@@ -1,2 +1,6 @@
 bin/
+<<<<<<< HEAD
 test*/
+=======
+tests/
+>>>>>>> d2058fdc12c8a095df979be4e8b024d3898cd915
