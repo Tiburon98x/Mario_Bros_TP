@@ -28,6 +28,7 @@ public class Mario {
 		this.game = game;
 		this.icon = Messages.MARIO_RIGHT;
 		
+		
 	}
 	
 
@@ -39,10 +40,16 @@ public class Mario {
 	}
 	
 	public boolean isInPos(Position pos){
+			
+		boolean isInPos = this.pos.equals(pos);
 		
-		return this.pos.equals(pos);
-	
+		if (this.isBig()) {
+			isInPos = this.pos.equals(pos) || this.pos.equals(pos.translate(new Position(0, 1)));
+			
 	}
+		return isInPos;
+	}
+		
 	
 	public boolean Esta_vivo() {
 		

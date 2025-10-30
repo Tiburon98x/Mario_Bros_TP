@@ -4,6 +4,7 @@ package tp1.logic;
 
 import tp1.control.*;
 import tp1.logic.gameobjects.*;
+import tp1.view.*;
 
 
 
@@ -14,7 +15,8 @@ public class Game {
 	private GameObjectContainer gameObjects;
 	private Mario mario;
 	private Controller controller;
-
+	private GameView view;
+	
 	private int level;
     @SuppressWarnings("unused")
 	private int time;
@@ -54,6 +56,9 @@ public class Game {
 	            case 0:
 	                initLevel0();
 	                break;
+	            case 1:
+	            	initLevel1();
+	            	break;
 	             default:
 	            	 initLevel0(); // si no existe el nivel, carga el 0
 	                break;
@@ -150,6 +155,63 @@ public class Game {
 		gameObjects.add(this.mario);
 		gameObjects.add(new Exit_door(new Position(Game.DIM_X-1, Game.DIM_Y-3)));
 	}
+	
+private void initLevel1() {
+		
+		// 1. Mapa
+		gameObjects = new GameObjectContainer();
+		for(int col = 0; col < 15; col++) {
+	
+			//Coordenadas cambiadas de orden!!!!
+			gameObjects.add(new Land(new Position(col,13)));
+			gameObjects.add(new Land(new Position(col,14)));
+			
+		}
+
+		gameObjects.add(new Land(new Position(9,Game.DIM_Y-3)));
+		gameObjects.add(new Land(new Position(12,Game.DIM_Y-3)));
+		
+		for(int col = 17; col < Game.DIM_X; col++) {
+				
+			gameObjects.add(new Land(new Position(col, Game.DIM_Y-2)));
+			gameObjects.add(new Land(new Position(col, Game.DIM_Y-1)));	
+			
+		}
+
+		gameObjects.add(new Land(new Position(2,9)));
+		gameObjects.add(new Land(new Position(5,9)));
+		gameObjects.add(new Land(new Position(6,9)));
+		gameObjects.add(new Land(new Position(7,9)));
+		gameObjects.add(new Land(new Position(6,5)));
+		
+		// Salto final
+		@SuppressWarnings("unused")
+		int tamX = 8, tamY= 8;
+		int posIniX = Game.DIM_X-3-tamX, posIniY = Game.DIM_Y-3;
+		
+		for(int col = 0; col < tamX; col++) {
+			
+			for (int fila = 0; fila < col+1; fila++) {
+				
+				gameObjects.add(new Land(new Position(posIniX+ col,posIniY- fila )));
+
+			}
+		}
+		// 3. Personajes
+		gameObjects.add(new Goomba(this, new Position(19, 0)));
+		gameObjects.add(new Goomba(this, new Position(6, 4)));
+		gameObjects.add(new Goomba(this, new Position(6, 12)));
+		gameObjects.add(new Goomba(this, new Position(8, 12)));
+		gameObjects.add(new Goomba(this, new Position(10, 10)));
+		gameObjects.add(new Goomba(this, new Position(11, 12)));
+		gameObjects.add(new Goomba(this, new Position(14, 12)));
+		
+		
+		this.mario = new Mario(this, new Position(0, Game.DIM_Y-3));
+		gameObjects.add(this.mario);
+		gameObjects.add(new Exit_door(new Position(Game.DIM_X-1, Game.DIM_Y-3)));
+	}
+
 			
 		
 	public void update() {
@@ -265,7 +327,11 @@ public class Game {
 	    
 	}
 	
-	
+	public void finished() {
+		
+		finished = true;
+		
+	}
 	
 	public void doInteractionsFrom(Mario mario) {
 		
@@ -280,6 +346,17 @@ public class Game {
 	    this.points += pts;
 	    
 	}
+
+
+
+	public void exit() {
+			
+		finished();
+		view.showMessage(Messages.PLAYER_QUITS);
+		
+	}
+	
+
 	
 	
 }

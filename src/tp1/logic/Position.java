@@ -5,8 +5,8 @@ package tp1.logic;
 
 public class Position {
 	
-	private int col;
-	private int row;
+	private final int col;
+	private final int row;
 	
 	
 	

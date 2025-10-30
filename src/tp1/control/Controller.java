@@ -18,7 +18,6 @@ public class Controller {
 	private ActionList actionList;
 	
 	
-	
 	public Controller(Game game, GameView view) {
 		
 		this.game = game;
@@ -51,10 +50,10 @@ public class Controller {
             String command = input[0].toLowerCase(); 
             
             switch (command) {
-            case "e":
-            case "exit":
-                exit();
-                break;
+//            case "e":
+//            case "exit":
+//                exit();
+//                break;
 
             case "h":
             case "help":
@@ -110,15 +109,28 @@ public class Controller {
             }
             
     }
-}
-	
-	
-	
-	private void exit() {
+//		while (!game.isFinished()) {
+//
+//		    String[] userWords = view.getPrompt();
+//		    Command command = CommandGenerator.parse(userWords);
+//
+//		    if (command != null) 
+//				command.execute(game, view);
+//		    else 
+//		        view.showError(Messages.UNKNOWN_COMMAND.formatted(String.join(" ", words)));
+//		}   
+//		
 		
-		view.showMessage("Player leaves game");
-        running = false;
-    }
+		
+	}
+	
+	
+	
+//	private void exit() {
+//		
+//		view.showMessage(Messages.PLAYER_QUITS);
+//        running = false;
+//    }
 
 	
 	

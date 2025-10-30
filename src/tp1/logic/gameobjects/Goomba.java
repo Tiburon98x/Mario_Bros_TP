@@ -55,20 +55,37 @@ public class Goomba {
 
 	 // 1. Si no hay suelo debajo → cae
 	    
-        if (!game.isSolid(below)) {
-        	
-            pos = below;
-            // si cae fuera del tablero → muere
-            
-            if (!pos.isInPosition(bordes)) { 
-            	
-                muere();
-            }
-            
+//        if (!game.isSolid(below)) {
+//        	
+//            pos = below;
+//            // si cae fuera del tablero → muere
+//            
+//            // Hay que arreglar el if de abajo!!!!!
+//            if (!pos.isInPosition(bordes)) { 
+//            	System.out.println("NO ESTA DENTRO");
+//                muere();
+//                
+//            }
+//            
+//            return;
+//            
+//        }
+	    
+      if (!game.isSolid(below)) {
+    	
+        pos = below;
+        return;
+        // si cae fuera del tablero → muere
+      }
+        // Hay que arreglar el if de abajo!!!!!
+        if (!pos.isInPosition(bordes)) { 
+        	System.out.println("NO ESTA DENTRO");
+            muere();
             return;
-            
-        }
 
+        }
+        
+        
         // 2. Si puede avanzar en la dirección actual → avanza
         
         if (game.isInside(next) && game.isEmpty(next)) {

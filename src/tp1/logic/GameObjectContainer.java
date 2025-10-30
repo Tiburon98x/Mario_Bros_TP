@@ -33,8 +33,9 @@ public class GameObjectContainer {
 	
 	
 	public void add(Mario mario) {
-		
-		this.mario = mario;
+
+		mario.setBig(true);
+		this.mario = mario;		
 		
 	}
 	
