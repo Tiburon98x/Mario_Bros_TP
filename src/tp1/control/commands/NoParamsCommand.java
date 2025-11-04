@@ -8,7 +8,13 @@ public abstract class NoParamsCommand extends AbstractCommand {
 
 	@Override
 	public Command parse(String[] commandWords) {
-		//First TODO fill with your code
+		//First TODO fill with your code (creo q es eso y ya)
+		
+		 if (commandWords.length == 1 && matchCommandName(commandWords[0])) {
+		        return this; 
+		    }				
 		return null;
 	}
+
+	
 }

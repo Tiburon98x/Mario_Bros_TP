@@ -8,15 +8,13 @@ import tp1.logic.*;
 
 
 
-public class Mario {
+public class Mario extends MovingObject{
 
 	private Position pos;
 	private Game game;
-	private boolean vivo = true;
-    private int dirX = 1;
+//	private boolean vivo = true;
 	private String icon;
 	private boolean big = false;
-	private boolean falling = false;
 	private int jumpcont = 0;
 
 
@@ -24,11 +22,10 @@ public class Mario {
 	
 	public Mario(Game game, Position pos) {
 		
-		this.pos = pos;
-		this.game = game;
+		super(game, pos);
 		this.icon = Messages.MARIO_RIGHT;
-		
-		
+		setFalling(false);
+		setDirx(1);
 	}
 	
 
@@ -39,7 +36,8 @@ public class Mario {
 		
 	}
 	
-	public boolean isInPos(Position pos){
+	@Override
+	public boolean isInPosition(Position pos){
 			
 		boolean isInPos = this.pos.equals(pos);
 		
@@ -51,32 +49,256 @@ public class Mario {
 	}
 		
 	
-	public boolean Esta_vivo() {
+//	public boolean Esta_vivo() {
+//		
+//        return vivo;
+//    
+//	}
+	
+	
+//	public void update(Iterable<Action> actions) {
+//		
+//		
+//	    boolean moved = false;
+//
+//	    if (!isAlive()) return;
+//	    
+//	    Position below = pos.translate(new Position(0, 1));
+//	    
+//	    if (game.isInside(below) && game.isSolid(below)) {
+//	    	
+//	        // Está en el suelo
+//	        setFalling(false);
+//	        jumpcont = 0;
+//	        
+//	    } else if (game.isInside(below) && !game.isSolid(below)) {
+//	    	
+//	        // Está en el aire → cae
+//	        pos = below;
+//	        setFalling(true);
+//	    }
+//
+//	    for (Action act : actions) {
+//	    	
+//	        Position next = pos.translateMario(act);
+//
+//	        // Movimiento horizontal
+//	        if (act == Action.LEFT || act == Action.RIGHT || act == Action.STOP) {
+//	        	
+//	            if (act == Action.LEFT) setDirx(-1);
+//	            else if (act == Action.RIGHT) setDirx(1);
+//	            else if (act == Action.STOP) setDirx(0);
+//
+//	            // Actualizar icono
+//	            icon = switch (getDirx()) {
+//	            
+//	                case 1 -> Messages.MARIO_RIGHT;
+//	                case -1 -> Messages.MARIO_LEFT;
+//	                default -> Messages.MARIO_STOP;
+//	                
+//	            };
+//
+//	            if (game.isInside(next) && game.isEmpty(next)) {
+//	                pos = next;
+//	                moved = true;
+//	            }
+//	        }
+//
+//	        // Salto (doble permitido)
+//	        if (act == Action.UP) {
+//	        	
+//	            if (jumpcont < 2) {
+//	            	
+//	                if (game.isInside(next) && game.isEmpty(next)) {
+//	                	
+//	                    pos = next;
+//	                    setFalling(true);
+//	                    jumpcont++; // solo incrementa si realmente sube
+//	                }
+//	            }
+//	            moved = true;
+//	        }
+//
+//	        // Caída rápida
+//	        if (act == Action.DOWN) {
+////	            Position below = pos.translateMario(act);
+//	            if (game.isInside(below) && !game.isSolid(below)) {
+//	                while (game.isInside(below) && !game.isSolid(below)) {
+//	                    pos = below;
+//	                    below = pos.translateMario(act);
+//	                    if (!game.isInside(below)) {
+//	                        muere();
+//	                        return;
+//	                    }
+//	                }
+//	                moved = true;
+//	            } else {
+//	                setDirx(0);
+//	                icon = Messages.MARIO_STOP;
+//	            }
+//	        }
+//	        
+//	    }
+//
+//
+//	    // Movimiento horizontal automático solo si no se movió
+//	    if (!moved) {
+//	        Position next = pos.translate(new Position(getDirx(), 0));
+//	        if (game.isInside(next) && game.isEmpty(next)) {
+//	            pos = next;
+//	        }
+//	        else
+//	        	setDirx(getDirx() * -1);
+//	    }
+//	}
+
+	public boolean processAction(Iterable<Action> actions) {
 		
-        return vivo;
-    
+		return true;
+	}
+	
+	public void muere() {
+		this.dead();
+		game.marioMuere(); // avisa al Game
+	}
+
+//	public void addAction(Action act) {
+//	    actions.add(act);
+//		
+//	}
+	//Hay que quitar el get position
+//	public boolean interactWith(Exit_door other) {
+//		
+////	    if (this.pos.equals(other.getPosition())) {
+//	    if (other.isInPos(this.pos)) {
+//	        game.marioExited(); // avisa al Game de que ha llegado
+//	        return true;
+//	    }
+//	    return false;
+//	}
+//
+//	public boolean interactWith(Goomba other) {
+//		
+////	    if (!this.pos.equals(other.getPosition())) return false;
+//		if (!other.isInPos(this.pos)) return false;
+//	    if (isFalling()) { // método que indica si Mario está cayendo
+//	        other.receiveInteraction(this);
+//	        return true;
+//	    }
+//
+//	    if (this.isBig()) {	
+//	        other.receiveInteraction(this);
+//	        this.setBig(false);
+//	        return true;
+//	    }   
+//	     else {
+//	    	 this.muere();
+//	    	 return true;
+//	    }
+//	    
+//	}
+	
+	public boolean isBig() {
+	    return big;
+	}
+	
+	public void setBig(boolean value) {
+	    this.big = value;
+	}
+	
+//	public boolean isFalling() {
+//	    return falling;
+//	}
+	
+	public void givePointsToGame(int pts) {
+	    game.addPoints(pts);
 	}
 	
 	
-	public void update(Iterable<Action> actions) {
+	public boolean interactWith(GameItem other) {
+		
+		boolean success = false;
+	    boolean canInteract = other.isInPosition(this.pos);
+	    if (canInteract) {	
+	        success = other.receiveInteraction(this);         
+	    }
+	    return canInteract && success;
+	}
+	
+	@Override
+	public boolean receiveInteraction(Goomba goomba) {
+
+	    if (this.isFalling()) {
+	        goomba.dead();
+	        givePointsToGame(100);
+	        return true;
+	    }
+
+	    if (this.isBig()) {
+	        goomba.dead();
+	        givePointsToGame(100);
+	        this.setBig(false);
+	        return true;
+	    }
+
+	    this.muere();
+	    return true;
+	}
+
+	@Override
+	public boolean receiveInteraction(Land land) {
+	    return true; // Mario pisa tierra, no se si asi esta bien, misma duda con el de goomba
+	}
+
+	@Override
+	public boolean receiveInteraction(Exit_door exit_door) {
+		
+	    game.marioExited();
+	    return true;
+	}
+
+	@Override
+	public boolean receiveInteraction(Mario mario) {
+	    return false;
+	}
+
+
+	@Override
+	public void update() {
+//		controller.consumeActions();
+//		update(Iterable<Action> actions);	
+		
+	    if (!isAlive()) return;
+
+		boolean ActionExecute = processActions(game.actions());
+	   
+		Position below = pos.translate(new Position(0, 1));
+
+		if(!ActionExecute && game.isInside(below))
+			super.update();
+		
+		else game.doInteraction(this);
+
+	}
+
+	private boolean processActions(Iterable<Action> actions) {
+		
 		
 	    boolean moved = false;
-
-	    if (!vivo) return;
 	    
 	    Position below = pos.translate(new Position(0, 1));
 	    
 	    if (game.isInside(below) && game.isSolid(below)) {
 	    	
 	        // Está en el suelo
-	        falling = false;
+	        setFalling(false);
 	        jumpcont = 0;
 	        
 	    } else if (game.isInside(below) && !game.isSolid(below)) {
 	    	
 	        // Está en el aire → cae
 	        pos = below;
-	        falling = true;
+	        setFalling(true);
 	    }
 
 	    for (Action act : actions) {
@@ -86,12 +308,12 @@ public class Mario {
 	        // Movimiento horizontal
 	        if (act == Action.LEFT || act == Action.RIGHT || act == Action.STOP) {
 	        	
-	            if (act == Action.LEFT) dirX = -1;
-	            else if (act == Action.RIGHT) dirX = 1;
-	            else if (act == Action.STOP) dirX = 0;
+	            if (act == Action.LEFT) setDirx(-1);
+	            else if (act == Action.RIGHT) setDirx(1);
+	            else if (act == Action.STOP) setDirx(0);
 
 	            // Actualizar icono
-	            icon = switch (dirX) {
+	            icon = switch (getDirx()) {
 	            
 	                case 1 -> Messages.MARIO_RIGHT;
 	                case -1 -> Messages.MARIO_LEFT;
@@ -113,7 +335,7 @@ public class Mario {
 	                if (game.isInside(next) && game.isEmpty(next)) {
 	                	
 	                    pos = next;
-	                    falling = true;
+	                    setFalling(true);
 	                    jumpcont++; // solo incrementa si realmente sube
 	                }
 	            }
@@ -129,100 +351,20 @@ public class Mario {
 	                    below = pos.translateMario(act);
 	                    if (!game.isInside(below)) {
 	                        muere();
-	                        return;
+	                        return false;
 	                    }
 	                }
 	                moved = true;
 	            } else {
-	                dirX = 0;
+	                setDirx(0);
 	                icon = Messages.MARIO_STOP;
 	            }
 	        }
+	        
 	    }
-
-
-	    // Movimiento horizontal automático solo si no se movió
-	    if (!moved) {
-	        Position next = pos.translate(new Position(dirX, 0));
-	        if (game.isInside(next) && game.isEmpty(next)) {
-	            pos = next;
-	        }
-	    }
+	    return moved;
 	}
 
 	
-	
-	public void muere() {
-		vivo = false;
-		game.marioMuere(); // avisa al Game
-	}
-
-//	public void addAction(Action act) {
-//	    actions.add(act);
-//		
-//	}
-	//Hay que quitar el get position
-	public boolean interactWith(Exit_door other) {
-		
-//	    if (this.pos.equals(other.getPosition())) {
-	    if (other.isInPos(this.pos)) {
-	        game.marioExited(); // avisa al Game de que ha llegado
-	        return true;
-	    }
-	    return false;
-	}
-
-	public boolean interactWith(Goomba other) {
-		
-//	    if (!this.pos.equals(other.getPosition())) return false;
-		if (!other.isInPos(this.pos)) return false;
-	    if (isFalling()) { // método que indica si Mario está cayendo
-	        other.receiveInteraction(this);
-	        return true;
-	    }
-
-	    if (this.isBig()) {	
-	        other.receiveInteraction(this);
-	        this.setBig(false);
-	        return true;
-	    }   
-	     else {
-	    	 this.muere();
-	    	 return true;
-//	    	if (game.numLives() > 1) {
-//	            this.muere(); 
-//	            
-//	        }
-//	    	else {	            
-//	            this.vivo = false;
-//	            game.marioMuere(); 
-//	            
-//	        }
-//	        return true;
-	    }
-	    
-	}
-	
-	public boolean isBig() {
-	    return big;
-	}
-	
-	public void setBig(boolean value) {
-	    this.big = value;
-//	    if(big) {
-//	        this.icon = Messages.MARIO_BIG;  // nuevo icono, aun no existe en messages
-//	    }
-//	    else
-//            this.icon = Messages.MARIO_RIGHT; 
-
-	}
-	
-	public boolean isFalling() {
-	    return falling;
-	}
-	
-	public void givePointsToGame(int pts) {
-	    game.addPoints(pts);
-	}
 	
 }

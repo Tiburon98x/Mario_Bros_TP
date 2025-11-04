@@ -9,32 +9,19 @@ public enum Action {
 	
 	private int x;
 	private int y;
-	
-	
-	
+		
 	private Action(int x, int y) {
 		
 		this.x=x;
-		this.y=y;
-		
+		this.y=y;		
 	}
 	
-	
-	
-	public int getX() {
-		
-		return x;
-		
+	public int getX() {		
+		return x;		
 	}
-
 	
-	
-	public int getY() {
-		
-		return y;
-		
+	public int getY() {		
+		return y;		
 	} 
-	
-	
 	
 }

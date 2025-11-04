@@ -17,17 +17,23 @@ public class CommandGenerator {
 //	}
 	
 	private static final List<Command> availableCommands = Arrays.asList(
-			//TODO fill with your code
-			// new UpdateCommand(),
-			new HelpCommand(),
-			new ExitCommand()
+	        new ActionCommand(null),
+			new UpdateCommand(),
+	        new ResetCommand(0),
+	        new HelpCommand(),
+	        new ExitCommand()
 	);
 
-	public static Command parse(String[] commandWords) {		
+	public static Command parse(String[] commandWords) {	
+
 		for (Command c: availableCommands) {
-			//TODO fill with your code
-		}
-		return null;
+
+			Command parsedCommand = c.parse(commandWords); //llama al de NoParamsCommand
+			 if (parsedCommand != null) { //aquí no se muy bien si cuando es NULL es hacer el movimiento automatico (m.u.)
+		            return parsedCommand;
+			 }
+		}		
+		return null; //respecto al comentario anterior, capaz en algun sitio haya q hacer if(parsedCommand = null) haga update con m.u.
 	}
 		
 	public static String commandHelp() {
@@ -38,10 +44,8 @@ public class CommandGenerator {
 		for (Command c: availableCommands) {
 			
 			c.helpText();
-			//TODO fill with your code
+
 		}
-
-
 		return commands.toString();
 	}
 

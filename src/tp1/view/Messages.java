@@ -78,7 +78,19 @@ public class Messages {
 	public static final String COMMAND_UPDATE_SHORTCUT = "u";
 	public static final String COMMAND_UPDATE_DETAILS = "[u]pdate | \"\"";
 	public static final String COMMAND_UPDATE_HELP = "user does not perform any action";
-		
+	
+	// RESET
+	public static final String COMMAND_RESET_NAME = "reset";
+	public static final String COMMAND_RESET_SHORTCUT = "r";
+	public static final String COMMAND_RESET_DETAILS = "[r]eset [numLevel]";
+	public static final String COMMAND_RESET_HELP = "reset the game to initial configuration if not numLevel else load the numLevel map";
+	
+	// ACTION
+	public static final String COMMAND_ACTION_NAME = "action";
+	public static final String COMMAND_ACTION_SHORTCUT = "a";
+	public static final String COMMAND_ACTION_DETAILS = "[a]ction [[R]IGHT | [L]EFT | [U]P | [D]OWN | [S]TOP]+";
+	public static final String COMMAND_ACTION_HELP = "user performs actions";
+	
 	// EXIT
 	public static final String COMMAND_EXIT_NAME = "exit";
 	public static final String COMMAND_EXIT_SHORTCUT = "e";

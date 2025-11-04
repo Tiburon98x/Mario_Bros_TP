@@ -8,7 +8,7 @@ import tp1.view.*;
 public interface Command {
 
 	
-	public void execute(Game game, GameView view);	
+	public void execute(GameModel game, GameView view);	
 	
 	Command parse(String[] a);
 	

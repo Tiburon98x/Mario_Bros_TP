@@ -11,12 +11,9 @@ public class ActionList {
 	private List<Action> actions = new ArrayList<>();
 	
 	
-	
-	public ActionList() {
-		
-    }
-
-	
+//	public ActionList() {
+//		
+//    }
 	
     // Añade una acción a la lista
     public boolean add(Action act) {
@@ -61,8 +58,6 @@ public class ActionList {
         return copy;
         
     }
-
-    
 
     // Devuelve si hay acciones pendientes
     public boolean isEmpty() {

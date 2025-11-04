@@ -21,7 +21,8 @@ public class ExitCommand extends NoParamsCommand{
 	public void execute(Game game, GameView view){
 		
 		// You should let the game know that you are leaving so that 
-		// if it needs to close something, it can close it and finish.
+		// if it needs to close something, it can close it and finish. ->esta frase me da desconfianza 
 	    game.exit(); //	
+	    view.showMessage(Messages.PLAYER_QUITS);
 	}
 }

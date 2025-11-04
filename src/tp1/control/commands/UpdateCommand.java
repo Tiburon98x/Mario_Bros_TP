@@ -1,10 +1,11 @@
 package tp1.control.commands;
 
-import tp1.logic.Game;
+//import tp1.logic.Game;
+import tp1.logic.GameModel;
 import tp1.view.GameView;
 import tp1.view.Messages;
 
-public class UpdateCommand extends AbstractCommand implements Command{
+public class UpdateCommand extends NoParamsCommand{
 	
 
 	private static final String NAME = Messages.COMMAND_UPDATE_NAME;
@@ -16,29 +17,11 @@ public class UpdateCommand extends AbstractCommand implements Command{
 		super(NAME, SHORTCUT, DETAILS, HELP);
 	}
 	
-	protected boolean matchCommand(String Command) {
-		
-		
-		return false;
 	
-	}
-	
-	
-	public String helpText() {
+	@Override
+	public void execute(GameModel game, GameView view) {
 		
-		
-		return null;		
-	}
-	
-	public Command parse(String[] Commands) {
-	
-		
-		return null;
-				
-	}
-	
-	public void execute(Game game, GameView view) {
-		
+		game.update();
 		
 	}
 }
