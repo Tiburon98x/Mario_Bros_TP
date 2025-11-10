@@ -6,34 +6,28 @@ import tp1.logic.*;
 import tp1.view.Messages;
 
 public class Land extends GameObject {
-	
-	private Position pos;
-	
-	public Land(Game game, Position pos) {
+		
+	public Land(GameWorld game, Position pos) {
 		super(game, pos);
 	}
 	
-	public Position getPosition() {
-        return pos;
-    } 
-	
+	@Override
 	public String getIcon() {
 		return Messages.LAND;
 	}
 	
-//	public boolean isInPos(Position pos){
-//		return (this.pos.equals(pos));
-//	}
 
+	@Override
 	public boolean interactWith(GameItem other) {
 		
-		boolean success = false;
-	    boolean canInteract = other.isInPosition(this.pos);
-	    if (canInteract) {
-	    	
-	        success = other.receiveInteraction(this);         
-	    }
-	    return canInteract && success;
+//		boolean success = false;
+//	    boolean canInteract = other.isInPosition(this.pos);
+//	    if (canInteract) {
+//	    	
+//	        success = other.receiveInteraction(this);         
+//	    }
+//	    return canInteract && success;
+		return false;
 	}
 
 	@Override
@@ -62,7 +56,7 @@ public class Land extends GameObject {
 
 	@Override
 	public void update() {
-		game.doInteraction(this);
+//		game.doInteraction(this);
 	}
 
 	@Override

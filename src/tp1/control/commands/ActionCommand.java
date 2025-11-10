@@ -1,8 +1,7 @@
 package tp1.control.commands;
 
 import tp1.logic.Action;
-import tp1.logic.ActionList;
-import tp1.logic.Game;
+import tp1.logic.GameModel;
 import tp1.view.GameView;
 import tp1.view.Messages;
 
@@ -24,27 +23,24 @@ public class ActionCommand extends NoParamsCommand {
 	}
 
     @Override
-    public void execute(Game game, GameView view) {
+    public void execute(GameModel game, GameView view) {
 
         for (String s : words) {
             Action act = parseAction(s);
 
             if (act == null) {
-                view.showError("Unknown action: " + s);
+                view.showError(Messages.UNKNOWN_COMMAND.formatted(s));
                 return;
             }
-            if(!game.getActionList().add(act)) {
-            	
-            	//rellenar
-            }
-            boolean added = game.getActionList().add(act);
-            if (!added) {
+          
+            if (!game.getActionList().add(act)) {
                 view.showError("Could not add action: " + s);
                 return;
             }
         }
 
-        view.showMessage("Actions queued.");
+        game.update();
+        view.showGame();
     }
 	
 	@Override
@@ -53,9 +49,8 @@ public class ActionCommand extends NoParamsCommand {
 	        return null;  // No es el comando "action"
 
 	    if (words.length < 2) 
-	        return null;  // No hay acciones
-
-	    // Creamos un nuevo array para las acciones
+	        return null; 
+	    
 	    String[] parameters = new String[words.length - 1];
 
 	    // Copiamos manualmente las acciones desde words a parameters
@@ -63,7 +58,6 @@ public class ActionCommand extends NoParamsCommand {
 	        parameters[i - 1] = words[i];
 	    }
 
-	    // Creamos un ActionCommand con esas acciones
 	    return new ActionCommand(parameters);
 	}
 	

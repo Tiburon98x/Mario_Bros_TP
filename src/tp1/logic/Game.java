@@ -36,71 +36,32 @@ public class Game implements GameModel, GameStatus, GameWorld {
 		this.lives = 3;
 		this.actionList = new ActionList();
 		this.gameObjects = new GameObjectContainer();
-		initLevel0();
+		initLevel(level);
 		
 		}
-	
-	
-	 
-	 public void setController(Controller controller) {
 		 
-        this.controller = controller;
-        
-	 	}
+	public void setController(Controller controller) {		 
+       this.controller = controller;       
+	}
 	 
-	 
-	 
-	 private void initLevel(int level) {
+	 	 
+	private void initLevel(int level) {
 	  
-	        switch (level) {
+        switch (level) {
 	        
-	            case 0:
-	                initLevel0();
-	                break;
-	            case 1:
-	            	initLevel1();
-	            	break;
-	             default:
-	            	 initLevel1(); // si no existe el nivel, carga el 0
-	                break;
-	        }
-	  }
-	  
-	  
+            case 0:
+                initLevel0();
+                break;
+            case 1:
+            	initLevel1();
+            	break;
+            	default:
+            	 initLevel1(); // si no existe el nivel, carga el 1
+                break;
+        }
+	 }
+
 	 
-	  public String positionToString(int col, int row) {
-
-		  Position pos = new Position(col , row);
-		  return gameObjects.busqueda(pos);
-	}
-	
-	
-	  
-	public boolean playerWins() {
-
-		return win;
-	}
-	
-	public boolean playerLoses() {
-
-		return lives <= 0;
-	}
-
-	public int remainingTime() {
-
-		return remainingTime;
-	}
-
-	public int points() {
-		
-		return points;
-	}
-
-	public int numLives() {
-		
-		return lives;
-	}
-
 	@Override
 	public String toString() {
 		
@@ -137,7 +98,7 @@ public class Game implements GameModel, GameStatus, GameWorld {
 		gameObjects.addItem(new Land(this, new Position(7,9)));
 		gameObjects.addItem(new Land(this, new Position(6,5)));
 		
-		// Salto final
+		// Salto final-
 		@SuppressWarnings("unused")
 		int tamX = 8, tamY= 8;
 		int posIniX = Game.DIM_X-3-tamX, posIniY = Game.DIM_Y-3;
@@ -212,34 +173,78 @@ private void initLevel1() {
 		gameObjects.addItem(this.mario);
 		gameObjects.addItem(new Exit_door(this, new Position(Game.DIM_X-1, Game.DIM_Y-3)));
 	}
+	
 
+	
+	
+	
+//	public GameObjectContainer getContainer() {
+//		
+//		return this.gameObjects;
+//		
+//	}
+	 
+
+//----------------GameModel-----------------------
+
+	 @Override
+	 public void update() {
+		 // Primero Mario
+		    if (finished || lives <= 0) return;
+
+		    // Mario procesa las acciones del turno
+		  //  mario.update(this.actions());
+
+		    // Control del tiempo
+		    remainingTime--;
+		    if (remainingTime <= 0) {
+		    	
+		        controller.run_out_time_message();
+		        marioMuere();
+		        return;
+		        
+		    }
+
+		    // Luego el resto de objetos (Goombas, etc.)
+		    gameObjects.update(this);
+		    // Interacciones de Mario con otros objetos
+		    //doInteractionsFrom(mario); ya no hace falta porque en el update anterior
+		    //hacemos interacciones de todos los objetos, incluido mario
+		    
+			gameObjects.resolveInteractions();
 			
-		
-	public void update() {
-	    // Primero Mario
-	    if (finished || lives <= 0) return;
+			gameObjects.removeDead();
 
-	    // Mario procesa las acciones del turno
-	  //  mario.update(this.actions());
+	 }
 
-	    // Control del tiempo
-	    remainingTime--;
-	    if (remainingTime <= 0) {
-	    	
-	        controller.run_out_time_message();
-	        marioMuere();
-	        return;
-	        
-	    }
-
-	    // Luego el resto de objetos (Goombas, etc.)
-	    gameObjects.update(this);
-	    // Interacciones de Mario con otros objetos
-	    //doInteractionsFrom(mario); ya no hace falta porque en el update anterior
-	    //hacemos interacciones de todos los objetos, incluido mario
-	    
+	@Override
+	public void reset(int level) {
+		this.level = level;
+		this.points = 0;
+		this.remainingTime = 100;
+		this.finished = false;
+		this.win = false;
+		this.gameObjects = new GameObjectContainer();
+		initLevel(level);
 	}
 
+
+	 @Override
+	 public boolean isFinished() {
+	    return finished;
+	 }
+
+	@Override
+	public void exit() {
+			finished = true;
+		}
+	 
+	 @Override
+		public int getCurrentLevel() {
+			return level;
+		}
+	 
+	@Override
 	public ActionList getActionList() {
 		return this.actionList;
 	}
@@ -247,121 +252,97 @@ private void initLevel1() {
 	public Iterable<Action> actions() {			    	
 		return actionList.IterableAndClear();	        
 	}
-	
-	public int getCurrentLevel() {		
-	    return level;
-	}
-	
-	public void reset(int level) {
 		
-	    this.time = 0;
-	    // vidas y puntos se mantienen
-	    this.level = level;
-	    this.remainingTime = 100;
-	    this.finished = false;
-	    this.win = false;
-	    // limpiar y volver a inicializar
-	    this.gameObjects = new GameObjectContainer();
-	    initLevel(level);
-	    
-	}
-	
-	
-	public GameObjectContainer getContainer() {
+
+//------------GameStatus-----------------------
+
 		
-		return this.gameObjects;
-		
-	}
-	
-	public boolean isSolid(Position pos) {
-		
-	    return gameObjects.solido(pos);
-	    
+	@Override
+	public int points() {
+		return points;
 	}
 
-	public boolean isEmpty(Position pos) {
-		
-	    return gameObjects.vacio(pos);
-	    
+	@Override
+	public boolean playerWins() {
+		return win;
+	}
+
+	@Override
+	public String positionToString(int col, int row) {
+		Position pos = new Position(col , row);
+		return gameObjects.busqueda(pos);
 	}
 	
-	public boolean isInside(Position pos) {
-		
-	    return gameObjects.dentro(pos);
-	    
+	@Override
+	public int numLives() {
+		return lives;
 	}
 	
-//	public boolean isExit(Position pos) {
-//		
-//	    return gameObjects.getExitDoor().isInPosition(pos);
-//	    
-//	}
-
-	public void marioMuere() {
-		
-		lives--;
-	    if (lives <= 0) {
-	    	
-	    	controller.game_over_message();
-	        finished = true;
-	        win = false;
-	        
-	    } else {
-	    	
-			controller.reset_message();;
-	        reset(level);
-	        
-	    }
-	    
-	} 
-
+	@Override
+	public int remainingTime() {
+		return remainingTime;
+	}
+	
+	@Override
+	public boolean playerLoses() {
+		return lives <= 0;
+	}
+	
 	
 
+//---------GameWorld------------------
+
+	@Override
 	public void marioExited() {
-		
-	    int pointsEarned = remainingTime * 10; 
-	    points += pointsEarned; 
-	    finished = true;
-	    win = true;
-	    controller.exit_message();
-	    
-	}
-	
-	
-	
-	public boolean isFinished() {
-		
-	    return finished;
-	    
-	}
-	
-	public void finished() {
-		
+		int pointsEarned = remainingTime * 10; 
+		points += pointsEarned; 
 		finished = true;
-		
+		win = true;
+//		controller.exit_message();
+	}
+
+	@Override
+	public int addPoints(int pts) {
+	
+		return this.points += pts;
+    
+	 }	
+
+	@Override
+	public boolean isSolid(Position pos) {
+		return gameObjects.solido(pos);
+ 	}
+	
+	@Override
+	public boolean isEmpty(Position pos) {
+		return gameObjects.vacio(pos);
 	}
 	
-//	public void doInteractionsFrom(Mario mario) {
-//		
-//	    gameObjects.doInteractionsFrom(mario);
-//	    
-//	}
-			
-	public void addPoints(int pts) {
-		
-	    this.points += pts;
-	    
+	@Override
+	public boolean isInside(Position pos) {
+		Position bordes = new Position(Game.DIM_X, Game.DIM_Y);
+		return pos.isInPosition(bordes);
 	}
 
-	public void exit() {
-			
-		finished();		
-	}
-
-	 public void doInteraction(GameItem other) {
-		 
-		   gameObjects.doInteraction(other);
+	@Override
+	public void marioMuere() {
+		lives--;
+		if (lives <= 0) {
+//			controller.game_over_message();
+			finished = true;
+			win = false;
+		} else {
+//			controller.reset_message();
+			reset(level);
 		}
+	}
 	
-	 
+	@Override
+	public void doInteraction(GameItem other) {
+		gameObjects.doInteraction(other);
+	}
+	
+
+
+	
 }

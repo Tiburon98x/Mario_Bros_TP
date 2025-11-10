@@ -43,8 +43,7 @@ public class CommandGenerator {
 		
 		for (Command c: availableCommands) {
 			
-			c.helpText();
-
+			commands.append(c.helpText());
 		}
 		return commands.toString();
 	}

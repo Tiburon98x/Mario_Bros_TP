@@ -1,9 +1,12 @@
 package tp1.logic;
 
+//para gameview
 public interface GameStatus {
 	
 	public int points();
+	public int numLives();
+	public int remainingTime();
 	public boolean playerWins();
-	public String[] positionToString(int col, int row);
-	
+	public boolean playerLoses();
+	public String positionToString(int col, int row);	
 }

@@ -6,16 +6,16 @@ public abstract class GameObject implements GameItem{ // TODO
 
 	protected Position pos; // If you can, make it private.
 	private boolean isAlive;
-	protected Game game; 
+	protected GameWorld game; 
 	
-	public GameObject(Game game, Position pos) {
+	public GameObject(GameWorld game, Position pos) {
 		this.isAlive = true;
 		this.pos = pos;
 		this.game = game;
 	}
 	
 	public boolean isInPosition(Position p) {
-	    return this.isAlive && this.pos.equals(p); //corregir para el big Mario
+	    return this.isAlive && this.pos.equals(p); 
 	}
  	
 	public boolean isAlive() {
@@ -34,10 +34,10 @@ public abstract class GameObject implements GameItem{ // TODO
 	
 	public abstract String getIcon();
 
-	// Not mandatory but recommended
-	protected void move(Action dir) {
-		// TODO Auto-generated method stub
-	}
+//	// Not mandatory but recommended
+//	protected void move(Action dir) {
+//		// TODO Auto-generated method stub
+//	}
 	
 	
 }

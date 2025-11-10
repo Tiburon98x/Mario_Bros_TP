@@ -1,6 +1,6 @@
 package tp1.logic.gameobjects;
 
-import tp1.logic.Game;
+import tp1.logic.GameWorld;
 import tp1.logic.Position;
 
 public abstract class MovingObject extends GameObject {
@@ -9,15 +9,12 @@ public abstract class MovingObject extends GameObject {
 	private int dirx;
 	private boolean isFalling;
 	
-	public MovingObject(Game game, Position pos) {
+	public MovingObject(GameWorld game, Position pos) {
 		super(game, pos);
 	}
 	
 	@Override
-	public String getIcon() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public abstract String getIcon();
 
 	public void setFalling(boolean falling) {
 	    this.isFalling = falling;
@@ -44,27 +41,37 @@ public abstract class MovingObject extends GameObject {
         Position below = pos.translate(new Position(0, 1));
 
         // No hay suelo, cae
+        if (!game.isInside(below)) {
+            dead(); // Si la posición debajo está fuera, muere
+            return;
+        }
         if (game.isInside(below) && !game.isSolid(below)) {
-        	        	
+    
+        	setFalling(true);        	
             pos = below;
-            setFalling(true);
-            
-            if(!game.isInside(below))
-            	dead(); //si está fuera del tablero, muere
-            return; 
+        
         }
         else {
         	setFalling(false);
+        	if (game.isInside(next) && !game.isSolid(next)) {
+                pos = next;
+            } 
+            else {
+                setDirx(getDirx() * -1);
+                switchIcon();
+            }
         }
 
         // Suelo y direccion auto
-        if (game.isInside(next) && !game.isSolid(next)) {
-            pos = next;
-        } 
-        else {
-            setDirx(getDirx() * -1);
-        }
-        game.doInteraction(this);
+//        if (game.isInside(next) && !game.isSolid(next)) {
+//            pos = next;
+//        } 
+//        else {
+//            setDirx(getDirx() * -1);
+//        }
+ //       game.doInteraction(this);
     }
+
+	public abstract void switchIcon();
 
 }
