@@ -88,22 +88,22 @@ public class GameObjectContainer{
 	}
 
 	
-	public void resolveInteractions() {
-		for (int i = 0; i < gameObjects.size(); i++) {
-			GameItem obj1 = gameObjects.get(i);
-			if (!obj1.isAlive()) continue;
-			
-			for (int j = i + 1; j < gameObjects.size(); j++) {
-				GameItem obj2 = gameObjects.get(j);
-				if (!obj2.isAlive()) continue;
-				
-				// Interacciones bidireccionales
-				obj1.interactWith(obj2);
-				obj2.interactWith(obj1);
-			}
-		}
-	}
-	
+//	public void resolveInteractions() {
+//		for (int i = 0; i < gameObjects.size(); i++) {
+//			GameItem obj1 = gameObjects.get(i);
+//			if (!obj1.isAlive()) continue;
+//			
+//			for (int j = i + 1; j < gameObjects.size(); j++) {
+//				GameItem obj2 = gameObjects.get(j);
+//				if (!obj2.isAlive()) continue;
+//				
+//				// Interacciones bidireccionales
+//				obj1.interactWith(obj2);
+//				obj2.interactWith(obj1);
+//			}
+//		}
+//	}
+//	
 	public void doInteraction(GameItem other) {
 		 
 	  for (GameItem item : gameObjects) {

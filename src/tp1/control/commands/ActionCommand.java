@@ -33,10 +33,11 @@ public class ActionCommand extends NoParamsCommand {
                 return;
             }
           
-            if (!game.getActionList().add(act)) {
-                view.showError("Could not add action: " + s);
-                return;
-            }
+//            if (!game.getActionList().add(act)) {
+//               // view.showError("Could not add action: " + s);
+//               // return;
+//            }
+            game.getActionList().add(act);
         }
 
         game.update();

@@ -12,7 +12,6 @@ public class Mario extends MovingObject{
 
 	private String icon;
 	private boolean big = true;
-	private int jumpcont = 0;
 
 
 
@@ -157,15 +156,9 @@ public class Mario extends MovingObject{
 			if(!isAlive()) {
 				game.marioMuere();
 			}
-//			Position below = pos.translate(new Position(0, 1));
-//			
-//			if (game.isInside(below)) {
-//				super.update();
-//			}
-//			else dead();
 
 		}
-	//	else game.doInteraction(this);
+		game.doInteraction(this);
 
 	}
 
@@ -180,16 +173,19 @@ public class Mario extends MovingObject{
 	    	
 	        // Está en el suelo
 	        setFalling(false);
-	        jumpcont = 0;
-	        
-	    } else if (game.isInside(below) && !game.isSolid(below)) {
-	    	
-	        // Está en el aire → cae
-	        pos = below;
-	        setFalling(true);
-	        moved = true;
 	    }
+	    else setFalling(true);
+	    
+//	    } else if (game.isInside(below) && !game.isSolid(below)) {
+//	    	
+//	        // Está en el aire → cae
+//	        pos = below;
+//	        setFalling(true);
+//	        moved = true;
+//	    }
 
+	    int maxL = 0, maxR = 0, maxU = 0;
+	    //realmente sea necesario hacer dos cont para el mov horizontal?
 	    for (Action act : actions) {
 	    	
 	        Position next = pos.translateMario(act);
@@ -197,9 +193,18 @@ public class Mario extends MovingObject{
 	        // Movimiento horizontal
 	        if (act == Action.LEFT || act == Action.RIGHT || act == Action.STOP) {
 	        	
-	            if (act == Action.LEFT) setDirx(-1);
-	            else if (act == Action.RIGHT) setDirx(1);
+	            if (act == Action.LEFT) {
+	            	setDirx(-1);
+	            	if(maxL > 3) continue;
+	            	maxL++;     
+	            }
+	            else if (act == Action.RIGHT) { 
+	            	setDirx(1);
+	            	if(maxR > 3) continue;
+	            	maxR++;
+	            }
 	            else if (act == Action.STOP) setDirx(0);
+
 
 	            // Actualizar icono
 	            icon = switch (getDirx()) {
@@ -216,27 +221,23 @@ public class Mario extends MovingObject{
 	            }
 	        }
 
-	        // Salto (doble permitido)
 	        if (act == Action.UP) {
-	        	
-	            if (jumpcont < 2) {
-	            	
-	                if (game.isInside(next) && game.isEmpty(next)) {
-	                	if(canMoveTo(next)) {
-	                		pos = next;
-	                		setFalling(true);
-	                		jumpcont++; // solo incrementa si realmente sube
-	                		moved = true;
+	        		           	            	
+                if (game.isInside(next) && game.isEmpty(next)) {
+                	if(canMoveTo(next)) {              		
+                		if(maxU > 3) continue;
+                		maxU++;
+                		pos = next;
+                		setFalling(true);
+                		moved = true;                		               		
 	                	}
-	                }
-	            }
-	       //     moved = true;
+	                }	            
 	        }
 
 	        // Caída rápida
 	        if (act == Action.DOWN) {
-//	            Position below = pos.translateMario(act);
-	            if (game.isInside(below) && !game.isSolid(below)) {
+
+	            if (isFalling()    /*game.isInside(below) && !game.isSolid(below)*/) {
 	                while (game.isInside(below) && !game.isSolid(below)) {
 	                    pos = below;
 	                    below = pos.translateMario(act);
@@ -246,14 +247,13 @@ public class Mario extends MovingObject{
 	                    }
 	                }
 	                moved = true;
+	                setFalling(false);	              
 	            } else {
 	                setDirx(0);
 	                icon = Messages.MARIO_STOP;
-	            }
-	        }
-	        
+	            }	        	
+	        }	        	      
 	    }
 	    return moved;
 	}
-	
 }

@@ -56,7 +56,7 @@ public class Land extends GameObject {
 
 	@Override
 	public void update() {
-//		game.doInteraction(this);
+		game.doInteraction(this);
 	}
 
 	@Override

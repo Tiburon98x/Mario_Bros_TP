@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 import java.util.List;
 
-import tp1.view.*;
+import tp1.view.Messages;
 
 public class CommandGenerator {
 
@@ -29,11 +29,14 @@ public class CommandGenerator {
 		for (Command c: availableCommands) {
 
 			Command parsedCommand = c.parse(commandWords); //llama al de NoParamsCommand
-			 if (parsedCommand != null) { //aquí no se muy bien si cuando es NULL es hacer el movimiento automatico (m.u.)
+			 if (parsedCommand != null) { 
 		            return parsedCommand;
 			 }
+			 else {
+				 
+			 }
 		}		
-		return null; //respecto al comentario anterior, capaz en algun sitio haya q hacer if(parsedCommand = null) haga update con m.u.
+		return null;
 	}
 		
 	public static String commandHelp() {

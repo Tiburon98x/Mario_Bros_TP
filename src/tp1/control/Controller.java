@@ -48,9 +48,12 @@ public class Controller {
 			}
 			else 
 				view.showError(Messages.UNKNOWN_COMMAND.formatted(String.join(" ", userWords)));
-		}  
+		} 
+		if(game.playerWins()) {
+			view.showMessage(Messages.MARIO_WINS);
+		}
 		
-		view.showEndMessage();
+	//	view.showEndMessage();
 		
 	}
 	

@@ -51,7 +51,7 @@ public class Exit_door extends GameObject {
 
 	@Override
 	public void update() {
-//		game.doInteraction(this);
+		game.doInteraction(this);
 	}	
 		
 }

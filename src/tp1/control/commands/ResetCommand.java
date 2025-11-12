@@ -27,7 +27,7 @@ public class ResetCommand extends AbstractCommand {
 		
 		if (level == -10) {
 		    targetLevel = game.getCurrentLevel();
-		    view.showError("Error al reiniciar nivel, reiniciando nivel anterior...");
+	//	    view.showError("Error al reiniciar nivel, reiniciando nivel anterior...");
 		    
 		} else {
 		    targetLevel = level;

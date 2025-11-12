@@ -211,7 +211,7 @@ private void initLevel1() {
 		    //doInteractionsFrom(mario); ya no hace falta porque en el update anterior
 		    //hacemos interacciones de todos los objetos, incluido mario
 		    
-			gameObjects.resolveInteractions();
+//			gameObjects.resolveInteractions();
 			
 			gameObjects.removeDead();
 
@@ -296,9 +296,10 @@ private void initLevel1() {
 	public void marioExited() {
 		int pointsEarned = remainingTime * 10; 
 		points += pointsEarned; 
+		remainingTime = 0;
 		finished = true;
 		win = true;
-//		controller.exit_message();
+	//	controller.exit_message();
 	}
 
 	@Override

@@ -9,4 +9,5 @@ public interface GameModel {
 	public void exit();
 	public int getCurrentLevel();
 	public ActionList getActionList();
+	public boolean playerWins();
 }
