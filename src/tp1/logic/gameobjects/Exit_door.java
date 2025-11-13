@@ -11,6 +11,10 @@ public class Exit_door extends GameObject {
 	public Exit_door(GameWorld game, Position pos) {	
 		super(game, pos);
 	}
+	
+//	protected Exit_door() {
+//		super();
+//	}
 				
 	@Override
 	public String getIcon() {			
@@ -51,7 +55,10 @@ public class Exit_door extends GameObject {
 
 	@Override
 	public void update() {
-		game.doInteraction(this);
 	}	
+	
+	//--------------Factoría--------------------
+	
+	
 		
 }

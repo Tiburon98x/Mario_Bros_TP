@@ -2,7 +2,7 @@ package tp1.logic.gameobjects;
 
 import tp1.logic.*;
 
-public abstract class GameObject implements GameItem{ // TODO 
+public abstract class GameObject implements GameItem{ 
 
 	protected Position pos; // If you can, make it private.
 	private boolean isAlive;

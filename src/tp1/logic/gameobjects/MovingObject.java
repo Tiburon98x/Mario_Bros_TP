@@ -69,6 +69,7 @@ public abstract class MovingObject extends GameObject {
 //        else {
 //            setDirx(getDirx() * -1);
 //        }
+        
         game.doInteraction(this);
     }
 

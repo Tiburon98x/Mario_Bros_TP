@@ -25,7 +25,6 @@ public class Game implements GameModel, GameStatus, GameWorld {
     private int remainingTime = 100;
     private boolean finished = false;
     private boolean win = false;
-    private ActionList actionList;
     
     
 	public Game(int nLevel) {
@@ -34,17 +33,16 @@ public class Game implements GameModel, GameStatus, GameWorld {
 		this.time = 0;
 		this.points = 0;
 		this.lives = 3;
-		this.actionList = new ActionList();
 		this.gameObjects = new GameObjectContainer();
 		initLevel(level);
 		
-		}
-		 
+	}
+ 
 	public void setController(Controller controller) {		 
        this.controller = controller;       
 	}
 	 
-	 	 
+	
 	private void initLevel(int level) {
 	  
         switch (level) {
@@ -56,20 +54,17 @@ public class Game implements GameModel, GameStatus, GameWorld {
             	initLevel1();
             	break;
             	default:
-            	 initLevel1(); // si no existe el nivel, carga el 1
+            //		controller.reset_message();
+            	initLevel1(); // si no existe el nivel, carga el 1
                 break;
         }
 	 }
-
 	 
 	@Override
-	public String toString() {
-		
-		return "TODO: Hola soy el game";
-		
+	public String toString() {		
+		return "TODO: Hola soy el game";		
 	}
 	
-
 	private void initLevel0() {
 		
 		// 1. Mapa
@@ -159,6 +154,9 @@ private void initLevel1() {
 
 			}
 		}
+		
+		this.mario = new Mario(this, new Position(0, Game.DIM_Y-3));
+		gameObjects.addItem(this.mario);
 		// 3. Personajes
 		gameObjects.addItem(new Goomba(this, new Position(19, 0)));
 		gameObjects.addItem(new Goomba(this, new Position(6, 4)));
@@ -168,9 +166,7 @@ private void initLevel1() {
 		gameObjects.addItem(new Goomba(this, new Position(11, 12)));
 		gameObjects.addItem(new Goomba(this, new Position(14, 12)));
 		
-		
-		this.mario = new Mario(this, new Position(0, Game.DIM_Y-3));
-		gameObjects.addItem(this.mario);
+
 		gameObjects.addItem(new Exit_door(this, new Position(Game.DIM_X-1, Game.DIM_Y-3)));
 	}
 	
@@ -183,50 +179,50 @@ private void initLevel1() {
 //		return this.gameObjects;
 //		
 //	}
+
 	 
 
 //----------------GameModel-----------------------
 
 	 @Override
 	 public void update() {
-		 // Primero Mario
-		    if (finished || lives <= 0) return;
+		 
+		 if (finished || lives <= 0) return;
 
-		    // Mario procesa las acciones del turno
-		  //  mario.update(this.actions());
-
-		    // Control del tiempo
-		    remainingTime--;
-		    if (remainingTime <= 0) {
+	    // Control del tiempo
+		 remainingTime--;
+		 if (remainingTime <= 0) {
 		    	
-		        controller.run_out_time_message();
-		        marioMuere();
-		        return;
-		        
-		    }
-
-		    // Luego el resto de objetos (Goombas, etc.)
-		    gameObjects.update(this);
-		    // Interacciones de Mario con otros objetos
-		    //doInteractionsFrom(mario); ya no hace falta porque en el update anterior
-		    //hacemos interacciones de todos los objetos, incluido mario
+			 controller.run_out_time_message();
+			 marioMuere();
+			 return;		        
+		 }
 		    
-//			gameObjects.resolveInteractions();
-			
-			gameObjects.removeDead();
-
+		 gameObjects.update(this);		  
+		   		    			
+		 gameObjects.removeDead();
 	 }
 
-	@Override
-	public void reset(int level) {
-		this.level = level;
-		this.points = 0;
-		this.remainingTime = 100;
-		this.finished = false;
-		this.win = false;
-		this.gameObjects = new GameObjectContainer();
-		initLevel(level);
-	}
+	 @Override
+	 public void reset(int level) {
+		 this.level = level;
+		 this.points = 0;
+		 this.remainingTime = 100;
+		 this.finished = false;
+		 this.win = false;
+		 this.gameObjects = new GameObjectContainer();
+		 initLevel(level);
+	 }
+	 
+	 public void perderVida(int level) {
+		 this.level = level;
+		 this.remainingTime = 100;
+		 this.finished = false;
+		 this.win = false;
+		 this.gameObjects = new GameObjectContainer();
+		 initLevel(level);
+		 
+	 }
 
 
 	 @Override
@@ -244,16 +240,11 @@ private void initLevel1() {
 			return level;
 		}
 	 
-	@Override
-	public ActionList getActionList() {
-		return this.actionList;
-	}
-	
-	public Iterable<Action> actions() {			    	
-		return actionList.IterableAndClear();	        
-	}
-		
-
+	 @Override
+	 public void addActionToMario(Action act) {
+			this.mario.addAction(act);
+		}
+	 
 //------------GameStatus-----------------------
 
 		
@@ -327,6 +318,7 @@ private void initLevel1() {
 
 	@Override
 	public void marioMuere() {
+
 		lives--;
 		if (lives <= 0) {
 //			controller.game_over_message();
@@ -334,7 +326,7 @@ private void initLevel1() {
 			win = false;
 		} else {
 //			controller.reset_message();
-			reset(level);
+			perderVida(level);
 		}
 	}
 	

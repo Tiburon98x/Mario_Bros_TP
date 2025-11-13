@@ -82,7 +82,7 @@ public class Controller {
        
     public void reset_message() {
     	
-    	view.showMessage("Mario ha muerto. Reiniciando nivel...");
+    	view.showError(Messages.INVALID_LEVEL_NUMBER);
     }
     
        

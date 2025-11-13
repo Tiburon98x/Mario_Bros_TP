@@ -32,12 +32,13 @@ public class ActionCommand extends NoParamsCommand {
                 view.showError(Messages.UNKNOWN_COMMAND.formatted(s));
                 return;
             }
+            
           
 //            if (!game.getActionList().add(act)) {
 //               // view.showError("Could not add action: " + s);
 //               // return;
 //            }
-            game.getActionList().add(act);
+            game.addActionToMario(act);
         }
 
         game.update();
@@ -47,14 +48,14 @@ public class ActionCommand extends NoParamsCommand {
 	@Override
 	public Command parse(String[] words) {
 	    if (!matchCommandName(words[0])) 
-	        return null;  // No es el comando "action"
+	        return null; 
 
 	    if (words.length < 2) 
 	        return null; 
 	    
 	    String[] parameters = new String[words.length - 1];
 
-	    // Copiamos manualmente las acciones desde words a parameters
+	    // Copiamos las acciones desde words a parameters
 	    for (int i = 1; i < words.length; i++) {
 	        parameters[i - 1] = words[i];
 	    }
@@ -82,7 +83,7 @@ public class ActionCommand extends NoParamsCommand {
             case "stop":
                 return Action.STOP;
             default:
-                return null;
+                return Action.INCORRECT;
                 
         }
     }

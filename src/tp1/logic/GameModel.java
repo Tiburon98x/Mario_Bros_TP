@@ -8,6 +8,7 @@ public interface GameModel {
 	public void reset(int level);
 	public void exit();
 	public int getCurrentLevel();
-	public ActionList getActionList();
+//	public ActionList getActionList();
 	public boolean playerWins();
+	public void addActionToMario(Action act);
 }

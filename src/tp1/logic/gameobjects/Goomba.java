@@ -20,42 +20,37 @@ public class Goomba extends MovingObject {
 		return Messages.GOOMBA;		
 	}
 	
-	@Override
-	public void update() {
-		
-		super.update();
-//		game.doInteraction(this);
-	}
-
-	
 	public boolean interactWith(GameItem other) {
 		
-		boolean success = false;
-	    boolean canInteract = other.isInPosition(this.pos);
-	    if (canInteract) {
-	    	
-	        success = other.receiveInteraction(this);         
-	    }
-	    return canInteract && success;
+//		boolean success = false;
+//	    boolean canInteract = other.isInPosition(this.pos);
+//	    if (canInteract) {
+//	    	
+//	        success = other.receiveInteraction(this);         
+//	    }
+	    return false;
 	}
 	
 	@Override
 	public boolean receiveInteraction(Mario mario) {
-		if(mario.isFalling()) {
-			this.dead();
-			mario.givePointsToGame(100);
+
+		this.dead();
+		mario.givePointsToGame(100);
+		if(!mario.isFalling()) {
+			mario.receiveInteraction(this);
 		}
+
 		return true;
 	}
 
 	@Override
 	public boolean receiveInteraction(Goomba goomba) {
-	    return false; // No estoy seguro, se chocan entre ellos no?
+	    return false; 
 	}
 
 	@Override
 	public boolean receiveInteraction(Land land) {
-	    return false; // No seguro, no se si esto hace que goomba detecte suelo
+	    return false; 
 	}
 
 	@Override
