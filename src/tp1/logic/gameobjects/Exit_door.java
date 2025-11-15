@@ -11,11 +11,13 @@ public class Exit_door extends GameObject {
 	public Exit_door(GameWorld game, Position pos) {	
 		super(game, pos);
 	}
-	
-//	protected Exit_door() {
-//		super();
-//	}
+
 				
+	public Exit_door() {
+		super();
+	}
+
+
 	@Override
 	public String getIcon() {			
 		return Messages.EXIT_DOOR;	
@@ -55,10 +57,18 @@ public class Exit_door extends GameObject {
 
 	@Override
 	public void update() {
+	}
+
+
+	@Override
+	public boolean receiveInteraction(Box obj) {
+		return false;
+	}
+
+
+	@Override
+	public boolean receiveInteraction(Mushroom obj) {
+		return false;
 	}	
-	
-	//--------------Factoría--------------------
-	
-	
 		
 }

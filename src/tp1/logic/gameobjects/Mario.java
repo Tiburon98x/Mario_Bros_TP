@@ -6,8 +6,6 @@ package tp1.logic.gameobjects;
 import tp1.view.Messages;
 import tp1.logic.*;
 
-
-
 public class Mario extends MovingObject{
 
 	private String icon;
@@ -25,6 +23,10 @@ public class Mario extends MovingObject{
 
 	}
 	
+	public Mario() {
+		super();
+	}
+
 	@Override
 	public void switchIcon() {
 		
@@ -47,7 +49,7 @@ public class Mario extends MovingObject{
 		boolean isInPos = this.pos.equals(pos);
 		
 		if (this.isBig()) {
-//			isInPos = this.pos.equals(pos) || this.pos.equals(pos.translate(new Position(0, 1)));
+
 			Position topPos = this.pos.translate(new Position(0, -1));
 			isInPos = this.pos.equals(pos) || topPos.equals(pos);
 		}
@@ -73,18 +75,11 @@ public class Mario extends MovingObject{
 	    return true;
 	}
 	
-	
-//	public boolean processAction(Iterable<Action> actions) {
-//		
-//		return true;
-//	}
-	
 	public void muere() {
 		this.dead();
-		game.marioMuere(); // avisa al Game
+		game.marioMuere();
 	}
 
-	
 	public boolean isBig() {
 	    return big;
 	}
@@ -99,11 +94,11 @@ public class Mario extends MovingObject{
 	
 	
 	public boolean interactWith(GameItem other) {
-		//Añadir si mario grande
 		
 		boolean success = false;
-	    boolean canInteract = other.isInPosition(this.pos); //corregir esto
-	    if (canInteract /*|| this.isBig() /*algo de posicion de arriba*/) {	
+	    boolean canInteract = other.isInPosition(this.pos); 
+	    Position topPos = this.pos.translate(new Position(0, -1));
+	    if (canInteract || (this.isBig() && other.isInPosition(topPos))) {	
 	        success = other.receiveInteraction(this);         
 	    }
 	    return canInteract && success;
@@ -111,7 +106,7 @@ public class Mario extends MovingObject{
 	
 	@Override
 	public boolean receiveInteraction(Goomba goomba) {
-
+		
 		 if (this.isBig()) {
 	        this.setBig(false);
 	        return true;
@@ -158,20 +153,17 @@ public class Mario extends MovingObject{
 				
 	    boolean moved = false;	    	    
 
-	    int maxL = 0, maxR = 0, maxU = 0;
-	    //realmente sea necesario hacer dos cont para el mov horizontal?
+	    int maxH = 0, maxU = 0; //cont para mov horiz, y mov up
+
 	    for (Action act : actions) {
 	    	
 	    	Position below = pos.translate(new Position(0, 1));
 	  	    
 	  	    if (game.isInside(below) && game.isSolid(below)) {
-	  	    	
-	  	        // Está en el suelo
-	  	        setFalling(false);
+	  	    	setFalling(false);
 	  	    }
 	  	    else { 
-	  	    	setFalling(true); 
-	  	    
+	  	    	setFalling(true); 	  	
 	  	    }
 	 	    
 	        Position next = pos.translateMario(act);
@@ -181,29 +173,27 @@ public class Mario extends MovingObject{
 	        	
 	            if (act == Action.LEFT) {
 	            	setDirx(-1);
-	            	if(maxL > 3) continue;
-	            	maxL++;     
+	            	if(maxH > 3) continue;
+	            	maxH++;     
 	            }
 	            else if (act == Action.RIGHT) { 
 	            	setDirx(1);
-	            	if(maxR > 3) continue;
-	            	maxR++;
+	            	if(maxH > 3) continue;
+	            	maxH++;
 	            }
 	            else if (act == Action.STOP) setDirx(0);
 	            if (canMoveTo(next)) {
 	                pos = next;	               
 	                moved = true;
 	            }
-	            // Actualizar icono
+
 	            icon = switch (getDirx()) {
 	            
 	                case 1 -> Messages.MARIO_RIGHT;
 	                case -1 -> Messages.MARIO_LEFT;
 	                default -> Messages.MARIO_STOP;
 	                
-	            };
-
-	            
+	            };           
 	        }
 
 	        if (act == Action.UP) {
@@ -222,17 +212,17 @@ public class Mario extends MovingObject{
 	        // Caída rápida
 	        if (act == Action.DOWN) {
 
-	            if (isFalling()    /*game.isInside(below) && !game.isSolid(below)*/) {
+	            if (isFalling()) {
 	                while (game.isInside(below) && !game.isSolid(below)) {
 	                    pos = below;
 	                    below = pos.translateMario(act);
 	                    if (!game.isInside(below)) {
-	                        //muere();
+	                    	
 	                        return false;
 	                    }
 	                }
 	                moved = true;
-	        //      setFalling(false);	              
+
 	            } else {
 	                setDirx(0);
 	                icon = Messages.MARIO_STOP;	                
@@ -249,5 +239,58 @@ public class Mario extends MovingObject{
 	
 	public void addAction(Action act) {
 		actionList.add(act);
+	}
+
+	@Override
+	public boolean receiveInteraction(Box obj) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean receiveInteraction(Mushroom obj) {
+		
+		if(!isBig()) {
+			setBig(true);
+		}	
+	//	obj.receiveInteraction(this);
+		return true;
+	}
+	
+	@Override
+
+	public GameObject parse(String[] objWords, GameWorld game) {
+
+	    Position pos = Position.parse(objWords[0]);
+
+	    if (!game.isInside(pos)) return null;
+
+	    Mario m = new Mario(game, pos);
+
+	    // Dirección
+
+	    if (objWords.length > 2) {
+
+	        if (objWords[2].equalsIgnoreCase("RIGHT")) m.setDirx(1);
+
+	        else if (objWords[2].equalsIgnoreCase("LEFT")) m.setDirx(-1);
+	    }
+
+	    // Tamaño
+
+	    if (objWords.length > 3) {
+
+	        if (objWords[3].equalsIgnoreCase("BIG")) m.setBig(true);
+
+	        else if (objWords[3].equalsIgnoreCase("SMALL")) m.setBig(false);
+	    }
+
+	    return m;
+
+	}
+
+	public boolean isDirectlyBelow(Position pos) {
+		Position below = pos.translate(new Position(0, 1));
+		return this.isInPosition(below);
 	}
 }

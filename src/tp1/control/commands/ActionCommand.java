@@ -1,3 +1,5 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
+
 package tp1.control.commands;
 
 import tp1.logic.Action;
@@ -6,16 +8,13 @@ import tp1.view.GameView;
 import tp1.view.Messages;
 
 public class ActionCommand extends NoParamsCommand {
-	//realmente no extiende de NOParamsCommand porque si necesita parametros
 
 	private static final String NAME = Messages.COMMAND_ACTION_NAME;
     private static final String SHORTCUT = Messages.COMMAND_ACTION_SHORTCUT;
     private static final String DETAILS = Messages.COMMAND_ACTION_DETAILS;
     private static final String HELP = Messages.COMMAND_ACTION_HELP;
-	//HAY QUE EDITAR EL MESSAGE PARA EL RESET CREO
 
 	private String[] words;
-
 	
     public ActionCommand(String[] words) {
 		super(NAME, SHORTCUT, DETAILS, HELP);
@@ -33,11 +32,6 @@ public class ActionCommand extends NoParamsCommand {
                 return;
             }
             
-          
-//            if (!game.getActionList().add(act)) {
-//               // view.showError("Could not add action: " + s);
-//               // return;
-//            }
             game.addActionToMario(act);
         }
 
@@ -83,9 +77,7 @@ public class ActionCommand extends NoParamsCommand {
             case "stop":
                 return Action.STOP;
             default:
-                return Action.INCORRECT;
-                
+                return Action.INCORRECT; //si las acciones introducidas son incorrectas (-1, -1)         
         }
     }
-	
 }

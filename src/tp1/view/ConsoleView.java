@@ -1,3 +1,5 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
+
 package tp1.view;
 
 import static tp1.util.MyStringUtils.repeat;

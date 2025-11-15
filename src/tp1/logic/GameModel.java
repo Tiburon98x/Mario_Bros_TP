@@ -1,4 +1,8 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
+
 package tp1.logic;
+
+import tp1.logic.gameobjects.GameObject;
 
 //para controller
 public interface GameModel {
@@ -8,7 +12,8 @@ public interface GameModel {
 	public void reset(int level);
 	public void exit();
 	public int getCurrentLevel();
-//	public ActionList getActionList();
 	public boolean playerWins();
 	public void addActionToMario(Action act);
+	public boolean playerLoses();
+	public void addGameObject(GameObject obj);
 }

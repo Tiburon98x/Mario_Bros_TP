@@ -1,3 +1,4 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
 
 package tp1.control.commands;
 
@@ -19,8 +20,6 @@ public class HelpCommand extends NoParamsCommand {
 	@Override
 	public void execute(GameModel game, GameView view) {
 		
-		
 		view.showMessage(CommandGenerator.commandHelp());
 	}
-
 }

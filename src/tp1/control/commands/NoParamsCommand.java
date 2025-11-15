@@ -1,3 +1,5 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
+
 package tp1.control.commands;
 
 public abstract class NoParamsCommand extends AbstractCommand {
@@ -12,11 +14,7 @@ public abstract class NoParamsCommand extends AbstractCommand {
 		 if (commandWords.length == 1 && matchCommandName(commandWords[0])) {
 		        return this; 
 		    }
-//		 else if(commandWords.length > 1) {
-//			 view.showError("Mensaje");
-//		 }
-		return null;
-	}
 
-	
+		return null;
+	}	
 }

@@ -1,3 +1,5 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
+
 package tp1.control.commands;
 
 import tp1.logic.GameModel;
@@ -8,7 +10,6 @@ public class ResetCommand extends AbstractCommand {
 	
 	private int level;
 	
-	//realmente no extiende de NOParamsCommand porque si necesita parametros
 	private static final String NAME = Messages.COMMAND_RESET_NAME;
     private static final String SHORTCUT = Messages.COMMAND_RESET_SHORTCUT;
     private static final String DETAILS = Messages.COMMAND_RESET_DETAILS;
@@ -36,28 +37,22 @@ public class ResetCommand extends AbstractCommand {
 		}
 		else {
 			game.reset(targetLevel);
+			
         view.showGame();
-			}
-		
+			}		
 	}
-
 
 	 @Override
 	 public Command parse(String[] commandWords) {
 	
 		 if (commandWords.length == 1 && matchCommandName(commandWords[0])) {
-	            return new ResetCommand(-10); //usamos -1 para indicar en el execute que es erroneo
+	            return new ResetCommand(-10); //usamos -10 para indicar en el execute que es erroneo
 	     }
 
 		 if (commandWords.length == 2 && matchCommandName(commandWords[0])) {
-			 try {
-				 int parsedLevel = Integer.parseInt(commandWords[1]);
-	             return new ResetCommand(parsedLevel);
-			 }
-	         catch (NumberFormatException e) {
 
-	        	 return null; // No es un número válido
-	        	 }
+			 int parsedLevel = Integer.parseInt(commandWords[1]);
+             return new ResetCommand(parsedLevel);
 		 }
 		 return null;
 	 }

@@ -1,6 +1,9 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
+
 package tp1.logic;
 
 import tp1.logic.gameobjects.GameItem;
+import tp1.logic.gameobjects.GameObject;
 
 //para gameobject
 public interface GameWorld {
@@ -12,4 +15,6 @@ public interface GameWorld {
 	public boolean isInside(Position pos);
 	public void marioMuere();
 	public void doInteraction(GameItem other);
+	public void addGameObject(GameObject obj);
+
 }

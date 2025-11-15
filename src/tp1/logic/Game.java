@@ -5,9 +5,6 @@ package tp1.logic;
 import tp1.control.*;
 
 import tp1.logic.gameobjects.*;
-//import tp1.view.*;
-
-
 
 public class Game implements GameModel, GameStatus, GameWorld {
 
@@ -26,7 +23,8 @@ public class Game implements GameModel, GameStatus, GameWorld {
     private boolean finished = false;
     private boolean win = false;
     
-    
+    private GameObjectContainer aux;
+       
 	public Game(int nLevel) {
 		
 		this.level = nLevel;
@@ -44,20 +42,25 @@ public class Game implements GameModel, GameStatus, GameWorld {
 	 
 	
 	private void initLevel(int level) {
-	  
-        switch (level) {
-	        
+		  
+        switch (level) {	        
             case 0:
                 initLevel0();
                 break;
             case 1:
             	initLevel1();
             	break;
+            case 2:
+            	initLevel2();
+            	break;
+            case -1:
+            	initLevel_vacío();
+            	break;
             	default:
-            //		controller.reset_message();
             	initLevel1(); // si no existe el nivel, carga el 1
                 break;
         }
+
 	 }
 	 
 	@Override
@@ -71,7 +74,6 @@ public class Game implements GameModel, GameStatus, GameWorld {
 		gameObjects = new GameObjectContainer();
 		for(int col = 0; col < 15; col++) {
 	
-			//Coordenadas cambiadas de orden!!!!
 			gameObjects.addItem(new Land(this, new Position(col,13)));
 			gameObjects.addItem(new Land(this, new Position(col,14)));
 			
@@ -93,7 +95,6 @@ public class Game implements GameModel, GameStatus, GameWorld {
 		gameObjects.addItem(new Land(this, new Position(7,9)));
 		gameObjects.addItem(new Land(this, new Position(6,5)));
 		
-		// Salto final-
 		@SuppressWarnings("unused")
 		int tamX = 8, tamY= 8;
 		int posIniX = Game.DIM_X-3-tamX, posIniY = Game.DIM_Y-3;
@@ -106,7 +107,6 @@ public class Game implements GameModel, GameStatus, GameWorld {
 
 			}
 		}
-		// 3. Personajes
 		gameObjects.addItem(new Goomba(this, new Position(19, 0)));
 		this.mario = new Mario(this, new Position(0, Game.DIM_Y-3));
 		gameObjects.addItem(this.mario);
@@ -115,11 +115,9 @@ public class Game implements GameModel, GameStatus, GameWorld {
 	
 private void initLevel1() {
 		
-		// 1. Mapa
 		gameObjects = new GameObjectContainer();
 		for(int col = 0; col < 15; col++) {
 	
-			//Coordenadas cambiadas de orden!!!!
 			gameObjects.addItem(new Land(this, new Position(col,13)));
 			gameObjects.addItem(new Land(this, new Position(col,14)));
 			
@@ -141,7 +139,6 @@ private void initLevel1() {
 		gameObjects.addItem(new Land(this, new Position(7,9)));
 		gameObjects.addItem(new Land(this, new Position(6,5)));
 		
-		// Salto final
 		@SuppressWarnings("unused")
 		int tamX = 8, tamY= 8;
 		int posIniX = Game.DIM_X-3-tamX, posIniY = Game.DIM_Y-3;
@@ -157,7 +154,6 @@ private void initLevel1() {
 		
 		this.mario = new Mario(this, new Position(0, Game.DIM_Y-3));
 		gameObjects.addItem(this.mario);
-		// 3. Personajes
 		gameObjects.addItem(new Goomba(this, new Position(19, 0)));
 		gameObjects.addItem(new Goomba(this, new Position(6, 4)));
 		gameObjects.addItem(new Goomba(this, new Position(6, 12)));
@@ -166,22 +162,127 @@ private void initLevel1() {
 		gameObjects.addItem(new Goomba(this, new Position(11, 12)));
 		gameObjects.addItem(new Goomba(this, new Position(14, 12)));
 		
-
 		gameObjects.addItem(new Exit_door(this, new Position(Game.DIM_X-1, Game.DIM_Y-3)));
 	}
-	
+
+	private void initLevel2() {
 
 	
+
+		// 1. Mapa
+
+		gameObjects = new GameObjectContainer();
+		
+		for(int col = 0; col < 15; col++) {
+
+
+
+			//Coordenadas cambiadas de orden!!!!
+
+			gameObjects.addItem(new Land(this, new Position(col,13)));
+
+			gameObjects.addItem(new Land(this, new Position(col,14)));
+
+		}
+
+
+
+		gameObjects.addItem(new Land(this, new Position(9,Game.DIM_Y-3)));
+
+		gameObjects.addItem(new Land(this, new Position(12,Game.DIM_Y-3)));
+
+	
+
+		for(int col = 17; col < Game.DIM_X; col++) {
+
+			
+
+			gameObjects.addItem(new Land(this, new Position(col, Game.DIM_Y-2)));
+
+			gameObjects.addItem(new Land(this, new Position(col, Game.DIM_Y-1)));	
+
+		
+
+		}
+
+
+
+		gameObjects.addItem(new Land(this, new Position(2,9)));
+
+		gameObjects.addItem(new Land(this, new Position(5,9)));
+
+		gameObjects.addItem(new Land(this, new Position(6,9)));
+
+		gameObjects.addItem(new Land(this, new Position(7,9)));
+
+		gameObjects.addItem(new Land(this, new Position(6,5)));
+
+	
+
+		// Salto final
+	
+		@SuppressWarnings("unused")
+	
+		int tamX = 8, tamY= 8;
+	
+		int posIniX = Game.DIM_X-3-tamX, posIniY = Game.DIM_Y-3;
+	
+		
+	
+			for(int col = 0; col < tamX; col++) {
+	
+			
+	
+				for (int fila = 0; fila < col+1; fila++) {
+	
+				
+	
+					gameObjects.addItem(new Land(this, new Position(posIniX+ col,posIniY- fila )));
 	
 	
-//	public GameObjectContainer getContainer() {
-//		
-//		return this.gameObjects;
-//		
-//	}
+	
+				}
+	
+			}
+	
+			// 3. Personajes
+	
+			this.mario = new Mario(this, new Position(0, Game.DIM_Y-3));
+			
+			gameObjects.addItem(this.mario);
+			
+			gameObjects.addItem(new Goomba(this, new Position(19, 0)));
+	
+			gameObjects.addItem(new Goomba(this, new Position(6, 4)));
+	
+			gameObjects.addItem(new Goomba(this, new Position(6, 12)));
+	
+			gameObjects.addItem(new Goomba(this, new Position(8, 12)));
+	
+			gameObjects.addItem(new Goomba(this, new Position(10, 10)));
+	
+			gameObjects.addItem(new Goomba(this, new Position(11, 12)));
+	
+			gameObjects.addItem(new Goomba(this, new Position(14, 12)));
+	
+			//Objetos nuevos (He cambiado córdenadas no sé si esté bien
+	
+			gameObjects.addItem(new Box(this, new Position(4,9)));
+	
+			gameObjects.addItem(new Mushroom(this, new Position(8,12)));
+	
+			gameObjects.addItem(new Mushroom(this, new Position(20,2)));
+		
+			gameObjects.addItem(new Exit_door(this, new Position(Game.DIM_X-1, Game.DIM_Y-3)));
+	
+		}
 
-	 
+	private void initLevel_vacío() {
 
+	// 1. Mapa
+		gameObjects = new GameObjectContainer();
+	}
+	
 //----------------GameModel-----------------------
 
 	 @Override
@@ -189,7 +290,6 @@ private void initLevel1() {
 		 
 		 if (finished || lives <= 0) return;
 
-	    // Control del tiempo
 		 remainingTime--;
 		 if (remainingTime <= 0) {
 		    	
@@ -206,25 +306,19 @@ private void initLevel1() {
 	 @Override
 	 public void reset(int level) {
 		 this.level = level;
-		 this.points = 0;
+//		 this.points = 0;
 		 this.remainingTime = 100;
 		 this.finished = false;
 		 this.win = false;
 		 this.gameObjects = new GameObjectContainer();
+		 
+		 if (level == -1) {
+				this.lives = 3;
+				this.points = 0;
+			}		 
 		 initLevel(level);
 	 }
 	 
-	 public void perderVida(int level) {
-		 this.level = level;
-		 this.remainingTime = 100;
-		 this.finished = false;
-		 this.win = false;
-		 this.gameObjects = new GameObjectContainer();
-		 initLevel(level);
-		 
-	 }
-
-
 	 @Override
 	 public boolean isFinished() {
 	    return finished;
@@ -279,7 +373,6 @@ private void initLevel1() {
 		return lives <= 0;
 	}
 	
-	
 
 //---------GameWorld------------------
 
@@ -321,12 +414,11 @@ private void initLevel1() {
 
 		lives--;
 		if (lives <= 0) {
-//			controller.game_over_message();
+
 			finished = true;
 			win = false;
 		} else {
-//			controller.reset_message();
-			perderVida(level);
+			reset(level);
 		}
 	}
 	
@@ -334,8 +426,11 @@ private void initLevel1() {
 	public void doInteraction(GameItem other) {
 		gameObjects.doInteraction(other);
 	}
-	
+
+	@Override
+	public void addGameObject(GameObject obj) {		
+		aux.addLater(obj);		
+	}
 
 
-	
 }

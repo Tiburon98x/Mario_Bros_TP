@@ -6,7 +6,6 @@ package tp1.logic.gameobjects;
 import tp1.logic.*;
 import tp1.view.Messages;
 
-
 public class Goomba extends MovingObject {
     
 	public Goomba (GameWorld game, Position pos) {
@@ -15,19 +14,16 @@ public class Goomba extends MovingObject {
 		setDirx(-1);
 	}
 	
+	public Goomba() {
+		super();
+	}
+
 	@Override
 	public String getIcon() {		
 		return Messages.GOOMBA;		
 	}
 	
 	public boolean interactWith(GameItem other) {
-		
-//		boolean success = false;
-//	    boolean canInteract = other.isInPosition(this.pos);
-//	    if (canInteract) {
-//	    	
-//	        success = other.receiveInteraction(this);         
-//	    }
 	    return false;
 	}
 	
@@ -36,10 +32,11 @@ public class Goomba extends MovingObject {
 
 		this.dead();
 		mario.givePointsToGame(100);
-		if(!mario.isFalling()) {
+        Position below = pos.translate(new Position(0, 1));
+
+		if(!mario.isFalling() || (mario.isFalling() && game.isEmpty(below))) { //que mario este debajo de goomba
 			mario.receiveInteraction(this);
 		}
-
 		return true;
 	}
 
@@ -60,5 +57,15 @@ public class Goomba extends MovingObject {
 
 	@Override
 	public void switchIcon() {}
+
+	@Override
+	public boolean receiveInteraction(Box obj) {
+		return false;
+	}
+
+	@Override
+	public boolean receiveInteraction(Mushroom obj) {
+		return false;
+	}
 
 }

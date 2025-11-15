@@ -1,3 +1,4 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
 
 package tp1.control.commands;
 
@@ -8,13 +9,6 @@ import java.util.List;
 import tp1.view.Messages;
 
 public class CommandGenerator {
-
-//	private GameView view;
-//	
-//	public CommandGenerator(GameView view) {
-//		
-//		this.view = view;	
-//	}
 	
 	private static final List<Command> availableCommands = Arrays.asList(
 	        new ActionCommand(null),
@@ -31,10 +25,7 @@ public class CommandGenerator {
 			Command parsedCommand = c.parse(commandWords); //llama al de NoParamsCommand
 			 if (parsedCommand != null) { 
 		            return parsedCommand;
-			 }
-			 else {
-				 
-			 }
+			 }			
 		}		
 		return null;
 	}
@@ -50,5 +41,4 @@ public class CommandGenerator {
 		}
 		return commands.toString();
 	}
-
 }

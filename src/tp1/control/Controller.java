@@ -2,29 +2,20 @@
 
 package tp1.control;
 
-
-
 import tp1.control.commands.*;
 import tp1.logic.*;
 import tp1.view.*;
 
 
-
 public class Controller {
 
-	//private Game game;
 	private GameModel game;
 	private GameView view;
-//	private ActionList actionList;
-	
 	
 	public Controller(GameModel game, GameView view) {
 		
 		this.game = game;
 		this.view = view;
-	//	this.game.setController(this);  instruccion necesaria pero hacerlo al final
-	//	this.actionList = new ActionList();
-		
 	}
 
 	
@@ -52,43 +43,16 @@ public class Controller {
 		if(game.playerWins()) {
 			view.showMessage(Messages.MARIO_WINS);
 		}
-		
-	//	view.showEndMessage();
+		else if(game.playerLoses()) {
+			view.showMessage(Messages.GAME_OVER);
+		}
 		
 	}
-	
-  
-//    public Iterable<Action> actions() {
-//    	
-//        return actionList.IterableAndClear();
-//        
-//    }
-//    
-    
-    
+	    
     public void run_out_time_message(){
     	
     	view.showMessage("¡Tiempo agotado!");
     	
     }
-    
-    
-    public void game_over_message() {
-    	
-        view.showMessage(Messages.GAME_OVER);
-       	
-    }
-    
-       
-    public void reset_message() {
-    	
-    	view.showError(Messages.INVALID_LEVEL_NUMBER);
-    }
-    
-       
-    public void exit_message() {
-        view.showMessage(Messages.MARIO_WINS);
-    }
-      
 
 }

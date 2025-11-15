@@ -1,3 +1,5 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
+
 package tp1.logic.gameobjects;
 
 import tp1.logic.*;
@@ -14,6 +16,8 @@ public abstract class GameObject implements GameItem{
 		this.game = game;
 	}
 	
+	public GameObject() {} //factoría
+
 	public boolean isInPosition(Position p) {
 	    return this.isAlive && this.pos.equals(p); 
 	}
@@ -34,10 +38,31 @@ public abstract class GameObject implements GameItem{
 	
 	public abstract String getIcon();
 
-//	// Not mandatory but recommended
-//	protected void move(Action dir) {
-//		// TODO Auto-generated method stub
-//	}
-	
+	public GameObject parse(String[] objWords, GameWorld game) {
+
+	    Position pos = Position.parse(objWords[0]);
+
+	    if (!game.isInside(pos)) return null;
+
+	    String type = objWords[1];
+
+	    if (type.equalsIgnoreCase("Land")) { //|| type.equalsIgnoreCase("L")
+
+	        return new Land(game, pos);
+	    }
+
+	    else if (type.equalsIgnoreCase("ExitDoor")) {
+
+	        return new Exit_door(game, pos);
+	    }
+
+	    else if (type.equalsIgnoreCase("Box")) {
+
+	        return new Box(game, pos);
+	    }
+	    // Si no coincide, devolvemos null
+
+	    return null;
+	}
 	
 }

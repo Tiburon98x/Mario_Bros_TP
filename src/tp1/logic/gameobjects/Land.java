@@ -11,22 +11,18 @@ public class Land extends GameObject {
 		super(game, pos);
 	}
 	
+	public Land() {
+		super();
+	}
+
 	@Override
 	public String getIcon() {
 		return Messages.LAND;
 	}
 	
-
 	@Override
 	public boolean interactWith(GameItem other) {
-		
-//		boolean success = false;
-//	    boolean canInteract = other.isInPosition(this.pos);
-//	    if (canInteract) {
-//	    	
-//	        success = other.receiveInteraction(this);         
-//	    }
-//	    return canInteract && success;
+
 		return false;
 	}
 
@@ -61,6 +57,16 @@ public class Land extends GameObject {
 	@Override
 	public boolean isSolid() {
 		return true;
+	}
+
+	@Override
+	public boolean receiveInteraction(Box obj) {
+		return false;
+	}
+
+	@Override
+	public boolean receiveInteraction(Mushroom obj) {
+		return false;
 	}
 
 	

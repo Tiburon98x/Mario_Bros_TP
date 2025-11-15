@@ -1,3 +1,5 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
+
 package tp1.logic.gameobjects;
 
 import tp1.logic.GameWorld;
@@ -13,6 +15,10 @@ public abstract class MovingObject extends GameObject {
 		super(game, pos);
 	}
 	
+	public MovingObject() {
+		super();
+	}
+
 	@Override
 	public abstract String getIcon();
 
@@ -61,18 +67,60 @@ public abstract class MovingObject extends GameObject {
                 switchIcon();
             }
         }
-
-        // Suelo y direccion auto
-//        if (game.isInside(next) && !game.isSolid(next)) {
-//            pos = next;
-//        } 
-//        else {
-//            setDirx(getDirx() * -1);
-//        }
         
         game.doInteraction(this);
     }
 
 	public abstract void switchIcon();
+	
+	
+	@Override
+	public GameObject parse(String[] objWords, GameWorld game) {
+
+	    Position pos = Position.parse(objWords[0]);
+
+	    if (!game.isInside(pos)) return null;
+
+	    String type = objWords[1];
+
+	    int dirx = 0;
+
+	    if (objWords.length > 2) {
+
+	        if (objWords[2].equalsIgnoreCase("RIGHT")) dirx = 1;
+
+	        else if (objWords[2].equalsIgnoreCase("LEFT")) dirx = -1;
+
+	    }
+
+	    if (type.equalsIgnoreCase("Goomba")) {
+
+	        Goomba g = new Goomba(game, pos);
+
+	        g.setDirx(dirx);
+
+	        return g;
+
+	    }
+
+	    else if (type.equalsIgnoreCase("Mushroom")) {
+
+	        Mushroom m = new Mushroom(game, pos);
+
+	        m.setDirx(dirx);
+
+	        return m;
+
+	    }
+
+	    else if (type.equalsIgnoreCase("Mario")) {
+
+	        // delegamos en Mario.parse para tamaño
+
+	        return new Mario().parse(objWords, game);
+
+	    }
+	    return null;
+	}
 
 }

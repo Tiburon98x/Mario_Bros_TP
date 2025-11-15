@@ -11,11 +11,13 @@ import tp1.logic.gameobjects.*;
 public class GameObjectContainer{
 	
 	private List<GameObject> gameObjects;
+	
+	private List<GameObject> aux; 
 
 	public GameObjectContainer() {
 		gameObjects = new ArrayList<>();
+		aux = new ArrayList<>();
 	}
-	
 	
 	public void addItem(GameObject obj) {
 		gameObjects.add(obj);
@@ -63,20 +65,10 @@ public class GameObjectContainer{
 	    return true;
 	}
 	
-	
-//	public boolean dentro(Position pos) {
-//		
-//		Position bordes = new Position(Game.DIM_X, Game.DIM_Y);
-//		return pos.isInPosition(bordes);	           
-//	 }   esto está en el game ahora
-	 
-	 
 	public void update(Game game) {
 		
-		// juego terminado
 		if (game.isFinished() || game.playerLoses()) return;
-
-	    
+   
 		for (GameObject obj : gameObjects) {
         obj.update();
 	    }
@@ -84,12 +76,13 @@ public class GameObjectContainer{
 		for (GameObject obj : gameObjects) {
 	        doInteraction(obj);
 		}
+		
+		if (!aux.isEmpty()) {
+	        gameObjects.addAll(aux);
+	        aux.clear();
+	    }
 
-		// eliminar los obj dead
-		//gameObjects.removeIf(obj -> !obj.isAlive()); -> esta instruccion esta en el game
-	   
 	}
-
 
 	public void doInteraction(GameItem other) {
 		 
@@ -104,6 +97,11 @@ public class GameObjectContainer{
 
 	public void removeDead() {
 		gameObjects.removeIf(obj -> !obj.isAlive());
+	}
+
+
+	public void addLater(GameObject obj) {
+		aux.add(obj);		
 	}
 	 
 }
