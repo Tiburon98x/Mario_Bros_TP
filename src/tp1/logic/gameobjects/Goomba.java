@@ -6,21 +6,27 @@ package tp1.logic.gameobjects;
 import tp1.logic.*;
 import tp1.view.Messages;
 
+
+
 public class Goomba extends MovingObject {
+	
+	private String icon;
     
 	public Goomba (GameWorld game, Position pos) {
 		
 		super(game, pos);
 		setDirx(-1);
+		this.icon = Messages.GOOMBA;
+		
 	}
 	
 	public Goomba() {
 		super();
 	}
-
+	
 	@Override
-	public String getIcon() {		
-		return Messages.GOOMBA;		
+	public String toString() {
+	    return this.icon;
 	}
 	
 	public boolean interactWith(GameItem other) {
@@ -29,15 +35,20 @@ public class Goomba extends MovingObject {
 	
 	@Override
 	public boolean receiveInteraction(Mario mario) {
+		
+			if(mario.isAlive()) {
+			this.dead();
+			mario.givePointsToGame(100);
+	        Position below = pos.translate(new Position(0, 1));
+			if(!mario.isFalling() || (mario.isInPosition(below)))  
+				mario.receiveInteraction(this);			
+			
+			return true;
+			
+			}
+			
+		return false;
 
-		this.dead();
-		mario.givePointsToGame(100);
-        Position below = pos.translate(new Position(0, 1));
-
-		if(!mario.isFalling() || (mario.isFalling() && game.isEmpty(below))) { //que mario este debajo de goomba
-			mario.receiveInteraction(this);
-		}
-		return true;
 	}
 
 	@Override
@@ -56,9 +67,6 @@ public class Goomba extends MovingObject {
 	}
 
 	@Override
-	public void switchIcon() {}
-
-	@Override
 	public boolean receiveInteraction(Box obj) {
 		return false;
 	}
@@ -68,4 +76,12 @@ public class Goomba extends MovingObject {
 		return false;
 	}
 
+	@Override
+	public void cambiarIconIzq() {}
+
+	@Override
+	public void cambiarIconDer() {}
+
+	
+	
 }

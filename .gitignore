@@ -1,6 +1,9 @@
+# Ignorar carpetas de compilación y configuración de Eclipse
 bin/
-<<<<<<< HEAD
-test*/
-=======
-tests/
->>>>>>> d2058fdc12c8a095df979be4e8b024d3898cd915
+.metadata/
+.recommenders/
+*.class
+
+# Ignorar archivos de sistema
+.DS_Store
+Thumbs.db

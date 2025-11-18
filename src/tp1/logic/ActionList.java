@@ -10,25 +10,24 @@ public class ActionList {
 
 	private List<Action> actions = new ArrayList<>();
 	
+	
+	
     // Añade una acción a la lista
     public boolean add(Action act) {
     	
        if(act == null) return false;
 
        if ((act == Action.LEFT && actions.contains(Action.RIGHT)) ||
-           (act == Action.RIGHT && actions.contains(Action.LEFT))) {
-    	   
+           (act == Action.RIGHT && actions.contains(Action.LEFT))) 
            return false;          
-       }
 
        if ((act == Action.UP && actions.contains(Action.DOWN)) ||
-           (act == Action.DOWN && actions.contains(Action.UP))) {
-    	   
+           (act == Action.DOWN && actions.contains(Action.UP)))
            return false;          
-       }
 
        actions.add(act);
-       return true;      
+       return true;  
+       
     }
     
     // Devuelve la lista de acciones y la vacía
@@ -36,11 +35,15 @@ public class ActionList {
     	
         List<Action> copy = new ArrayList<>(actions);
         actions.clear();
-        return copy;       
+        return copy; 
+        
     }
 
     // Devuelve si hay acciones pendientes
     public boolean isEmpty() {   	
         return actions.isEmpty();        
-    }      
+    }  
+    
+    
+    
 }

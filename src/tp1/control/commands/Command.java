@@ -9,6 +9,7 @@ public interface Command {
 	public void execute(GameModel game, GameView view);		
 	Command parse(String[] a);	
 	String helpText();
+	
+	
+	
 }
-
-

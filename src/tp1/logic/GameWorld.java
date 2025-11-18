@@ -3,7 +3,7 @@
 package tp1.logic;
 
 import tp1.logic.gameobjects.GameItem;
-import tp1.logic.gameobjects.GameObject;
+import tp1.logic.gameobjects.Mushroom;
 
 //para gameobject
 public interface GameWorld {
@@ -15,6 +15,6 @@ public interface GameWorld {
 	public boolean isInside(Position pos);
 	public void marioMuere();
 	public void doInteraction(GameItem other);
-	public void addGameObject(GameObject obj);
+	public void addMushroom(Mushroom mushroom);
 
 }

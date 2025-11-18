@@ -7,7 +7,7 @@ import tp1.logic.GameModel;
 import tp1.view.GameView;
 import tp1.view.Messages;
 
-public class ActionCommand extends NoParamsCommand {
+public class ActionCommand extends AbstractCommand {
 
 	private static final String NAME = Messages.COMMAND_ACTION_NAME;
     private static final String SHORTCUT = Messages.COMMAND_ACTION_SHORTCUT;
@@ -41,9 +41,10 @@ public class ActionCommand extends NoParamsCommand {
 	
 	@Override
 	public Command parse(String[] words) {
-	    if (!matchCommandName(words[0])) 
+		
+	    if (!matchCommandName(words[0])) {
 	        return null; 
-
+	    }
 	    if (words.length < 2) 
 	        return null; 
 	    

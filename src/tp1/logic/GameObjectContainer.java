@@ -11,8 +11,9 @@ import tp1.logic.gameobjects.*;
 public class GameObjectContainer{
 	
 	private List<GameObject> gameObjects;
-	
 	private List<GameObject> aux; 
+	
+	
 
 	public GameObjectContainer() {
 		gameObjects = new ArrayList<>();
@@ -34,48 +35,45 @@ public class GameObjectContainer{
 		StringBuilder sb = new StringBuilder();
 
 	    for (GameObject obj : gameObjects) {
-	        if (obj.isInPosition(pos)) {
-	            sb.append(obj.getIcon());
-	        }
+	        if (obj.isInPosition(pos))
+	            sb.append(obj.toString());
 	    }
+	    
 	    return sb.toString();				
 	}
 	
 	
 	public boolean solido(Position pos) {
 	 
-		for (GameObject obj : gameObjects) {
-	       
-	    	if (obj.isSolid() && obj.isInPosition(pos)) {
-	            return true; 
-	        }	
-	    }	    
+		for (GameObject obj : gameObjects) {    
+	    		if (obj.isSolid() && obj.isInPosition(pos))
+	    			return true; 
+	    }
+		
 	    return false;
+	    
 	}
 
 	
 	public boolean vacio(Position pos) {
 	    
-		for (GameObject obj : gameObjects) {
-	      
-			if (obj.isSolid() && obj.isInPosition(pos)) {
+		for (GameObject obj : gameObjects) { 
+			if (obj.isSolid() && obj.isInPosition(pos))
 	            return false; 
-	        }
+	       
 	    }
+		
 	    return true;
+	    
 	}
 	
 	public void update(Game game) {
 		
-		if (game.isFinished() || game.playerLoses()) return;
+		if (game.isFinished() || game.playerLoses())
+			return;
    
-		for (GameObject obj : gameObjects) {
+		for (GameObject obj : gameObjects)
         obj.update();
-	    }
-		
-		for (GameObject obj : gameObjects) {
-	        doInteraction(obj);
-		}
 		
 		if (!aux.isEmpty()) {
 	        gameObjects.addAll(aux);
@@ -91,6 +89,7 @@ public class GameObjectContainer{
 
 			  other.interactWith(item);
 			  item.interactWith(other);
+			  
 		  }
 	   }		    
 	}
@@ -103,5 +102,20 @@ public class GameObjectContainer{
 	public void addLater(GameObject obj) {
 		aux.add(obj);		
 	}
+
+	public void updateAdd(Game game) {
+
+		if (!aux.isEmpty()) {
+	        gameObjects.addAll(aux);
+	        aux.clear();
+	    }		
+	}
+	
+	 public void SetAction(Action act) {
+		 for (GameObject obj : gameObjects)
+			 obj.receiveAction(act); 
+	 }
+	
+	 
 	 
 }

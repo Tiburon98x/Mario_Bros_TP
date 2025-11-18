@@ -6,53 +6,52 @@ import tp1.logic.*;
 import tp1.view.Messages;
 
 public class Land extends GameObject {
+	
+	private String icon;
 		
 	public Land(GameWorld game, Position pos) {
+		
 		super(game, pos);
+		this.icon = Messages.LAND;
+		
 	}
 	
 	public Land() {
 		super();
 	}
-
+	
 	@Override
-	public String getIcon() {
-		return Messages.LAND;
+	public String toString() {
+	    return this.icon;
 	}
 	
 	@Override
 	public boolean interactWith(GameItem other) {
-
 		return false;
 	}
 
 	@Override
 	public boolean receiveInteraction(Land obj) {
-
 		return false;
 	}
 
 	@Override
 	public boolean receiveInteraction(Exit_door obj) {
-
 		return false;
 	}
 
 	@Override
 	public boolean receiveInteraction(Mario obj) {
-
 		return false;
 	}
 
 	@Override
 	public boolean receiveInteraction(Goomba obj) {
-
 		return false;
 	}
 
 	@Override
-	public void update() {
-	}
+	public void update() {}
 
 	@Override
 	public boolean isSolid() {
@@ -70,5 +69,5 @@ public class Land extends GameObject {
 	}
 
 	
+	
 }
-

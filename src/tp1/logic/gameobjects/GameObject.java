@@ -6,14 +6,18 @@ import tp1.logic.*;
 
 public abstract class GameObject implements GameItem{ 
 
-	protected Position pos; // If you can, make it private.
+	protected Position pos;
 	private boolean isAlive;
 	protected GameWorld game; 
 	
+	
+	
 	public GameObject(GameWorld game, Position pos) {
+		
 		this.isAlive = true;
 		this.pos = pos;
 		this.game = game;
+		
 	}
 	
 	public GameObject() {} //factoría
@@ -36,33 +40,31 @@ public abstract class GameObject implements GameItem{
 	 
 	public abstract void update();
 	
-	public abstract String getIcon();
+//	public abstract String getIcon();
+	public abstract String toString();
 
 	public GameObject parse(String[] objWords, GameWorld game) {
 
 	    Position pos = Position.parse(objWords[0]);
-
-	    if (!game.isInside(pos)) return null;
+	    if (!game.isInside(pos)) 
+	    		return null;
 
 	    String type = objWords[1];
-
-	    if (type.equalsIgnoreCase("Land")) { //|| type.equalsIgnoreCase("L")
-
+	    if (type.equalsIgnoreCase("Land") || type.equalsIgnoreCase("L")) 
 	        return new Land(game, pos);
-	    }
-
-	    else if (type.equalsIgnoreCase("ExitDoor")) {
-
+	    
+	    else if (type.equalsIgnoreCase("ExitDoor") || type.equalsIgnoreCase("ED")) 
 	        return new Exit_door(game, pos);
-	    }
 
-	    else if (type.equalsIgnoreCase("Box")) {
-
+	    else if (type.equalsIgnoreCase("Box") || type.equalsIgnoreCase("B")) 
 	        return new Box(game, pos);
-	    }
-	    // Si no coincide, devolvemos null
-
+	    
 	    return null;
+	    
 	}
+	
+	public void receiveAction(Action act) {}
+
+
 	
 }

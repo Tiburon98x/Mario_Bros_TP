@@ -16,9 +16,12 @@ public class ResetCommand extends AbstractCommand {
     private static final String HELP = Messages.COMMAND_RESET_HELP;
 
     
+    
 	public ResetCommand(int level) {
+		
 		super(NAME, SHORTCUT, DETAILS, HELP);
 		this.level = level;
+		
 	}
 			
 	@Override
@@ -32,29 +35,31 @@ public class ResetCommand extends AbstractCommand {
 		} else {
 		    targetLevel = level;
 		}
-		if(targetLevel > 10) { //pongo mayor que 10 para que el test 00 haga bien 
+		if(targetLevel > 10) 
 			view.showError(Messages.INVALID_LEVEL_NUMBER);
-		}
 		else {
 			game.reset(targetLevel);
-			
-        view.showGame();
-			}		
+			view.showGame();
+		}		
 	}
 
 	 @Override
 	 public Command parse(String[] commandWords) {
 	
-		 if (commandWords.length == 1 && matchCommandName(commandWords[0])) {
+		 if (commandWords.length == 1 && matchCommandName(commandWords[0])) 
 	            return new ResetCommand(-10); //usamos -10 para indicar en el execute que es erroneo
-	     }
-
+		 
 		 if (commandWords.length == 2 && matchCommandName(commandWords[0])) {
 
 			 int parsedLevel = Integer.parseInt(commandWords[1]);
              return new ResetCommand(parsedLevel);
+             
 		 }
+		 
 		 return null;
+		 
 	 }
 
+	 
+	 
 }

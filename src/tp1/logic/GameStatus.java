@@ -10,5 +10,6 @@ public interface GameStatus {
 	public int remainingTime();
 	public boolean playerWins();
 	public boolean playerLoses();
-	public String positionToString(int col, int row);	
+	public String positionToString(int col, int row);
+	
 }

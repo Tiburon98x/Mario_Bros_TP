@@ -8,6 +8,8 @@ public class Position {
 	private final int col;
 	private final int row;
 		
+	
+	
 	public Position(int row2, int col2) {
 
 		this.row = row2;
@@ -15,7 +17,6 @@ public class Position {
 	}
 		
 	public boolean isInPosition(Position delta) {
-		
 	        return row >= 0 && row < delta.row && col >= 0 && col < delta.col;	        
 	    }		
 	
@@ -27,34 +28,42 @@ public class Position {
 				
 	}	
 	
-	public Position translateMario(Action a) {	
-		
-	    return new Position(this.row + a.getX(), this.col + a.getY());
-	     
+//	public Position translateMario(Action a) {	
+//	    return new Position(this.row + a.getX(), this.col + a.getY());     
+//	}
+	
+	public Position translateMario(Action a) {
+	    switch (a) {
+	        case LEFT:   
+	            return new Position(this.row - 1, this.col);
+	        case RIGHT:
+	            return new Position(this.row + 1, this.col);
+	        case UP:
+	            return new Position(this.row, this.col - 1);
+	        case DOWN:
+	            return new Position(this.row, this.col + 1);
+	        case STOP:
+	        default:
+	            return new Position(this.row, this.col);
+	    }
 	}
+	
 		
 	public Position translate(Position delta) {   
-		
-        return new Position(this.row + delta.row, this.col + delta.col);
-        
+        return new Position(this.row + delta.row, this.col + delta.col); 
     }
 
 	public static Position parse(String s) {
 
-        // El formato esperado es "(fila,columna)"
-
         s = s.trim();
-
         s = s.replace("(", "").replace(")", "");
-
         String[] parts = s.split(",");
-
         int row = Integer.parseInt(parts[0]);
-
         int col = Integer.parseInt(parts[1]);
-
-        return new Position(row, col);
+        return new Position(col, row);
 
     }
+
+	
 	
 }

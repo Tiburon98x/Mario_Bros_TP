@@ -22,9 +22,9 @@ public class Game implements GameModel, GameStatus, GameWorld {
     private int remainingTime = 100;
     private boolean finished = false;
     private boolean win = false;
+
     
-    private GameObjectContainer aux;
-       
+    
 	public Game(int nLevel) {
 		
 		this.level = nLevel;
@@ -59,15 +59,11 @@ public class Game implements GameModel, GameStatus, GameWorld {
             	default:
             	initLevel1(); // si no existe el nivel, carga el 1
                 break;
+                
         }
 
 	 }
 	 
-	@Override
-	public String toString() {		
-		return "TODO: Hola soy el game";		
-	}
-	
 	private void initLevel0() {
 		
 		// 1. Mapa
@@ -111,9 +107,10 @@ public class Game implements GameModel, GameStatus, GameWorld {
 		this.mario = new Mario(this, new Position(0, Game.DIM_Y-3));
 		gameObjects.addItem(this.mario);
 		gameObjects.addItem(new Exit_door(this, new Position(Game.DIM_X-1, Game.DIM_Y-3)));
+		
 	}
 	
-private void initLevel1() {
+	private void initLevel1() {
 		
 		gameObjects = new GameObjectContainer();
 		for(int col = 0; col < 15; col++) {
@@ -163,12 +160,11 @@ private void initLevel1() {
 		gameObjects.addItem(new Goomba(this, new Position(14, 12)));
 		
 		gameObjects.addItem(new Exit_door(this, new Position(Game.DIM_X-1, Game.DIM_Y-3)));
+		
 	}
 
 	private void initLevel2() {
-
-	
-
+		
 		// 1. Mapa
 
 		gameObjects = new GameObjectContainer();
@@ -278,8 +274,6 @@ private void initLevel1() {
 		}
 
 	private void initLevel_vacío() {
-
-	// 1. Mapa
 		gameObjects = new GameObjectContainer();
 	}
 	
@@ -301,12 +295,12 @@ private void initLevel1() {
 		 gameObjects.update(this);		  
 		   		    			
 		 gameObjects.removeDead();
+		 
 	 }
 
 	 @Override
 	 public void reset(int level) {
 		 this.level = level;
-//		 this.points = 0;
 		 this.remainingTime = 100;
 		 this.finished = false;
 		 this.win = false;
@@ -317,6 +311,7 @@ private void initLevel1() {
 				this.points = 0;
 			}		 
 		 initLevel(level);
+		 
 	 }
 	 
 	 @Override
@@ -336,8 +331,14 @@ private void initLevel1() {
 	 
 	 @Override
 	 public void addActionToMario(Action act) {
-			this.mario.addAction(act);
+		 this.gameObjects.SetAction(act);
 		}
+	 
+	 @Override
+	 public void AddObject() {		 
+		 gameObjects.updateAdd(this);
+	 }
+
 	 
 //------------GameStatus-----------------------
 
@@ -356,6 +357,7 @@ private void initLevel1() {
 	public String positionToString(int col, int row) {
 		Position pos = new Position(col , row);
 		return gameObjects.busqueda(pos);
+		
 	}
 	
 	@Override
@@ -383,14 +385,12 @@ private void initLevel1() {
 		remainingTime = 0;
 		finished = true;
 		win = true;
-	//	controller.exit_message();
+		
 	}
 
 	@Override
 	public int addPoints(int pts) {
-	
 		return this.points += pts;
-    
 	 }	
 
 	@Override
@@ -417,9 +417,9 @@ private void initLevel1() {
 
 			finished = true;
 			win = false;
-		} else {
+		} else
 			reset(level);
-		}
+	
 	}
 	
 	@Override
@@ -428,9 +428,28 @@ private void initLevel1() {
 	}
 
 	@Override
-	public void addGameObject(GameObject obj) {		
-		aux.addLater(obj);		
+	public boolean addGameObject(String[] WORDS) {		
+     
+		GameObject obj = this.mario.parse(WORDS, this);
+        		
+		if (obj != null) 
+			this.mario=(Mario) obj;
+		
+		else 		
+			obj = GameObjectFactory.parse(WORDS,this);        
+        
+        if(obj!=null)
+        		gameObjects.addItem(obj);
+        
+        return obj != null;
+        
 	}
+
+	@Override
+	public void addMushroom(Mushroom mushroom) {
+	    this.gameObjects.addLater(mushroom);   
+	}
+
 
 
 }

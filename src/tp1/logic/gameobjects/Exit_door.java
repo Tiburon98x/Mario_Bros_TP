@@ -8,19 +8,22 @@ import tp1.view.Messages;
 
 public class Exit_door extends GameObject {
 		
+	private String icon;
+	
 	public Exit_door(GameWorld game, Position pos) {	
+		
 		super(game, pos);
+		this.icon = Messages.EXIT_DOOR;
+		
 	}
-
-				
+			
 	public Exit_door() {
 		super();
 	}
 
-
 	@Override
-	public String getIcon() {			
-		return Messages.EXIT_DOOR;	
+	public String toString() {
+	    return this.icon;
 	}
 		
 	@Override
@@ -28,11 +31,11 @@ public class Exit_door extends GameObject {
 			
 		boolean success = false;
 	    boolean canInteract = other.isInPosition(this.pos);
-	    if (canInteract) {
-		    	
-	        success = other.receiveInteraction(this);         
-	    }
+	    if (canInteract) 		    	
+	        success = other.receiveInteraction(this); 
+	    
 	    return canInteract && success;
+	    
 	}
 		
 	@Override
@@ -70,5 +73,7 @@ public class Exit_door extends GameObject {
 	public boolean receiveInteraction(Mushroom obj) {
 		return false;
 	}	
-		
+	
+	
+	
 }

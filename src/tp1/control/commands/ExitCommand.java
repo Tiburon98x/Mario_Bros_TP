@@ -13,18 +13,20 @@ public class ExitCommand extends NoParamsCommand{
 	private static final String DETAILS = Messages.COMMAND_EXIT_DETAILS;
 	private static final String HELP = Messages.COMMAND_EXIT_HELP;
 
+	
+	
 	public ExitCommand() {
 		super(NAME, SHORTCUT, DETAILS, HELP); 
 	}
 
 	@Override
 	public void execute(GameModel game, GameView view){
-		
-		// You should let the game know that you are leaving so that 
-		// if it needs to close something, it can close it and finish. ->esta frase me da desconfianza 
-	    game.exit(); //	
+		 
+	    game.exit(); 
 	    view.showMessage(Messages.PLAYER_QUITS);
+	    
 	}
+
 
 	
 }

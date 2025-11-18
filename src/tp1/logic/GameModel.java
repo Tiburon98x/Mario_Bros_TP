@@ -2,8 +2,6 @@
 
 package tp1.logic;
 
-import tp1.logic.gameobjects.GameObject;
-
 //para controller
 public interface GameModel {
 	
@@ -15,5 +13,7 @@ public interface GameModel {
 	public boolean playerWins();
 	public void addActionToMario(Action act);
 	public boolean playerLoses();
-	public void addGameObject(GameObject obj);
+	public boolean addGameObject(String[] WORDS);
+	public void AddObject();
+	
 }

@@ -7,21 +7,19 @@ public enum Action {
 	
 	LEFT(-1,0), RIGHT(1,0), DOWN(0,1), UP(0,-1), STOP(0,0), INCORRECT(-1, -1);
 	
+	@SuppressWarnings("unused")
 	private int x;
+	@SuppressWarnings("unused")
 	private int y;
 		
+	
+	
 	private Action(int x, int y) {
 		
 		this.x=x;
 		this.y=y;		
 	}
 	
-	public int getX() {		
-		return x;		
-	}
-	
-	public int getY() {		
-		return y;		
-	} 
+		
 	
 }

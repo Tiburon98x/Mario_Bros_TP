@@ -124,8 +124,7 @@ public class Tests {
 	}
 
     private static void fail(String string) {
-		// TODO Auto-generated method stub
-		
+    		//Habia to do que por el momento no tienen sentido
 	}
 
 	public void parameterizedTest(Path input, Path expected, Path output, String[] args) {
@@ -155,8 +154,7 @@ public class Tests {
 	}
 
 	private void fail() {
-		// TODO Auto-generated method stub
-		
+		//Habia to do que por el momento no tienen sentido
 	}
 
 	private void testN(int n) {

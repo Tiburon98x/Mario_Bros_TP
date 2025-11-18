@@ -13,6 +13,8 @@ public class UpdateCommand extends NoParamsCommand{
     private static final String DETAILS = Messages.COMMAND_UPDATE_DETAILS;
     private static final String HELP = Messages.COMMAND_UPDATE_HELP;
 	
+    
+    
     public UpdateCommand() {
 		super(NAME, SHORTCUT, DETAILS, HELP);
 	}
@@ -23,4 +25,7 @@ public class UpdateCommand extends NoParamsCommand{
 		game.update();
 		view.showGame();
 	}
+	
+	
+	
 }
