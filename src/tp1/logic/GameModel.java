@@ -2,6 +2,10 @@
 
 package tp1.logic;
 
+import tp1.exception.OffBoardException;
+import tp1.exception.GameModelException;
+import tp1.exception.ObjectParseException;
+
 //para controller
 public interface GameModel {
 	
@@ -10,10 +14,10 @@ public interface GameModel {
 	public void reset(int level);
 	public void exit();
 	public int getCurrentLevel();
-	public boolean playerWins();
 	public void addActionToMario(Action act);
-	public boolean playerLoses();
-	public boolean addGameObject(String[] WORDS);
+//	public boolean addGameObject(String[] WORDS);
+	public void addGameObject(String[] WORDS) throws OffBoardException, ObjectParseException;
 	public void AddObject();
+	public void save(String fileName) throws GameModelException;
 	
 }

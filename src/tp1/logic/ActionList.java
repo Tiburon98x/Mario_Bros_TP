@@ -9,10 +9,7 @@ import java.util.List;
 public class ActionList {
 
 	private List<Action> actions = new ArrayList<>();
-	
-	
-	
-    // Añade una acción a la lista
+		
     public boolean add(Action act) {
     	
        if(act == null) return false;
@@ -30,20 +27,14 @@ public class ActionList {
        
     }
     
-    // Devuelve la lista de acciones y la vacía
     public Iterable<Action> IterableAndClear() {
     	
         List<Action> copy = new ArrayList<>(actions);
         actions.clear();
-        return copy; 
-        
+        return copy;        
     }
 
-    // Devuelve si hay acciones pendientes
     public boolean isEmpty() {   	
         return actions.isEmpty();        
     }  
-    
-    
-    
 }

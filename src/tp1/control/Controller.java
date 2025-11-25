@@ -3,9 +3,11 @@
 package tp1.control;
 
 import tp1.control.commands.*;
+import tp1.exception.CommandParseException;
+import tp1.exception.CommandExecuteException;
+
 import tp1.logic.*;
 import tp1.view.*;
-
 
 public class Controller {
 
@@ -17,7 +19,6 @@ public class Controller {
 		this.game = game;
 		this.view = view;
 	}
-
 	
 	public void run() {
 		
@@ -26,33 +27,48 @@ public class Controller {
 		
 		while (!game.isFinished()) {			
 
+			try {
 			String[] userWords = view.getPrompt();
-			Command command = CommandGenerator.parse(userWords);
-
-			if (command != null) {
-				command.execute(game, view);
-			}
-			else if (userWords.length == 1 && userWords[0].isEmpty()){
+			Command command = CommandGenerator.parse(userWords);			
+			command.execute(game, view);
+			
+			if(userWords.length == 1 && userWords[0].isEmpty()){
 				
 				game.update();
 				view.showGame();
 			}
-			else 
-				view.showError(Messages.UNKNOWN_COMMAND.formatted(String.join(" ", userWords)));
-		} 
-		if(game.playerWins()) {
-			view.showMessage(Messages.MARIO_WINS);
-		}
-		else if(game.playerLoses()) {
-			view.showMessage(Messages.GAME_OVER);
-		}
+			
+			} catch (CommandParseException | CommandExecuteException e){
+			  
+				view.showError(e.getMessage());
+				Throwable cause = e.getCause();
+				while(cause != null) {
+					view.showError(cause.getMessage());
+	 				cause = cause.getCause();
+				}
+			}
 		
+			
+			
+//			String[] userWords = view.getPrompt();
+//			Command command = CommandGenerator.parse(userWords);
+//			
+//			if(command != null) {
+//				command.execute(game, view);
+//			}
+//			else if (userWords.length == 1 && userWords[0].isEmpty()){
+//					
+//				game.update();
+//				view.showGame();
+//			}
+//			else 
+//				view.showError(Messages.UNKNOWN_COMMAND.formatted(String.join(" ", userWords)));
+//			}
+//		view.showEndMessage();	
+
+		} 
+		view.showEndMessage();
+
 	}
-	    
-    public void run_out_time_message(){
-    	
-    	view.showMessage("¡Tiempo agotado!");
-    	
-    }
 
 }

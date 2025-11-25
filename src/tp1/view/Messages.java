@@ -50,6 +50,9 @@ public class Messages {
 	// Errores de factorías:
 	public static final String UNKNOWN_COMMAND = "Unknown command: %s";
 	public static final String INVALID_GAME_OBJECT = "Invalid game object: %s";
+	public static final String UNKNOWN_GAME_OBJECT = "Unknown game object: \"%s\""; // NUEVO
+    public static final String INVALID_POSITION = "Invalid position: %s"; // Adaptado
+    public static final String OBJECT_POSITION_OFF_BOARD = "Object position is off board: \"%s\""; // NUEVO
 	// Errores de commandos:
 	public static final String COMMAND_PARAMETERS_MISSING = "Missing parameters";
 	public static final String COMMAND_INCORRECT_PARAMETER_NUMBER = "Incorrect parameter number";
@@ -58,7 +61,10 @@ public class Messages {
 	public static final String INVALID_COMMAND = "Invalid command: %s";
 	public static final String INVALID_COMMAND_PARAMETERS = "Invalid command parameters";
 	public static final String ERROR_COMMAND_EXECUTE = "Command execute problem";
-
+	// Errores de ficheros:
+	public static final String FILE_NOT_FOUND = "File not found: \"%s\"";
+    public static final String READ_ERROR = "Error reading file \"%s\"";
+    public static final String WRITE_ERROR = "Error writing file \"%s\"";
 	
 	public static final String HELP_AVAILABLE_COMMANDS = "Available commands:";
 	@Deprecated
@@ -104,7 +110,33 @@ public class Messages {
 	public static final String COMMAND_HELP_SHORTCUT = "h";
 	public static final String COMMAND_HELP_DETAILS = "[h]elp";
 	public static final String COMMAND_HELP_HELP = "print this help message";
+	
+	// ADDOBJECT
+	public static final String COMMAND_ADDOBJECT_NAME = "addObject";
+	public static final String COMMAND_ADDOBJECT_SHORTCUT = "aO";
+	public static final String COMMAND_ADDOBJECT_DETAILS = "[a]dd[O]bject <object_description>";
+	public static final String COMMAND_ADDOBJECT_HELP = "adds to the board the object given by object_description";
 
+	// SAVE
+	public static final String COMMAND_SAVE_NAME = "save";
+    public static final String COMMAND_SAVE_SHORTCUT = "s";
+    public static final String COMMAND_SAVE_DETAILS = "[s]ave <fileName>";
+    public static final String COMMAND_SAVE_HELP = "save the actual configuration in text file <fileName>";
+	
+    // OBJETOS
+    public static final String OBJECT_BOX = "Box";
+    public static final String OBJECT_BOX_SHORTCUT = "B";
+    public static final String OBJECT_EXIT_DOOR = "ExitDoor";
+    public static final String OBJECT_EXIT_DOOR_SHORTCUT = "ED";
+    public static final String OBJECT_GOOMBA = "Goomba";
+    public static final String OBJECT_GOOMBA_SHORTCUT = "G";
+    public static final String OBJECT_LAND = "Land";
+    public static final String OBJECT_LAND_SHORTCUT = "L";
+    public static final String OBJECT_MARIO = "Mario";
+    public static final String OBJECT_MARIO_SHORTCUT = "M";
+    public static final String OBJECT_MUSHROOM = "Mushroom";
+    public static final String OBJECT_MUSHROOM_SHORTCUT = "MU";
+    
 //Symbols
 	public static final String EMPTY = "";
 	public static final String LAND = MyStringUtils.repeat("▓",ConsoleView.CELL_SIZE);

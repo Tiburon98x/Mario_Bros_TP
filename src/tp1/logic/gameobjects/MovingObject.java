@@ -10,7 +10,8 @@ public abstract class MovingObject extends GameObject {
 
 	private int dirx;
 	private boolean isFalling;
-	
+    protected abstract MovingObject createObject(GameWorld game, Position pos, int Dirx); //creacion de objetos
+
 	
 	
 	public MovingObject(GameWorld game, Position pos) {
@@ -20,8 +21,6 @@ public abstract class MovingObject extends GameObject {
 	public MovingObject() {
 		super();
 	}
-
-	public abstract String toString();
 
 	public void setFalling(boolean falling) {
 	    this.isFalling = falling;
@@ -92,11 +91,11 @@ public abstract class MovingObject extends GameObject {
 	public abstract void cambiarIconDer();
 
 	@Override
-	public GameObject parse(String[] objWords, GameWorld game) {
+	public GameObject parse(String[] objWords, GameWorld game, Position pos) {
 
-	    Position pos = Position.parse(objWords[0]);
-	    if (!game.isInside(pos)) 
-	    		return null;
+//	   Position pos = Position.parse(objWords[0]);
+//	    if (!game.isInside(pos)) 
+//	    		return null;
 
 	    String type = objWords[1];
 	    int dirx = 0;
@@ -110,25 +109,36 @@ public abstract class MovingObject extends GameObject {
 
 	    }
 
-	    if (type.equalsIgnoreCase("Goomba") || type.equalsIgnoreCase("G")) {
-
-	        Goomba g = new Goomba(game, pos);
-	        g.setDirx(dirx);
-	        return g;
-
-	    }
-
-	    else if (type.equalsIgnoreCase("Mushroom") || type.equalsIgnoreCase("MU")) {
-
-	        Mushroom m = new Mushroom(game, pos);
-	        m.setDirx(dirx);
-	        return m;
-	        
-	    }
-
+//	    if (type.equalsIgnoreCase("Goomba") || type.equalsIgnoreCase("G")) {
+//
+//	        Goomba g = new Goomba(game, pos);
+//	        g.setDirx(dirx);
+//	        return g;
+//
+//	    }
+//
+//	    else if (type.equalsIgnoreCase("Mushroom") || type.equalsIgnoreCase("MU")) {
+//
+//	        Mushroom m = new Mushroom(game, pos);
+//	        m.setDirx(dirx);
+//	        return m;
+//	        
+//	    }
+	    if (type.equalsIgnoreCase(this.getName()) || type.equalsIgnoreCase(this.getShortcut())) 
+	    	
+	    	return createObject(game, pos, dirx); //mario tiene su propio parse
+	    		    
 	    return null;
 	}
 
-	
+	@Override
+    public String stringify() {
+        StringBuilder sb = new StringBuilder(super.stringify());
+        if (dirx == 1) sb.append(" RIGHT"); //direcciones
+        else if (dirx == -1) sb.append(" LEFT");
+      //  else sb.append("STOP"); 
+        
+        return sb.toString();
+    }
 	
 }

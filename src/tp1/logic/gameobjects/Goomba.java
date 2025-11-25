@@ -11,6 +11,9 @@ import tp1.view.Messages;
 public class Goomba extends MovingObject {
 	
 	private String icon;
+	private static final String NAME = Messages.OBJECT_GOOMBA;
+    private static final String SHORTCUT = Messages.OBJECT_GOOMBA_SHORTCUT;
+
     
 	public Goomba (GameWorld game, Position pos) {
 		
@@ -25,10 +28,23 @@ public class Goomba extends MovingObject {
 	}
 	
 	@Override
-	public String toString() {
-	    return this.icon;
+	public String getName() {
+		return NAME;
 	}
 	
+	@Override
+	public String getShortcut() {
+		return SHORTCUT;
+	}
+	
+	@Override
+	public MovingObject createObject(GameWorld game, Position pos, int Dirx) {
+		Goomba g = new Goomba(game, pos);
+		g.setDirx(Dirx);
+		return g;
+	}
+	
+	@Override
 	public boolean interactWith(GameItem other) {
 	    return false;
 	}
@@ -36,19 +52,17 @@ public class Goomba extends MovingObject {
 	@Override
 	public boolean receiveInteraction(Mario mario) {
 		
-			if(mario.isAlive()) {
+		if(mario.isAlive()) {
+			
 			this.dead();
 			mario.givePointsToGame(100);
 	        Position below = pos.translate(new Position(0, 1));
 			if(!mario.isFalling() || (mario.isInPosition(below)))  
 				mario.receiveInteraction(this);			
 			
-			return true;
-			
-			}
-			
+			return true;			
+		}		
 		return false;
-
 	}
 
 	@Override
@@ -82,6 +96,14 @@ public class Goomba extends MovingObject {
 	@Override
 	public void cambiarIconDer() {}
 
-	
+	@Override
+	public String toString() {
+	    return this.icon;
+	}
+
+	@Override
+	protected GameObject createObject(GameWorld game, Position pos) {
+		return null;
+	}	//no se va a usar este, se usará el movingObject
 	
 }

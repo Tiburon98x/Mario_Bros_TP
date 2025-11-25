@@ -1,3 +1,5 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
+
 package tp1.logic.gameobjects;
 
 import tp1.logic.GameWorld;
@@ -7,8 +9,9 @@ import tp1.view.Messages;
 public class Mushroom extends MovingObject {
 
 	private String icon;
+	private static final String NAME = Messages.OBJECT_MUSHROOM;
+    private static final String SHORTCUT = Messages.OBJECT_MUSHROOM_SHORTCUT;
 
-	
 
 	public Mushroom(GameWorld game, Position pos) {
 		
@@ -21,7 +24,24 @@ public class Mushroom extends MovingObject {
 	public Mushroom() {
 		super();
 	}
+	
+	@Override
+	public String getName() {
+		return NAME;
+	}
+	
+	@Override
+	public String getShortcut() {
+		return SHORTCUT;
+	}
 
+	@Override
+	public MovingObject createObject(GameWorld game, Position pos, int Dirx) {
+		Mushroom m = new Mushroom(game, pos);
+		m.setDirx(Dirx);
+		return m;
+	}
+	
 	@Override
 	public boolean interactWith(GameItem item) {
 		return false;
@@ -50,11 +70,6 @@ public class Mushroom extends MovingObject {
 	public boolean receiveInteraction(Goomba obj) {
 		return false;
 	}
-	
-	@Override
-	public String toString() {
-	    return this.icon;
-	}
 
 	@Override
 	public boolean receiveInteraction(Box obj) {
@@ -71,7 +86,15 @@ public class Mushroom extends MovingObject {
 
 	@Override
 	public void cambiarIconDer() {}
-	
-	
+
+	@Override
+	public String toString() {
+	    return this.icon;
+	}
+
+	@Override
+	protected GameObject createObject(GameWorld game, Position pos) {
+		return null; //se usará siempre el de movingObject
+	}
 	
 }

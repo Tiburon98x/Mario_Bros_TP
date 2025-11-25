@@ -9,6 +9,9 @@ import tp1.view.Messages;
 public class Exit_door extends GameObject {
 		
 	private String icon;
+	private static final String NAME = Messages.OBJECT_EXIT_DOOR;
+    private static final String SHORTCUT = Messages.OBJECT_EXIT_DOOR_SHORTCUT;
+
 	
 	public Exit_door(GameWorld game, Position pos) {	
 		
@@ -20,12 +23,22 @@ public class Exit_door extends GameObject {
 	public Exit_door() {
 		super();
 	}
-
-	@Override
-	public String toString() {
-	    return this.icon;
-	}
 		
+	@Override
+	public String getName() {
+		return NAME;
+	}
+	
+	@Override
+	public String getShortcut() {
+		return SHORTCUT;
+	}
+	
+	@Override
+	public GameObject createObject(GameWorld game, Position pos) {
+		return new Exit_door(game, pos);
+	}
+	
 	@Override
 	public boolean interactWith(GameItem other) {
 			
@@ -59,21 +72,18 @@ public class Exit_door extends GameObject {
 	}
 
 	@Override
-	public void update() {
-	}
-
-
-	@Override
 	public boolean receiveInteraction(Box obj) {
 		return false;
 	}
 
-
 	@Override
 	public boolean receiveInteraction(Mushroom obj) {
 		return false;
+	}
+
+	@Override
+	public String toString() {
+	    return this.icon;
 	}	
-	
-	
-	
+			
 }

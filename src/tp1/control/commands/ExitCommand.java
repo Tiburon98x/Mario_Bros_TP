@@ -12,8 +12,6 @@ public class ExitCommand extends NoParamsCommand{
 	private static final String SHORTCUT = Messages.COMMAND_EXIT_SHORTCUT;
 	private static final String DETAILS = Messages.COMMAND_EXIT_DETAILS;
 	private static final String HELP = Messages.COMMAND_EXIT_HELP;
-
-	
 	
 	public ExitCommand() {
 		super(NAME, SHORTCUT, DETAILS, HELP); 
@@ -22,11 +20,6 @@ public class ExitCommand extends NoParamsCommand{
 	@Override
 	public void execute(GameModel game, GameView view){
 		 
-	    game.exit(); 
-	    view.showMessage(Messages.PLAYER_QUITS);
-	    
+	    game.exit(); 	    
 	}
-
-
-	
 }

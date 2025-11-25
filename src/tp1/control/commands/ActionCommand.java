@@ -2,6 +2,9 @@
 
 package tp1.control.commands;
 
+import tp1.exception.ActionParseException;
+import tp1.exception.CommandExecuteException;
+import tp1.exception.CommandParseException;
 import tp1.logic.Action;
 import tp1.logic.GameModel;
 import tp1.view.GameView;
@@ -16,69 +19,93 @@ public class ActionCommand extends AbstractCommand {
 
 	private String[] words;
 	
+	public ActionCommand() {
+        super(NAME, SHORTCUT, DETAILS, HELP);
+    }
+	
     public ActionCommand(String[] words) {
 		super(NAME, SHORTCUT, DETAILS, HELP);
 		this.words = words;
 	}
 
+//    @Override
+//    public void execute(GameModel game, GameView view) throws CommandExecuteException{
+//    	//try catch aqui
+//        for (String s : words) {
+//            Action act = parseAction(s);
+//
+//            if (act == null) {
+//                view.showError(Messages.UNKNOWN_COMMAND.formatted(s));
+//                return;
+//            }
+//            
+//            game.addActionToMario(act);
+//        }
+//
+//        game.update();
+//        view.showGame();
+//    }
+    
+    
     @Override
-    public void execute(GameModel game, GameView view) {
-
+    public void execute(GameModel game, GameView view) throws CommandExecuteException {
         for (String s : words) {
-            Action act = parseAction(s);
-
-            if (act == null) {
-                view.showError(Messages.UNKNOWN_COMMAND.formatted(s));
-                return;
+            try {
+                Action act = Action.parseAction(s);
+                game.addActionToMario(act);
+            } catch (ActionParseException e) {
+                throw new CommandExecuteException(Messages.ERROR_COMMAND_EXECUTE, e);
             }
-            
-            game.addActionToMario(act);
         }
-
         game.update();
         view.showGame();
     }
+    
 	
-	@Override
-	public Command parse(String[] words) {
+//	@Override
+//	public Command parse(String[] words){
+//		
+//	    if (!matchCommandName(words[0])) {
+//	        return null; 
+//	    }
+//	    if (words.length < 2) 
+//	        return null; 
+//	    
+//	    String[] parameters = new String[words.length - 1];
+//
+//	    // Copiamos las acciones desde words a parameters
+//	    for (int i = 1; i < words.length; i++) {
+//	        parameters[i - 1] = words[i];
+//	    }
+//
+//	    return new ActionCommand(parameters);
+//	}
+    
+    @Override
+	public Command parse(String[] words) throws CommandParseException{
 		
-	    if (!matchCommandName(words[0])) {
-	        return null; 
-	    }
-	    if (words.length < 2) 
-	        return null; 
-	    
-	    String[] parameters = new String[words.length - 1];
+		if (matchCommandName(words[0]) && words.length == 1) 
+			throw new CommandParseException(Messages.INVALID_COMMAND_PARAMETERS); 
+			    
+//		if (words.length < 2) 
+//			throw new CommandParseException(Messages.INVALID_COMMAND_PARAMETERS); 
+		
+		if (!matchCommandName(words[0]))
+			return null;
 
-	    // Copiamos las acciones desde words a parameters
-	    for (int i = 1; i < words.length; i++) {
-	        parameters[i - 1] = words[i];
-	    }
-
-	    return new ActionCommand(parameters);
+		
+			  
+		String[] parameters = new String[words.length - 1];
+	
+		// Copiamos las acciones desde words a parameters
+		for (int i = 1; i < words.length; i++) 
+			parameters[i - 1] = words[i];
+			    
+	
+		return new ActionCommand(parameters);
+    	
+    	   
 	}
 	
-    private Action parseAction(String str) {
-    	
-        str = str.toLowerCase();
-        switch (str) {
-            case "l":
-            case "left":
-                return Action.LEFT;
-            case "r":
-            case "right":
-                return Action.RIGHT;
-            case "u":
-            case "up":
-                return Action.UP;
-            case "d":
-            case "down":
-                return Action.DOWN;
-            case "s":
-            case "stop":
-                return Action.STOP;
-            default:
-                return Action.INCORRECT; //si las acciones introducidas son incorrectas (-1, -1)         
-        }
-    }
+  
 }

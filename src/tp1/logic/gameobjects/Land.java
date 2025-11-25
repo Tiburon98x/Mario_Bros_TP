@@ -8,6 +8,9 @@ import tp1.view.Messages;
 public class Land extends GameObject {
 	
 	private String icon;
+	private static final String NAME = Messages.OBJECT_LAND;
+    private static final String SHORTCUT = Messages.OBJECT_LAND_SHORTCUT;
+
 		
 	public Land(GameWorld game, Position pos) {
 		
@@ -21,8 +24,18 @@ public class Land extends GameObject {
 	}
 	
 	@Override
-	public String toString() {
-	    return this.icon;
+	public String getName() {
+		return NAME;
+	}
+	
+	@Override
+	public String getShortcut() {
+		return SHORTCUT;
+	}
+	
+	@Override
+	public GameObject createObject(GameWorld game, Position pos) {
+		return new Land(game, pos);
 	}
 	
 	@Override
@@ -68,6 +81,8 @@ public class Land extends GameObject {
 		return false;
 	}
 
-	
-	
+	@Override
+	public String toString() {
+	    return this.icon;
+	}		
 }

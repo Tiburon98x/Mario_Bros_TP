@@ -29,7 +29,7 @@ public class GameObjectContainer{
 		return gameObjects;
 	}
 	
-
+	
 	public String busqueda(Position pos) {
 		
 		StringBuilder sb = new StringBuilder();
@@ -50,28 +50,22 @@ public class GameObjectContainer{
 	    			return true; 
 	    }
 		
-	    return false;
-	    
+	    return false;	    
 	}
-
 	
 	public boolean vacio(Position pos) {
 	    
 		for (GameObject obj : gameObjects) { 
 			if (obj.isSolid() && obj.isInPosition(pos))
-	            return false; 
+				return false; 
 	       
 	    }
 		
-	    return true;
-	    
+	    return true;	    
 	}
 	
 	public void update(Game game) {
-		
-		if (game.isFinished() || game.playerLoses())
-			return;
-   
+
 		for (GameObject obj : gameObjects)
         obj.update();
 		
@@ -79,7 +73,6 @@ public class GameObjectContainer{
 	        gameObjects.addAll(aux);
 	        aux.clear();
 	    }
-
 	}
 
 	public void doInteraction(GameItem other) {
@@ -111,11 +104,18 @@ public class GameObjectContainer{
 	    }		
 	}
 	
-	 public void SetAction(Action act) {
-		 for (GameObject obj : gameObjects)
-			 obj.receiveAction(act); 
-	 }
+	public void SetAction(Action act) {
+		for (GameObject obj : gameObjects)
+			obj.receiveAction(act); 
+	}
 	
-	 
-	 
+	public String stringifyObjects() { //serializacion de los objetos
+        StringBuilder sb = new StringBuilder();
+        for (GameObject obj : gameObjects) {
+            sb.append(obj.stringify());
+            sb.append(System.lineSeparator()); // Salto de línea
+        }
+        return sb.toString();
+    }
+	
 }

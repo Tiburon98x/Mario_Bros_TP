@@ -11,6 +11,9 @@ import tp1.logic.*;
 public class Mario extends MovingObject{
 
 	private String icon;
+	private static final String NAME = Messages.OBJECT_MARIO;
+    private static final String SHORTCUT = Messages.OBJECT_MARIO_SHORTCUT;
+
 	private boolean big = true;
     private ActionList actionList;
 	
@@ -32,6 +35,23 @@ public class Mario extends MovingObject{
 	}
 
 	@Override
+	public String getName() {
+		return NAME;
+	}
+	
+	@Override
+	public String getShortcut() {
+		return SHORTCUT;
+	}
+	
+	@Override
+	public MovingObject createObject(GameWorld game, Position pos, int Dirx) {
+		Mario m = new Mario(game, pos);
+		m.setDirx(Dirx);
+		return m;
+	}
+	
+	@Override
 	public void cambiarIconIzq() {
 		this.icon = Messages.MARIO_LEFT;
 	}
@@ -39,11 +59,6 @@ public class Mario extends MovingObject{
 	@Override
 	public void cambiarIconDer() {
 		this.icon = Messages.MARIO_RIGHT;
-	}
-	
-	@Override
-	public String toString() {
-	    return this.icon;
 	}
 	
 	@Override
@@ -122,10 +137,9 @@ public class Mario extends MovingObject{
 	    } 
 		
 		else 
-	    		this.muere();
+	   		this.muere();
 	    
-	    return true;
-	    
+	    return true;    
 	}
 	
 	@Override
@@ -224,16 +238,15 @@ public class Mario extends MovingObject{
         if (act == Action.UP) {
 
             if (game.isInside(next) && game.isEmpty(next)) {
-	            	if(canMoveTo(next)) {    
+	            if(canMoveTo(next)) {    
 	            		
-	            		if(maxU > 3) continue;
-	            		maxU++;
-	            		pos = next;
-	            		setFalling(true);
-	            		moved = true;  
-	            		
-	                	}
+	            	if(maxU > 3) continue;
 	            	
+	            	maxU++;
+	            	pos = next;
+	            	setFalling(true);
+	            	moved = true;  	            		
+	            }            	
             }
             
         }
@@ -249,8 +262,7 @@ public class Mario extends MovingObject{
         				game.doInteraction(this);
                     below = pos.translateMario(act);
                     if (!game.isInside(below))                     	
-                        return false;
-                    
+                        return false;                   
                 }
                 
                 moved = true;
@@ -296,14 +308,14 @@ public class Mario extends MovingObject{
 	}
 	
 	@Override
-	public GameObject parse(String[] objWords, GameWorld game) {
+	public GameObject parse(String[] objWords, GameWorld game, Position Pos) {
 
-		if(!objWords[1].equalsIgnoreCase("Mario") && !objWords[1].equalsIgnoreCase("M")) 
-			return null;
+		if(!objWords[1].equalsIgnoreCase(NAME) && !objWords[1].equalsIgnoreCase(SHORTCUT)) 
+			return null; //esto no se si está bien
 		
-	    Position pos = Position.parse(objWords[0]);
-	    if (!game.isInside(pos))
-	    		return null;
+//	    Position pos = Position.parse(objWords[0]);
+//	    if (!game.isInside(pos))
+//	    		return null;
 
 	    Mario m = new Mario(game, pos);
 
@@ -351,7 +363,26 @@ public class Mario extends MovingObject{
         addAction(act);
     }
 
+	@Override
+	public String toString() {
+	    return this.icon;
+	}
+
+	@Override
+	protected GameObject createObject(GameWorld game, Position pos) {
+		return null;
+	}			
 	
-	
-	
+	@Override
+    public String stringify() {
+        // Llama a MovingObject.getGameItemState (que ya pone Posición, Nombre y Dirección)
+        StringBuilder sb = new StringBuilder(super.stringify());
+        
+        if (big) {
+            sb.append(" BIG");
+        } else {
+            sb.append(" SMALL");
+        }
+        return sb.toString();
+    }
 }

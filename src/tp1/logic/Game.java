@@ -2,9 +2,16 @@
 package tp1.logic;
 
 
-import tp1.control.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
+import tp1.exception.GameModelException;
+import tp1.exception.ObjectParseException;
+import tp1.exception.OffBoardException;
 import tp1.logic.gameobjects.*;
+import tp1.view.Messages;
 
 public class Game implements GameModel, GameStatus, GameWorld {
 
@@ -12,7 +19,6 @@ public class Game implements GameModel, GameStatus, GameWorld {
 	public static final int DIM_Y = 15;
 	private GameObjectContainer gameObjects;
 	private Mario mario;
-	private Controller controller;
 	
 	private int level;
     @SuppressWarnings("unused")
@@ -35,12 +41,7 @@ public class Game implements GameModel, GameStatus, GameWorld {
 		initLevel(level);
 		
 	}
- 
-	public void setController(Controller controller) {		 
-       this.controller = controller;       
-	}
-	 
-	
+ 	
 	private void initLevel(int level) {
 		  
         switch (level) {	        
@@ -287,7 +288,6 @@ public class Game implements GameModel, GameStatus, GameWorld {
 		 remainingTime--;
 		 if (remainingTime <= 0) {
 		    	
-			 controller.run_out_time_message();
 			 marioMuere();
 			 return;		        
 		 }
@@ -427,9 +427,33 @@ public class Game implements GameModel, GameStatus, GameWorld {
 		gameObjects.doInteraction(other);
 	}
 
+//	@Override
+//	public boolean addGameObject(String[] WORDS) {		
+//     
+//		GameObject obj = this.mario.parse(WORDS, this);
+//        		
+//		if (obj != null) 
+//			this.mario=(Mario) obj;
+//		
+//		else 		
+//			obj = GameObjectFactory.parse(WORDS,this);        
+//        
+//        if(obj!=null)
+//        		gameObjects.addItem(obj);
+//        
+//        return obj != null;
+//        
+//	}
 	@Override
-	public boolean addGameObject(String[] WORDS) {		
+	public void addGameObject(String[] WORDS) throws OffBoardException, ObjectParseException{		
      
+		Position pos = Position.parse(WORDS[0]); // Lanza PositionParseException
+        if (!isInside(pos)) {
+            throw new OffBoardException(tp1.view.Messages.OBJECT_POSITION_OFF_BOARD.formatted(String.join(" ", WORDS)));
+        } //esto es solo para Mario, estariamos repitiendo codigo de GOF
+        //capaz rente mas ponerlo dentro de la condicion para que no se ejecute todo el rato y se ejecute cuando
+        //sea solo Mario
+		
 		GameObject obj = this.mario.parse(WORDS, this);
         		
 		if (obj != null) 
@@ -438,10 +462,10 @@ public class Game implements GameModel, GameStatus, GameWorld {
 		else 		
 			obj = GameObjectFactory.parse(WORDS,this);        
         
-        if(obj!=null)
+       // if(obj!=null)
         		gameObjects.addItem(obj);
         
-        return obj != null;
+     //   return obj != null;
         
 	}
 
@@ -450,6 +474,40 @@ public class Game implements GameModel, GameStatus, GameWorld {
 	    this.gameObjects.addLater(mushroom);   
 	}
 
+//	@Override
+//    public void save(String fileName) throws GameModelException {
+//        // Try-with-resources: Cierra el fichero automáticamente al acabar
+//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+//            
+//            // 1. Escribir cabecera: time points lives
+//            // Ejemplo enunciado: "100 0 5"
+//            writer.write(remainingTime + " " + points + " " + lives);
+//            writer.newLine();
+//
+//            // 2. Escribir objetos (delegamos en el contenedor)
+//            writer.write(gameObjects.getGameObjectsState());
+//            
+//            // Nota: getGameObjectsState ya mete los saltos de línea al final de cada objeto
+//
+//        } catch (IOException e) {
+//            // Envolvemos la excepción de Java en la nuestra
+//            throw new GameModelException(Messages.WRITE_ERROR.formatted(fileName), e);
+//        }
+//    }
+	
+	@Override
+	public void save(String fileName) throws GameModelException {
+		try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)))) {
+            
+            out.println(remainingTime + " " + points + " " + lives);
+
+            out.println(gameObjects.stringifyObjects());
+            
+		} catch (IOException e) {
+            throw new GameModelException(Messages.WRITE_ERROR + e.getMessage());
+        }
+	}
+	
 
 
 }

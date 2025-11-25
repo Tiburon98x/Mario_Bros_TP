@@ -2,20 +2,25 @@
 
 package tp1.control.commands;
 
+import tp1.exception.CommandExecuteException;
+import tp1.exception.CommandParseException;
 import tp1.logic.GameModel;
 import tp1.view.GameView;
 import tp1.view.Messages;
 
 public class ResetCommand extends AbstractCommand {
 	
+	private static final int defaultLevel = -10;
 	private int level;
 	
 	private static final String NAME = Messages.COMMAND_RESET_NAME;
     private static final String SHORTCUT = Messages.COMMAND_RESET_SHORTCUT;
     private static final String DETAILS = Messages.COMMAND_RESET_DETAILS;
-    private static final String HELP = Messages.COMMAND_RESET_HELP;
-
+    private static final String HELP = Messages.COMMAND_RESET_HELP;   
     
+    public ResetCommand() {
+        super(NAME, SHORTCUT, DETAILS, HELP);
+    }
     
 	public ResetCommand(int level) {
 		
@@ -23,43 +28,100 @@ public class ResetCommand extends AbstractCommand {
 		this.level = level;
 		
 	}
-			
+//	public void execute(GameModel game, GameView view) {
+//
+//
+//		int targetLevel;
+//
+//
+//		if (level == defaultLevel) {
+//
+//		targetLevel = game.getCurrentLevel();
+//
+//
+//		} else {
+//
+//		targetLevel = level;
+//
+//		}
+//
+//		if(targetLevel > 10)
+//
+//		view.showError(Messages.INVALID_LEVEL_NUMBER);
+//
+//		else {
+//
+//		game.reset(targetLevel);
+//
+//		view.showGame();
+//
+//		}
+//
+//		}
 	@Override
-	public void execute(GameModel game, GameView view) {
-     
-		int targetLevel;
-		
-		if (level == -10) {
-		    targetLevel = game.getCurrentLevel();
-		    
-		} else {
-		    targetLevel = level;
-		}
-		if(targetLevel > 10) 
-			view.showError(Messages.INVALID_LEVEL_NUMBER);
-		else {
-			game.reset(targetLevel);
-			view.showGame();
-		}		
+	public void execute(GameModel game, GameView view) throws CommandExecuteException{
+//	    try {
+	        int targetLevel;
+
+	        if (level == defaultLevel) {
+	            targetLevel = game.getCurrentLevel();
+	        } else {
+	            targetLevel = level;
+	        }
+
+	        if (targetLevel > 10) {
+	            throw new CommandExecuteException(Messages.INVALID_LEVEL_NUMBER);
+	        }
+
+	        game.reset(targetLevel);
+	        view.showGame();
+
+//	    } catch (CommandExecuteException nfe) {
+//	       
+//	        view.showError(nfe.getMessage());
+//	    }
 	}
 
-	 @Override
-	 public Command parse(String[] commandWords) {
+//	 @Override
+//	 public Command parse(String[] commandWords) {
+//	
+//		 if (commandWords.length == 1 && matchCommandName(commandWords[0])) 
+//	            return new ResetCommand(defaultLevel); //usamos -10 para indicar en el execute que es erroneo
+//		 
+//		 if (commandWords.length == 2 && matchCommandName(commandWords[0])) {
+//
+//			 int parsedLevel = Integer.parseInt(commandWords[1]);
+//             return new ResetCommand(parsedLevel);
+//             
+//		 }
+//		 
+//		 return null;		 
+//	 }	 
 	
-		 if (commandWords.length == 1 && matchCommandName(commandWords[0])) 
-	            return new ResetCommand(-10); //usamos -10 para indicar en el execute que es erroneo
-		 
-		 if (commandWords.length == 2 && matchCommandName(commandWords[0])) {
+	
+	@Override
+	public Command parse(String[] commandWords) throws CommandParseException {
+		
+	    if (matchCommandName(commandWords[0])) {
+	    	
+	        if (commandWords.length != 2) {
+	        	
+	            throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+	            
+	        } else if (commandWords.length == 1)
+	        	return new ResetCommand(defaultLevel);
 
-			 int parsedLevel = Integer.parseInt(commandWords[1]);
-             return new ResetCommand(parsedLevel);
-             
-		 }
-		 
-		 return null;
-		 
-	 }
+	        try {
 
-	 
-	 
+	        	int parsedLevel = Integer.parseInt(commandWords[1]);
+	            return new ResetCommand(parsedLevel);
+	        } catch (NumberFormatException nfe) {
+
+	            throw new CommandParseException(Messages.LEVEL_NOT_A_NUMBER_ERROR.formatted(commandWords[1]), nfe);
+	        }
+	    }
+	    return null; 
+	}
+	
+	
 }

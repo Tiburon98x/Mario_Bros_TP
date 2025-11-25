@@ -6,9 +6,9 @@ import tp1.view.Messages;
 
 public class Box extends GameObject{
 
+	private static final String NAME = Messages.OBJECT_BOX;
+    private static final String SHORTCUT = Messages.OBJECT_BOX_SHORTCUT;
 	private String icon;
-
-	
 	
 	public Box(GameWorld game, Position pos) {
 		
@@ -19,6 +19,21 @@ public class Box extends GameObject{
 
 	public Box() {
 		super();
+	}
+	
+	@Override
+	public String getName() {
+		return NAME;
+	}
+	
+	@Override
+	public String getShortcut() {
+		return SHORTCUT;
+	}
+	
+	@Override
+	public GameObject createObject(GameWorld game, Position pos) {
+		return new Box(game, pos);
 	}
 
 	@Override
@@ -58,14 +73,6 @@ public class Box extends GameObject{
 	}
 
 	@Override
-	public void update() {}
-
-//	@Override
-//	public String getIcon() {
-//		return icon;
-//	}
-	
-	@Override
 	public String toString() {
 	    return this.icon;
 	}
@@ -84,7 +91,15 @@ public class Box extends GameObject{
 	public boolean receiveInteraction(Mushroom obj) {
 		return false;
 	}
+	
+	@Override
+    public String stringify() {
+        StringBuilder sb = new StringBuilder(super.stringify());
 
-	
-	
+        if (this.icon.equals(Messages.EMPTY_BOX)) { //comprobamos si es vacia para indicarlo
+             sb.append(" Empty");
+        }
+        return sb.toString();
+    }
+
 }

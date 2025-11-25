@@ -2,6 +2,7 @@
 
 package tp1.logic;
 
+import tp1.exception.PositionParseException;
 
 public class Position {
 	
@@ -28,40 +29,68 @@ public class Position {
 				
 	}	
 	
-//	public Position translateMario(Action a) {	
-//	    return new Position(this.row + a.getX(), this.col + a.getY());     
-//	}
-	
-	public Position translateMario(Action a) {
-	    switch (a) {
-	        case LEFT:   
-	            return new Position(this.row - 1, this.col);
-	        case RIGHT:
-	            return new Position(this.row + 1, this.col);
-	        case UP:
-	            return new Position(this.row, this.col - 1);
-	        case DOWN:
-	            return new Position(this.row, this.col + 1);
-	        case STOP:
-	        default:
-	            return new Position(this.row, this.col);
-	    }
+	public Position translateMario(Action a) {	
+	    return new Position(this.row + a.getX(), this.col + a.getY());     
 	}
+	
+//	public Position translateMario(Action a) {
+//	    switch (a) {
+//	        case LEFT:   
+//	            return new Position(this.row - 1, this.col);
+//	        case RIGHT:
+//	            return new Position(this.row + 1, this.col);
+//	        case UP:
+//	            return new Position(this.row, this.col - 1);
+//	        case DOWN:
+//	            return new Position(this.row, this.col + 1);
+//	        case STOP:
+//	        default:
+//	            return new Position(this.row, this.col);
+//	    }
+//	}
 	
 		
 	public Position translate(Position delta) {   
         return new Position(this.row + delta.row, this.col + delta.col); 
     }
 
-	public static Position parse(String s) {
+//	public static Position parse(String s){
+//
+//        s = s.trim();
+//        s = s.replace("(", "").replace(")", "");
+//        String[] parts = s.split(",");
+//        int row = Integer.parseInt(parts[0]);
+//        int col = Integer.parseInt(parts[1]);
+//        return new Position(col, row);
+//
+//    }	//excepcion numerica??
+	
+	public static Position parse(String s) throws PositionParseException {
 
-        s = s.trim();
+		s = s.trim();
+        if (!s.startsWith("(") || !s.endsWith(")")) {
+             throw new PositionParseException("Invalid position format: " + s);
+        }
         s = s.replace("(", "").replace(")", "");
         String[] parts = s.split(",");
-        int row = Integer.parseInt(parts[0]);
-        int col = Integer.parseInt(parts[1]);
-        return new Position(col, row);
+        
+        if (parts.length != 2) {
+             throw new PositionParseException("Invalid position format: " + s);
+        }
+        
+        try {
+            int col = Integer.parseInt(parts[0].trim());
+            int row = Integer.parseInt(parts[1].trim());
+            return new Position(col, row);
+        } catch (NumberFormatException e) {
+            throw new PositionParseException("Invalid position coordinates: " + s, e);
+        }
 
+    }	//excepcion numerica??
+	
+	@Override
+    public String toString() { //podríamos usar stringify, pero queda más clean en esta clase con toString
+        return "(%d,%d)".formatted(col, row); //recoge el formato deseado para el fichero
     }
 
 	
