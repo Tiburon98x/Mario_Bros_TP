@@ -29,14 +29,16 @@ public class Controller {
 
 			try {
 			String[] userWords = view.getPrompt();
-			Command command = CommandGenerator.parse(userWords);			
-			command.execute(game, view);
 			
 			if(userWords.length == 1 && userWords[0].isEmpty()){
 				
 				game.update();
 				view.showGame();
 			}
+			else {Command command = CommandGenerator.parse(userWords);			
+			command.execute(game, view);
+			}
+		
 			
 			} catch (CommandParseException | CommandExecuteException e){
 			  

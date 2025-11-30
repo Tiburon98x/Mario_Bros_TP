@@ -1,27 +1,26 @@
-
 package tp1.control.commands;
 
 import tp1.exception.CommandExecuteException;
 import tp1.exception.CommandParseException;
-import tp1.exception.GameModelException;
+import tp1.exception.GameLoadException;
 import tp1.logic.GameModel;
 import tp1.view.GameView;
 import tp1.view.Messages;
 
-public class SaveCommand extends AbstractCommand {
+public class LoadCommand extends AbstractCommand {
 
-    private static final String NAME = Messages.COMMAND_SAVE_NAME;
-    private static final String SHORTCUT = Messages.COMMAND_SAVE_SHORTCUT;
-    private static final String DETAILS = Messages.COMMAND_SAVE_DETAILS;
-    private static final String HELP = Messages.COMMAND_SAVE_HELP;
-
+    private static final String NAME = Messages.COMMAND_LOAD_NAME;
+    private static final String SHORTCUT = Messages.COMMAND_LOAD_SHORTCUT;
+    private static final String DETAILS = Messages.COMMAND_LOAD_DETAILS;
+    private static final String HELP = Messages.COMMAND_LOAD_HELP;
+    		
     private String fileName;
 
-    public SaveCommand() {
+    public LoadCommand() {
         super(NAME, SHORTCUT, DETAILS, HELP);
     }
     
-    public SaveCommand(String fileName) {
+    public LoadCommand(String fileName) {
         super(NAME, SHORTCUT, DETAILS, HELP);
         this.fileName = fileName;
     }
@@ -29,12 +28,10 @@ public class SaveCommand extends AbstractCommand {
     @Override
     public void execute(GameModel game, GameView view) throws CommandExecuteException {
         try {
-            game.save(fileName);
-            view.showMessage("Game successfully saved to file: " + fileName); // Mensaje de éxito opcional
-        } catch (GameModelException e) {
-//            throw new CommandExecuteException(Messages.WRITE_ERROR.formatted(fileName), e);
-            throw new CommandExecuteException(e.getMessage());
-
+            game.load(fileName);
+            view.showGame(); // Mostrar tablero tras éxito
+        } catch (GameLoadException e) {
+            throw new CommandExecuteException(Messages.LOAD_ERROR.formatted(fileName), e);
         }
     }
 
@@ -44,7 +41,7 @@ public class SaveCommand extends AbstractCommand {
             if (commandWords.length != 2) {
                 throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
             }
-            return new SaveCommand(commandWords[1]);
+            return new LoadCommand(commandWords[1]);
         }
         return null;
     }

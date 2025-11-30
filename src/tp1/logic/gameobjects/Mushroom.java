@@ -15,7 +15,8 @@ public class Mushroom extends MovingObject {
 
 	public Mushroom(GameWorld game, Position pos) {
 		
-		super(game, pos);
+//		super(game, pos);
+		super(game, pos, NAME, SHORTCUT);
 		this.icon = Messages.MUSHROOM;
 		setDirx(1);
 		
@@ -25,15 +26,15 @@ public class Mushroom extends MovingObject {
 		super();
 	}
 	
-	@Override
-	public String getName() {
-		return NAME;
-	}
-	
-	@Override
-	public String getShortcut() {
-		return SHORTCUT;
-	}
+//	@Override
+//	public String getName() {
+//		return NAME;
+//	}
+//	
+//	@Override
+//	public String getShortcut() {
+//		return SHORTCUT;
+//	}
 
 	@Override
 	public MovingObject createObject(GameWorld game, Position pos, int Dirx) {

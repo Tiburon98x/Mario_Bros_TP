@@ -4,6 +4,8 @@ package tp1.logic.gameobjects;
 
 
 import tp1.view.Messages;
+import tp1.exception.ObjectParseException;
+import tp1.exception.OffBoardException;
 import tp1.logic.*;
 
 
@@ -21,7 +23,8 @@ public class Mario extends MovingObject{
     
 	public Mario(GameWorld game, Position pos) {
 		
-		super(game, pos);
+//		super(game, pos);
+		super(game, pos, NAME, SHORTCUT);
 		this.icon = Messages.MARIO_RIGHT;
 		setFalling(false);
 		setDirx(1);
@@ -34,15 +37,15 @@ public class Mario extends MovingObject{
 		super();
 	}
 
-	@Override
-	public String getName() {
-		return NAME;
-	}
-	
-	@Override
-	public String getShortcut() {
-		return SHORTCUT;
-	}
+//	@Override
+//	public String getName() {
+//		return NAME;
+//	}
+//	
+//	@Override
+//	public String getShortcut() {
+//		return SHORTCUT;
+//	}
 	
 	@Override
 	public MovingObject createObject(GameWorld game, Position pos, int Dirx) {
@@ -308,33 +311,36 @@ public class Mario extends MovingObject{
 	}
 	
 	@Override
-	public GameObject parse(String[] objWords, GameWorld game, Position Pos) {
+	public Mario parse(String[] objWords, GameWorld game) throws OffBoardException, ObjectParseException {
 
-		if(!objWords[1].equalsIgnoreCase(NAME) && !objWords[1].equalsIgnoreCase(SHORTCUT)) 
-			return null; //esto no se si está bien
+//		if(!objWords[1].equalsIgnoreCase(NAME) && !objWords[1].equalsIgnoreCase(SHORTCUT)) 
+//			return null; //esto no se si está bien
 		
-//	    Position pos = Position.parse(objWords[0]);
-//	    if (!game.isInside(pos))
-//	    		return null;
-
-	    Mario m = new Mario(game, pos);
+		GameObject obj = super.parse(objWords, game);
+		
+		if (obj == null) 
+	        return null;
+	    
+		
+	//    Mario m = new Mario(game, pos);
+		Mario m = (Mario) obj;
 
 	    // Dirección
 
-	    if (objWords.length > 2) {
-
-	        if (objWords[2].equalsIgnoreCase("RIGHT") || objWords[2].equalsIgnoreCase("R")) 
-	        		m.setDirx(1);
-
-	        else if (objWords[2].equalsIgnoreCase("LEFT") || objWords[2].equalsIgnoreCase("L")) {
-	        	
-	        	m.setDirx(-1);
-	        	m.cambiarIconIzq();
-	        	
-	        }
-	        
-	    }
-
+//	    if (objWords.length > 2) {
+//
+//	        if (objWords[2].equalsIgnoreCase("RIGHT") || objWords[2].equalsIgnoreCase("R")) 
+//	        		m.setDirx(1);
+//
+//	        else if (objWords[2].equalsIgnoreCase("LEFT") || objWords[2].equalsIgnoreCase("L")) {
+//	        	
+//	        	m.setDirx(-1);
+//	        	m.cambiarIconIzq();
+//	        	
+//	        }
+//	        
+//	    }
+		
 	    // Tamaño
 
 	    if (objWords.length > 3) {
@@ -343,12 +349,11 @@ public class Mario extends MovingObject{
 	        		m.setBig(true);
 
 	        else if (objWords[3].equalsIgnoreCase("SMALL") || objWords[3].equalsIgnoreCase("S")) 
-	        		m.setBig(false);
-	        
+	        		m.setBig(false);	
+	        else 
+	        	throw new ObjectParseException(Messages.ERROR_INVALID_MARIO_SIZE.formatted(String.join(" ", objWords)));
 	    }
-
 	    return m;
-
 	}
 
 	public boolean isDirectlyBelow(Position pos) {

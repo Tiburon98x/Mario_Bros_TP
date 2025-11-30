@@ -3,6 +3,7 @@
 package tp1.logic;
 
 import tp1.exception.OffBoardException;
+import tp1.exception.GameLoadException;
 import tp1.exception.GameModelException;
 import tp1.exception.ObjectParseException;
 
@@ -16,8 +17,9 @@ public interface GameModel {
 	public int getCurrentLevel();
 	public void addActionToMario(Action act);
 //	public boolean addGameObject(String[] WORDS);
-	public void addGameObject(String[] WORDS) throws OffBoardException, ObjectParseException;
+	public void addObject(String[] WORDS) throws OffBoardException, ObjectParseException;
 	public void AddObject();
 	public void save(String fileName) throws GameModelException;
+	public void load(String fileName) throws GameLoadException;
 	
 }

@@ -14,7 +14,8 @@ public class Land extends GameObject {
 		
 	public Land(GameWorld game, Position pos) {
 		
-		super(game, pos);
+//		super(game, pos);
+		super(game, pos, NAME, SHORTCUT);
 		this.icon = Messages.LAND;
 		
 	}
@@ -23,15 +24,15 @@ public class Land extends GameObject {
 		super();
 	}
 	
-	@Override
-	public String getName() {
-		return NAME;
-	}
-	
-	@Override
-	public String getShortcut() {
-		return SHORTCUT;
-	}
+//	@Override
+//	public String getName() {
+//		return NAME;
+//	}
+//	
+//	@Override
+//	public String getShortcut() {
+//		return SHORTCUT;
+//	}
 	
 	@Override
 	public GameObject createObject(GameWorld game, Position pos) {

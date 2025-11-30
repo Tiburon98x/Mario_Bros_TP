@@ -10,7 +10,8 @@ import tp1.view.Messages;
 
 public class ResetCommand extends AbstractCommand {
 	
-	private static final int defaultLevel = -10;
+//	private static final int defaultLevel = -10;
+	private boolean haslevel = false; //¿?
 	private int level;
 	
 	private static final String NAME = Messages.COMMAND_RESET_NAME;
@@ -20,12 +21,14 @@ public class ResetCommand extends AbstractCommand {
     
     public ResetCommand() {
         super(NAME, SHORTCUT, DETAILS, HELP);
+        
     }
     
 	public ResetCommand(int level) {
 		
 		super(NAME, SHORTCUT, DETAILS, HELP);
 		this.level = level;
+		this.haslevel = true;   // ¿?
 		
 	}
 //	public void execute(GameModel game, GameView view) {
@@ -61,19 +64,24 @@ public class ResetCommand extends AbstractCommand {
 	@Override
 	public void execute(GameModel game, GameView view) throws CommandExecuteException{
 //	    try {
-	        int targetLevel;
+//	        int targetLevel;
+//
+//	        if (level == defaultLevel) {
+//	            targetLevel = game.getCurrentLevel();
+//	        } else {
+//	            targetLevel = level;
+//	        }
+//
+//	        if (targetLevel > 10) {
+//	      
+//	            throw new CommandExecuteException(Messages.INVALID_LEVEL_NUMBER);
+//	        }
+		
+		
+	        if(!haslevel)
+	        	level = game.getCurrentLevel();        	
 
-	        if (level == defaultLevel) {
-	            targetLevel = game.getCurrentLevel();
-	        } else {
-	            targetLevel = level;
-	        }
-
-	        if (targetLevel > 10) {
-	            throw new CommandExecuteException(Messages.INVALID_LEVEL_NUMBER);
-	        }
-
-	        game.reset(targetLevel);
+	        game.reset(level);
 	        view.showGame();
 
 //	    } catch (CommandExecuteException nfe) {
@@ -109,7 +117,9 @@ public class ResetCommand extends AbstractCommand {
 	            throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	            
 	        } else if (commandWords.length == 1)
-	        	return new ResetCommand(defaultLevel);
+//	        	return new ResetCommand(defaultLevel); // No necesario, si no tiene nivel se le atribuye el constructor sin nivel
+	        	//Ahora la pregunta es sería necesario inicializar level a algún valor 
+	        	return new ResetCommand();
 
 	        try {
 

@@ -7,9 +7,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import tp1.exception.GameLoadException;
 import tp1.exception.GameModelException;
 import tp1.exception.ObjectParseException;
 import tp1.exception.OffBoardException;
+import tp1.exception.PositionParseException;
 import tp1.logic.gameobjects.*;
 import tp1.view.Messages;
 
@@ -28,6 +30,8 @@ public class Game implements GameModel, GameStatus, GameWorld {
     private int remainingTime = 100;
     private boolean finished = false;
     private boolean win = false;
+    
+    private String lastLoadedFile = null;
 
     
     
@@ -300,19 +304,46 @@ public class Game implements GameModel, GameStatus, GameWorld {
 
 	 @Override
 	 public void reset(int level) {
+		 
 		 this.level = level;
 		 this.remainingTime = 100;
 		 this.finished = false;
 		 this.win = false;
 		 this.gameObjects = new GameObjectContainer();
 		 
-		 if (level == -1) {
-				this.lives = 3;
-				this.points = 0;
-			}		 
-		 initLevel(level);
+//		 if (level == -1) {
+//				this.lives = 3;
+//				this.points = 0;
+//			}	
+//		 initLevel(level);
+		 if (this.lastLoadedFile != null && (level == -1 || level == this.getCurrentLevel())) {
+			 try {
+				 load(this.lastLoadedFile);
+				 return; // Salimos, ya hemos cargado
+			 } catch (GameLoadException e) {
+				 System.err.println("Error reloading file on reset: " + e.getMessage());
+				 // Si falla la recarga, podríamos volver al nivel por defecto o no hacer nada
+			 }
+		 }
+		 
+		 if(level != 0 && level != 1 && level != 2 && level != -1)
+			 initLevel(this.getCurrentLevel());
+		 else {
+			 
+			 if (level == -1) {
+				 
+					this.lives = 3;
+					this.points = 0;
+					
+				}	
+			 
+			 initLevel(level);
+			 
+		 }
 		 
 	 }
+	 
+	 
 	 
 	 @Override
 	 public boolean isFinished() {
@@ -445,12 +476,23 @@ public class Game implements GameModel, GameStatus, GameWorld {
 //        
 //	}
 	@Override
-	public void addGameObject(String[] WORDS) throws OffBoardException, ObjectParseException{		
+	public void addObject(String[] WORDS) throws OffBoardException, ObjectParseException {		
      
-		Position pos = Position.parse(WORDS[0]); // Lanza PositionParseException
-        if (!isInside(pos)) {
-            throw new OffBoardException(tp1.view.Messages.OBJECT_POSITION_OFF_BOARD.formatted(String.join(" ", WORDS)));
-        } //esto es solo para Mario, estariamos repitiendo codigo de GOF
+//		Position pos; // Lanza PositionParseException
+//		
+//		try {
+//			pos = Position.parse(WORDS[0]);	
+//		}
+//		catch(PositionParseException e){
+//			throw new ObjectParseException(e.getMessage(), e);
+//		}
+//		
+//		
+//        if (!isInside(pos)) {
+//            throw new OffBoardException(Messages.OBJECT_POSITION_OFF_BOARD.formatted(String.join(" ", WORDS)));
+//        } //al hacer este if, si ha entrado al catch, que pasaría?? xq no tiene valor la variable pos
+        
+        //esto es solo para Mario, estariamos repitiendo codigo de GOF
         //capaz rente mas ponerlo dentro de la condicion para que no se ejecute todo el rato y se ejecute cuando
         //sea solo Mario
 		
@@ -504,10 +546,40 @@ public class Game implements GameModel, GameStatus, GameWorld {
             out.println(gameObjects.stringifyObjects());
             
 		} catch (IOException e) {
-            throw new GameModelException(Messages.WRITE_ERROR + e.getMessage());
+            throw new GameModelException(Messages.WRITE_ERROR.formatted(fileName) + e.getMessage());
         }
 	}
 	
+	@Override
+	public void load(String fileName) throws GameLoadException {
+	    
+	    // 1. Creamos la configuración desde el fichero (si falla, lanza excepción y no toca nada)
+	    GameConfiguration config = new FileGameConfiguration(fileName, this);
+
+	    // 2. Si llegamos aquí, la carga fue exitosa. Actualizamos el juego.
+	    this.remainingTime = config.getRemainingTime();
+	    this.points = config.getPoints();
+	    this.lives = config.getLives();
+	    
+	    // Reiniciamos el contenedor
+	    this.gameObjects = new GameObjectContainer();
+	    
+	    // Añadimos a Mario
+	    this.mario = config.getMario();
+	    this.gameObjects.addItem(this.mario);
+	    
+	    // Añadimos el resto de objetos
+	    for (GameObject obj : config.getObjects()) {
+	        this.gameObjects.addItem(obj);
+	    }
+	    
+	    // Guardamos el nombre del fichero para futuros resets
+	    this.lastLoadedFile = fileName;
+	    
+	    // Reset de flags de estado
+	    this.finished = false;
+	    this.win = false;
+	}
 
 
 }

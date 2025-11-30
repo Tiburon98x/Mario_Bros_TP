@@ -122,6 +122,12 @@ public class Messages {
     public static final String COMMAND_SAVE_SHORTCUT = "s";
     public static final String COMMAND_SAVE_DETAILS = "[s]ave <fileName>";
     public static final String COMMAND_SAVE_HELP = "save the actual configuration in text file <fileName>";
+    
+    // LOAD
+    public static final String COMMAND_LOAD_NAME = "load";
+    public static final String COMMAND_LOAD_SHORTCUT = "l";
+    public static final String COMMAND_LOAD_DETAILS = "[l]oad <fileName>";
+    public static final String COMMAND_LOAD_HELP = "load the game configuration from text file <fileName>";
 	
     // OBJETOS
     public static final String OBJECT_BOX = "Box";
@@ -149,4 +155,11 @@ public class Messages {
 	public static final String MUSHROOM = "🍄";
 	public static final String BOX = MyStringUtils.repeat("?",ConsoleView.CELL_SIZE);
 	public static final String EMPTY_BOX = MyStringUtils.repeat("0",ConsoleView.CELL_SIZE);
-}
+
+	public static final String LOAD_ERROR = "Unable to load game configuration from file \"%s\"";
+    public static final String INVALID_FILE_CONFIGURATION = "Invalid file \"%s\" configuration";
+    public static final String ERROR_INVALID_POSITION = "Invalid object position: \"%s\"";
+    public static final String ERROR_UNKNOWN_DIRECTION = "Unknown moving object direction: \"%s\"";
+    public static final String ERROR_INVALID_DIRECTION = "Invalid moving object direction: \"%s\"";
+    public static final String ERROR_INVALID_MARIO_SIZE = "Invalid Mario size: \"%s\"";
+    public static final String INCORRECT_GAME_STATUS = "Incorrect game status \"%s\"";}

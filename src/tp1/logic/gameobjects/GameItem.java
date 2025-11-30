@@ -19,5 +19,8 @@ public interface GameItem {
 	public  boolean receiveInteraction(Box obj);
 	public  boolean receiveInteraction(Mushroom obj);
 	
+//	public String getName();
+//	public String getShortcut();
+//	
 }
 

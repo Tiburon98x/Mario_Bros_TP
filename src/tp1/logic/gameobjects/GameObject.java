@@ -3,8 +3,11 @@
 package tp1.logic.gameobjects;
 
 import tp1.exception.GameParseException;
+import tp1.exception.ObjectParseException;
 import tp1.exception.OffBoardException;
+import tp1.exception.PositionParseException;
 import tp1.logic.*;
+import tp1.view.Messages;
 
 public abstract class GameObject implements GameItem{ 
 
@@ -12,13 +15,19 @@ public abstract class GameObject implements GameItem{
 	private boolean isAlive;
 	protected GameWorld game; 
 	
+	private  String NAME;
+   private  String SHORTCUT;
 	
+    
 	
-	public GameObject(GameWorld game, Position pos) {
+	public GameObject(GameWorld game, Position pos, String NAME, String SHORTCUT) { // DUDOSO , String NAME, String SHORTCUT
 		
 		this.isAlive = true;
 		this.pos = pos;
 		this.game = game;
+		//¿?
+		this.NAME = NAME;
+		this.SHORTCUT = SHORTCUT;
 		
 	}
 	
@@ -45,31 +54,36 @@ public abstract class GameObject implements GameItem{
 //	public abstract String getIcon();
 	public abstract String toString();
 	
-	protected abstract String getName(); //nombre de los objetos
-    protected abstract String getShortcut(); //shortcut de los objetos
+	//¿?
+	protected String getName() {
+		return NAME;
+	}
+	//¿?
+	protected String getShortcut() {
+		return SHORTCUT;
+	}
+	
     protected abstract GameObject createObject(GameWorld game, Position pos); //creacion de objetos
 
-	public GameObject parse(String[] objWords, GameWorld game, Position pos) throws GameParseException, OffBoardException {
+	public GameObject parse(String[] objWords, GameWorld game) throws ObjectParseException, OffBoardException {
+	
+		if (this.getName().equalsIgnoreCase(objWords[1]) ||  this.getShortcut().equalsIgnoreCase(objWords[1])) {
+		        
+			Position pos;
+			try {
+				pos = Position.parse(objWords[0]);
+				
+			} catch (PositionParseException e) {
+				throw new ObjectParseException(Messages.ERROR_INVALID_POSITION.formatted(String.join(" ", objWords)), e);
+			}
 
-//	    Position pos = Position.parse(objWords[0]);
-//	    if (!game.isInside(pos)) 
-//	    		return null;
+			if (!game.isInside(pos)) {
+				throw new OffBoardException(Messages.OBJECT_POSITION_OFF_BOARD.formatted(String.join(" ", objWords)));
+			}
 
-	    String type = objWords[1];
-	    if (type.equalsIgnoreCase(this.getName()) || type.equalsIgnoreCase(this.getShortcut())) {
-	    	
-	        return this.createObject(game, pos);
-
-	    }
-	    
-//	    else if (type.equalsIgnoreCase("ExitDoor") || type.equalsIgnoreCase("ED")) 
-//	        return new Exit_door(game, pos);
-//
-//	    else if (type.equalsIgnoreCase("Box") || type.equalsIgnoreCase("B")) 
-//	        return new Box(game, pos);
-	    
-	    return null;
-	    
+			return this.createObject(game, pos);
+		}
+		return null; //o hacemos un gameParseException?	    
 	}
 	
 	public void receiveAction(Action act){}

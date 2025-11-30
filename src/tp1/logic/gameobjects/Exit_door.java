@@ -15,7 +15,8 @@ public class Exit_door extends GameObject {
 	
 	public Exit_door(GameWorld game, Position pos) {	
 		
-		super(game, pos);
+//		super(game, pos);
+		super(game, pos, NAME, SHORTCUT);
 		this.icon = Messages.EXIT_DOOR;
 		
 	}
@@ -24,15 +25,15 @@ public class Exit_door extends GameObject {
 		super();
 	}
 		
-	@Override
-	public String getName() {
-		return NAME;
-	}
-	
-	@Override
-	public String getShortcut() {
-		return SHORTCUT;
-	}
+//	@Override
+//	public String getName() {
+//		return NAME;
+//	}
+//	
+//	@Override
+//	public String getShortcut() {
+//		return SHORTCUT;
+//	}
 	
 	@Override
 	public GameObject createObject(GameWorld game, Position pos) {

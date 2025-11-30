@@ -5,6 +5,7 @@ package tp1.logic.gameobjects;
 import tp1.exception.GameParseException;
 import tp1.exception.ObjectParseException;
 import tp1.exception.OffBoardException;
+import tp1.exception.PositionParseException;
 import tp1.logic.GameWorld;
 import tp1.logic.Position;
 import tp1.view.Messages;
@@ -30,17 +31,17 @@ public class GameObjectFactory {
 	
 	
 	
-	public static GameObject parse (String objWords[], GameWorld game) throws GameParseException, OffBoardException {
+	public static GameObject parse (String objWords[], GameWorld game) throws ObjectParseException, OffBoardException {
 
-		Position pos = Position.parse(objWords[0]); //lanza PPE
-		
-		if (!game.isInside(pos)) {
-            throw new OffBoardException(Messages.OBJECT_POSITION_OFF_BOARD.formatted(String.join(" ", objWords)));
-        }
+//		Position pos = Position.parse(objWords[0]); //lanza PPE
+//		
+//		if (!game.isInside(pos)) {
+//            throw new OffBoardException(Messages.OBJECT_POSITION_OFF_BOARD.formatted(String.join(" ", objWords)));
+//        }
 		
 		for (GameObject obj : availableObjects) {
 			
-			GameObject object = obj.parse(objWords, game, pos);
+			GameObject object = obj.parse(objWords, game);
 			if(object != null)
 				return object;
 			

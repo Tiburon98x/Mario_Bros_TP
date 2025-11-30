@@ -52,7 +52,7 @@ public class AddObjectCommand extends AbstractCommand {
 	public void execute(GameModel game, GameView view) throws CommandExecuteException {
 		
         try {
-		    game.addGameObject(objWords);
+		    game.addObject(objWords);
 			game.AddObject();
 			view.showGame();
         } catch (GameModelException e) {

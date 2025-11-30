@@ -12,7 +12,8 @@ public class Box extends GameObject{
 	
 	public Box(GameWorld game, Position pos) {
 		
-		super(game, pos);
+//		super(game, pos);
+		super(game, pos, NAME, SHORTCUT);
 		this.icon = Messages.BOX;
 		
 	}
@@ -21,15 +22,15 @@ public class Box extends GameObject{
 		super();
 	}
 	
-	@Override
-	public String getName() {
-		return NAME;
-	}
-	
-	@Override
-	public String getShortcut() {
-		return SHORTCUT;
-	}
+//	@Override
+//	public String getName() {
+//		return NAME;
+//	}
+//	
+//	@Override
+//	public String getShortcut() {
+//		return SHORTCUT;
+//	}
 	
 	@Override
 	public GameObject createObject(GameWorld game, Position pos) {
@@ -97,7 +98,7 @@ public class Box extends GameObject{
         StringBuilder sb = new StringBuilder(super.stringify());
 
         if (this.icon.equals(Messages.EMPTY_BOX)) { //comprobamos si es vacia para indicarlo
-             sb.append(" Empty");
+             sb.append(" Empty ");
         }
         return sb.toString();
     }

@@ -86,7 +86,7 @@ public class Position {
             throw new PositionParseException("Invalid position coordinates: " + s, e);
         }
 
-    }	//excepcion numerica??
+    }
 	
 	@Override
     public String toString() { //podríamos usar stringify, pero queda más clean en esta clase con toString
