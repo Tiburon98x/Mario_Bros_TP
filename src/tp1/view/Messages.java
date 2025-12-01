@@ -6,7 +6,7 @@ import tp1.util.MyStringUtils;
 
 public class Messages {
 	
-	public static final String VERSION = "2.X";
+	public static final String VERSION = "3.0";
 
 	public static final String GAME_NAME = "MarioBross";
 
@@ -115,7 +115,7 @@ public class Messages {
 	public static final String COMMAND_ADDOBJECT_NAME = "addObject";
 	public static final String COMMAND_ADDOBJECT_SHORTCUT = "aO";
 	public static final String COMMAND_ADDOBJECT_DETAILS = "[a]dd[O]bject <object_description>";
-	public static final String COMMAND_ADDOBJECT_HELP = "adds to the board the object given by object_description";
+	public static final String COMMAND_ADDOBJECT_HELP = "adds to the board the object given by object_description.";
 
 	// SAVE
 	public static final String COMMAND_SAVE_NAME = "save";

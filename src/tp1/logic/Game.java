@@ -303,7 +303,7 @@ public class Game implements GameModel, GameStatus, GameWorld {
 	 }
 
 	 @Override
-	 public void reset(int level) {
+	 public void reset(int level) throws GameModelException { //He añadido el throw que se trata en controller
 		 
 		 this.level = level;
 		 this.remainingTime = 100;
@@ -321,25 +321,44 @@ public class Game implements GameModel, GameStatus, GameWorld {
 				 load(this.lastLoadedFile);
 				 return; // Salimos, ya hemos cargado
 			 } catch (GameLoadException e) {
-				 System.err.println("Error reloading file on reset: " + e.getMessage());
+				 //System.err.println("Error reloading file on reset: " + e.getMessage());
+				 throw new GameModelException(Messages.FILE_NOT_FOUND + e.getMessage());
 				 // Si falla la recarga, podríamos volver al nivel por defecto o no hacer nada
 			 }
 		 }
 		 
-		 if(level != 0 && level != 1 && level != 2 && level != -1)
-			 initLevel(this.getCurrentLevel());
-		 else {
+		 if (level == 0 || level == 1 || level == 2 || level == -1) {
 			 
-			 if (level == -1) {
+			 if(level == -1) {
 				 
-					this.lives = 3;
-					this.points = 0;
-					
-				}	
+				 this.lives = 3;
+			     this.points = 0;
+			 
+			 }
 			 
 			 initLevel(level);
-			 
+			  
 		 }
+		 else 
+			 throw new GameModelException(Messages.INVALID_LEVEL_NUMBER);
+			 
+		 
+//		 if(level != 0 && level != 1 && level != 2 && level != -1) {
+//			 //initLevel(this.getCurrentLevel());
+//			
+//		 }
+//		 else {
+//			 
+//			 if (level == -1) {
+//				 
+//					this.lives = 3;
+//					this.points = 0;
+//					
+//				}	
+//			 
+//			 initLevel(level);
+//			 
+//		 }
 		 
 	 }
 	 
@@ -449,10 +468,15 @@ public class Game implements GameModel, GameStatus, GameWorld {
 			finished = true;
 			win = false;
 		} else
-			reset(level);
+			//Hay que revisar esta parte porque lanza excepción pero nunca se lanza aqui porque se carga el nivel anterior
+			try {
+				reset(level);
+			} catch (GameModelException e) {
+				
+			}
 	
 	}
-	
+
 	@Override
 	public void doInteraction(GameItem other) {
 		gameObjects.doInteraction(other);

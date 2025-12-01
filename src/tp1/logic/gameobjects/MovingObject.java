@@ -27,9 +27,13 @@ public abstract class MovingObject extends GameObject {
 		super(game, pos, NAME, SHORTCUT);
 	}
 	
-	public MovingObject() {
-		super();
+	public MovingObject(String name, String shortcut) {
+		super(name, shortcut);
 	}
+	
+//	public MovingObject() {
+//		super();
+//	}
 
 	public void setFalling(boolean falling) {
 	    this.isFalling = falling;
@@ -159,7 +163,7 @@ public abstract class MovingObject extends GameObject {
 	}
 		
 	@Override
-	protected GameObject createObject(GameWorld game, Position pos) {	 
+	protected GameObject createObject(GameWorld game, Position pos, String[] s) {	 
 	    return this.createObject(game, pos, 0); //los MOVOBJ necesitan la dirx 
 	}
 	

@@ -34,7 +34,8 @@ public class Mario extends MovingObject{
 	}
 	
 	public Mario() {
-		super();
+		super(NAME, SHORTCUT);
+		//super();
 	}
 
 //	@Override
@@ -374,7 +375,7 @@ public class Mario extends MovingObject{
 	}
 
 	@Override
-	protected GameObject createObject(GameWorld game, Position pos) {
+	protected GameObject createObject(GameWorld game, Position pos, String[] s) {
 		return null;
 	}			
 	

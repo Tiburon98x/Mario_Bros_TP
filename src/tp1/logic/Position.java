@@ -81,7 +81,7 @@ public class Position {
         try {
             int col = Integer.parseInt(parts[0].trim());
             int row = Integer.parseInt(parts[1].trim());
-            return new Position(col, row);
+            return new Position(row, col);
         } catch (NumberFormatException e) {
             throw new PositionParseException("Invalid position coordinates: " + s, e);
         }

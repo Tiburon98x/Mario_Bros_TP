@@ -22,7 +22,8 @@ public class Exit_door extends GameObject {
 	}
 			
 	public Exit_door() {
-		super();
+		super(NAME, SHORTCUT);
+		//super();
 	}
 		
 //	@Override
@@ -36,7 +37,9 @@ public class Exit_door extends GameObject {
 //	}
 	
 	@Override
-	public GameObject createObject(GameWorld game, Position pos) {
+	public GameObject createObject(GameWorld game, Position pos, String[] s) {
+		if(s.length > 2)
+			return null;
 		return new Exit_door(game, pos);
 	}
 	

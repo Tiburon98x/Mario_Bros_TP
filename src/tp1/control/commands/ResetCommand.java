@@ -4,6 +4,7 @@ package tp1.control.commands;
 
 import tp1.exception.CommandExecuteException;
 import tp1.exception.CommandParseException;
+import tp1.exception.GameModelException;
 import tp1.logic.GameModel;
 import tp1.view.GameView;
 import tp1.view.Messages;
@@ -81,8 +82,16 @@ public class ResetCommand extends AbstractCommand {
 	        if(!haslevel)
 	        	level = game.getCurrentLevel();        	
 
-	        game.reset(level);
-	        view.showGame();
+	        try {
+	        	
+	            game.reset(level);
+   	            view.showGame();
+	            
+	        } catch (GameModelException e) {
+	            throw new CommandExecuteException(e.getMessage());
+	        }
+//	        game.reset(level);
+//	        view.showGame();
 
 //	    } catch (CommandExecuteException nfe) {
 //	       

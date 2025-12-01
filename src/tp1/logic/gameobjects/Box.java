@@ -19,7 +19,8 @@ public class Box extends GameObject{
 	}
 
 	public Box() {
-		super();
+		super(NAME, SHORTCUT);
+		//super();
 	}
 	
 //	@Override
@@ -33,7 +34,13 @@ public class Box extends GameObject{
 //	}
 	
 	@Override
-	public GameObject createObject(GameWorld game, Position pos) {
+	public GameObject createObject(GameWorld game, Position pos, String[] s) {
+		//Hay que arreglar cuando se quiere añadir una caja vacía porque añade siempre una llena
+		//Mi idea era crear otro constructor al que se le paso como parámetro como está la caja
+		//Mejor idea imitar el mario creas y luego haces un setState dependiendo si esta vacía 
+		// o llena pasándolo por los parámetros
+		if(s.length > 3)
+			return null;
 		return new Box(game, pos);
 	}
 

@@ -31,7 +31,15 @@ public abstract class GameObject implements GameItem{
 		
 	}
 	
-	public GameObject() {} //factoría
+	//public GameObject() {} //factoría
+	
+	// CONSTRUCTOR 2: Para la Factory (Prototipo)
+    // Este es el que soluciona tu NullPointerException
+    public GameObject(String name, String shortcut) {
+        this.NAME = name;
+        this.SHORTCUT = shortcut;
+        // No necesitamos pos ni game aquí, solo saber CÓMO se llama el objeto
+    }
 
 	public boolean isInPosition(Position p) {
 	    return this.isAlive && this.pos.equals(p); 
@@ -63,10 +71,18 @@ public abstract class GameObject implements GameItem{
 		return SHORTCUT;
 	}
 	
-    protected abstract GameObject createObject(GameWorld game, Position pos); //creacion de objetos
+    protected abstract GameObject createObject(GameWorld game, Position pos, String[] objWords); //creacion de objetos
 
 	public GameObject parse(String[] objWords, GameWorld game) throws ObjectParseException, OffBoardException {
 	
+		// 1. PROTECCIÓN: Si no hay suficientes palabras, no es responsabilidad de este objeto parsearlo.
+	    // Necesitamos al menos [Posición] y [Nombre], es decir, longitud 2.
+	    if (objWords.length < 2) 
+	        return null;
+	    		
+	    
+	    
+	    
 		if (this.getName().equalsIgnoreCase(objWords[1]) ||  this.getShortcut().equalsIgnoreCase(objWords[1])) {
 		        
 			Position pos;
@@ -81,7 +97,7 @@ public abstract class GameObject implements GameItem{
 				throw new OffBoardException(Messages.OBJECT_POSITION_OFF_BOARD.formatted(String.join(" ", objWords)));
 			}
 
-			return this.createObject(game, pos);
+			return this.createObject(game, pos, objWords);
 		}
 		return null; //o hacemos un gameParseException?	    
 	}

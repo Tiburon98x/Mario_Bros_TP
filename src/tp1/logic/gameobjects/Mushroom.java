@@ -23,7 +23,8 @@ public class Mushroom extends MovingObject {
 	}
 
 	public Mushroom() {
-		super();
+		super(NAME, SHORTCUT);
+		//super();
 	}
 	
 //	@Override
@@ -94,7 +95,7 @@ public class Mushroom extends MovingObject {
 	}
 
 	@Override
-	protected GameObject createObject(GameWorld game, Position pos) {
+	protected GameObject createObject(GameWorld game, Position pos, String[] s) {
 		return null; //se usará siempre el de movingObject
 	}
 	

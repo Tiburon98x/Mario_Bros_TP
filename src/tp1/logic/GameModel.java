@@ -12,7 +12,7 @@ public interface GameModel {
 	
 	public boolean isFinished();
 	public void update();
-	public void reset(int level);
+	public void reset(int level) throws GameModelException;
 	public void exit();
 	public int getCurrentLevel();
 	public void addActionToMario(Action act);
