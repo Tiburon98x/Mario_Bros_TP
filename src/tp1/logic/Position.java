@@ -3,6 +3,7 @@
 package tp1.logic;
 
 import tp1.exception.PositionParseException;
+import tp1.view.Messages;
 
 public class Position {
 	
@@ -83,7 +84,7 @@ public class Position {
             int row = Integer.parseInt(parts[1].trim());
             return new Position(row, col);
         } catch (NumberFormatException e) {
-            throw new PositionParseException("Invalid position coordinates: " + s, e);
+            throw new PositionParseException(Messages.INVALID_POSITION.formatted(s), e);
         }
 
     }

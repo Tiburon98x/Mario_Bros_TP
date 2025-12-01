@@ -15,13 +15,21 @@ public abstract class MovingObject extends GameObject {
 
 	private int dirx;
 	private boolean isFalling;
+	
+    public static final int AllowedArgsMovingObject = 3; //posicion, nombre y dirección
+
     
 //	private  String NAME;
 //    private  String SHORTCUT;
 
-	
+
     protected abstract MovingObject createObject(GameWorld game, Position pos, int Dirx); //creacion de objetos
 	
+    @Override
+    protected int getAllowedArgs() {
+        return AllowedArgsMovingObject; 
+    }
+    
 	public MovingObject(GameWorld game, Position pos, String NAME, String SHORTCUT) {  // DUDOSO String NAME, String SHORTCUT
 //		super(game, pos);
 		super(game, pos, NAME, SHORTCUT);
@@ -105,61 +113,23 @@ public abstract class MovingObject extends GameObject {
 	@Override
 	public GameObject parse(String[] objWords, GameWorld game) throws ObjectParseException, OffBoardException  {
 
-//		String type = objWords[1];
-//		
-//	    if (!type.equalsIgnoreCase(this.getName()) && !type.equalsIgnoreCase(this.getShortcut())) {
-//	        return null; 
-//	    }
-//
-//	    Position pos;
-//	    try {
-//	        pos = Position.parse(objWords[0]);
-//	        
-//	    } catch (PositionParseException e) {
-//	        throw new ObjectParseException(e.getMessage(), e);
-//	    }
-//
-//	    if (!game.isInside(pos)) {
-//	        throw new OffBoardException(Messages.OBJECT_POSITION_OFF_BOARD.formatted(String.join(" ", objWords)));
-//	    }
+
 	    
 		GameObject obj = super.parse(objWords, game);
 	    
-	    if (obj == null) return null;
-	    
-	    MovingObject mObj = (MovingObject) obj; //CASTING, SE PUEDE??, si no se puede, la solucion
-	    //seria repetir codigo y crear movingObject obj (está todo en comentarios)
-	    
-//	    if (objWords.length > 2) {
-//	        if (objWords[2].equalsIgnoreCase("RIGHT") || objWords[2].equalsIgnoreCase("R")) 
-//	            this.dirx = 1;
-//	        
-//	        else if (objWords[2].equalsIgnoreCase("LEFT") || objWords[2].equalsIgnoreCase("L")) 
-//	            this.dirx = -1;       
-//	    }
-	    
-	    
-	 //   MovingObject obj = this.createObject(game, pos, dirx);
-	    
-	//    if (dirx == -1) obj.cambiarIconIzq();
-
-	    //------------AJUSTE DE DIRECCIONES
-//	    if (dirx != 0) { // Solo si ha cambiado
-//	        mObj.setDirx(dirx);
-//	        if (dirx == -1) mObj.cambiarIconIzq();
-//	    }
-	    
-	    if (objWords.length > 2) {
-            String dirString = objWords[2];
-            String originalText = String.join(" ", objWords);
+		if (obj != null) {
+            MovingObject mObj = (MovingObject) obj;
             
-            Action action = parseDirection(dirString, originalText);
-            
-            mObj.setDirection(action, originalText);
-        }
+            // Si hay dirección (indice 2)
+            if (objWords.length > 2) {
+            	
+            	String dirString = objWords[2];
+            	Action dirAux = parseDirection(dirString, objWords);
+            	applyDirection(mObj, dirAux);
+            }
+		}
 	    
-	  //  return obj;
-	    return mObj;
+	    return obj;
 	}
 		
 	@Override
@@ -177,30 +147,45 @@ public abstract class MovingObject extends GameObject {
         return sb.toString();
     }
 	
-	private Action parseDirection(String dirString, String originalText) throws ObjectParseException {
-        try {
-            return Action.parseAction(dirString);
-        } catch (ActionParseException e) {
-            throw new ObjectParseException(Messages.ERROR_UNKNOWN_DIRECTION.formatted(originalText), e);
+	private boolean isValidDirection(Action action) {
+        return action == Action.LEFT || action == Action.RIGHT || action == Action.STOP;
+    }
+	
+	private void applyDirection(MovingObject mObj, Action action) {
+        switch (action) {
+            case RIGHT:
+                mObj.setDirx(1);
+                mObj.cambiarIconDer();
+                break;
+            case LEFT:
+                mObj.setDirx(-1);
+                mObj.cambiarIconIzq();
+                break;
+            default: // STOP
+                mObj.setDirx(0);
+                break;
         }
     }
 	
-	private void setDirection(Action action, String originalText) throws ObjectParseException {
-        switch (action) {
-            case RIGHT:
-                this.setDirx(1);
-                this.cambiarIconDer();
-                break;
-            case LEFT:
-                this.setDirx(-1);
-                this.cambiarIconIzq();
-                break;
-            case STOP:
-                this.setDirx(0);
-                break;
-            default:
-                throw new ObjectParseException(Messages.ERROR_INVALID_DIRECTION.formatted(originalText));
-        }
+	private Action parseDirection(String dirString, String[] objWords) throws ObjectParseException {
+		 try {
+
+             Action dirAux = Action.parseAction(objWords[2]);
+             
+             if (isValidDirection(dirAux)) {
+            	 
+            	 return dirAux;
+            	 
+             } else {
+                 
+                 throw new ObjectParseException(Messages.ERROR_INVALID_DIRECTION.formatted(String.join(" ", objWords)));
+             }
+             
+         } catch (ActionParseException e) {
+             
+             throw new ObjectParseException(Messages.ERROR_UNKNOWN_DIRECTION.formatted(String.join(" ", objWords)), e);
+         }
     }
+	
 	
 }

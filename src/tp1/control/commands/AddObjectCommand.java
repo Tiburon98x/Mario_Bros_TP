@@ -53,11 +53,13 @@ public class AddObjectCommand extends AbstractCommand {
 		
         try {
 		    game.addObject(objWords);
-			game.AddObject();
+			game.AddObjectToContainer();
 			view.showGame();
         } catch (GameModelException e) {
         		//Si le pasas la causa imprime dos veces el error por el run de controller
-            throw new CommandExecuteException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+//            throw new CommandExecuteException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+        	throw new CommandExecuteException(Messages.COMMAND_EXECUTE_ERROR, e);
+
         }
 	}
 
@@ -65,7 +67,7 @@ public class AddObjectCommand extends AbstractCommand {
 	public Command parse(String[] commandWords) throws CommandParseException{
 		 
 		if (matchCommandName(commandWords[0])) {
-			if (commandWords.length < 2)
+			if (commandWords.length < 3) //2 o 3
 				throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER); 
 
 //				return null;

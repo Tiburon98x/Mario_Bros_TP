@@ -385,7 +385,7 @@ public class Game implements GameModel, GameStatus, GameWorld {
 		}
 	 
 	 @Override
-	 public void AddObject() {		 
+	 public void AddObjectToContainer() {		 
 		 gameObjects.updateAdd(this);
 	 }
 

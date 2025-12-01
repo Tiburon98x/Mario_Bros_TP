@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class Tests_V3 {
-	public static final String DIR = "tests/pr3/";
+	public static final String DIR = "tests/pr3_3/";
 	public static final String FILE_PREFIXES[] = {
 			"00_00-commands_errors",
 			"00_01-commands",

@@ -50,20 +50,26 @@ public class ActionCommand extends AbstractCommand {
     @Override
     public void execute(GameModel game, GameView view) throws CommandExecuteException {
     		
-    		String forError = String.join(" ", words);
-    		for (String s : words) {
-            try {
-                Action act = Action.parseAction(s);
-                game.addActionToMario(act);
+ //   	String forError = String.join(" ", words);
+    	boolean emptyActions = true;
+    	
+    	for (String s : words) {
+    		try {
+    			Action act = Action.parseAction(s);
+    			game.addActionToMario(act);
+    			emptyActions = false;
             
-         } catch (ActionParseException e) {
+    		} catch (ActionParseException e) {
             	
-            		//Cuando le pasas la causa lo hace dos veces por como esta configurado el run de controller
-                throw new CommandExecuteException(Messages.UNKNOWN_COMMAND.formatted(NAME + " " + forError));
-            }
-    		 }
-        game.update();
-        view.showGame();
+    			//Cuando le pasas la causa lo hace dos veces por como esta configurado el run de controller
+    		//	throw new CommandExecuteException(Messages.UNKNOWN_COMMAND.formatted(NAME + " " + forError));
+    		}
+    	}
+    	if(emptyActions)
+    		throw new CommandExecuteException(Messages.EMPTY_ACTIONS);
+    	
+    	game.update();
+    	view.showGame();
     }
     
 	

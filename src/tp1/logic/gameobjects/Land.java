@@ -37,8 +37,8 @@ public class Land extends GameObject {
 	
 	@Override
 	public GameObject createObject(GameWorld game, Position pos, String[] s) {
-		if(s.length > 2) 
-			return null;
+//		if(s.length > 2) 
+//			return null;
 		return new Land(game, pos);
 	}
 	

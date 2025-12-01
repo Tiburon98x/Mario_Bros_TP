@@ -18,7 +18,7 @@ public interface GameModel {
 	public void addActionToMario(Action act);
 //	public boolean addGameObject(String[] WORDS);
 	public void addObject(String[] WORDS) throws OffBoardException, ObjectParseException;
-	public void AddObject();
+	public void AddObjectToContainer();
 	public void save(String fileName) throws GameModelException;
 	public void load(String fileName) throws GameLoadException;
 	

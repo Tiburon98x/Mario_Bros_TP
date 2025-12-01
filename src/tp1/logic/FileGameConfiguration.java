@@ -32,7 +32,7 @@ public class FileGameConfiguration implements GameConfiguration {
 		try (BufferedReader inStream = new BufferedReader(new FileReader(fileName))){
 			
 			this.gameObjects = new ArrayList<>();
-			this.mario = new Mario(game, new Position(0, 0)); //inicializamos con esa posición
+//			this.mario = new Mario(game, new Position(0, 0)); //inicializamos con esa posición
 			
 			String line = inStream.readLine();
 			//si line está vacio, excepcion??

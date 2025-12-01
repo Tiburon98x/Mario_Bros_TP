@@ -16,9 +16,9 @@ public abstract class GameObject implements GameItem{
 	protected GameWorld game; 
 	
 	private  String NAME;
-   private  String SHORTCUT;
+	private  String SHORTCUT;
 	
-    
+    private static final int AllowedArgsGameObject = 2; //posicion y nombre
 	
 	public GameObject(GameWorld game, Position pos, String NAME, String SHORTCUT) { // DUDOSO , String NAME, String SHORTCUT
 		
@@ -30,6 +30,10 @@ public abstract class GameObject implements GameItem{
 		this.SHORTCUT = SHORTCUT;
 		
 	}
+	
+	protected int getAllowedArgs() {
+        return AllowedArgsGameObject;
+    }
 	
 	//public GameObject() {} //factoría
 	
@@ -75,16 +79,17 @@ public abstract class GameObject implements GameItem{
 
 	public GameObject parse(String[] objWords, GameWorld game) throws ObjectParseException, OffBoardException {
 	
-		// 1. PROTECCIÓN: Si no hay suficientes palabras, no es responsabilidad de este objeto parsearlo.
-	    // Necesitamos al menos [Posición] y [Nombre], es decir, longitud 2.
-	    if (objWords.length < 2) 
-	        return null;
-	    		
-	    
-	    
-	    
-		if (this.getName().equalsIgnoreCase(objWords[1]) ||  this.getShortcut().equalsIgnoreCase(objWords[1])) {
+
+//	    if (objWords.length < 2) 
+//	    	throw new ObjectParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+	    	 	   
+	    if (this.getName().equalsIgnoreCase(objWords[1]) ||  this.getShortcut().equalsIgnoreCase(objWords[1])) {
 		        
+			if(objWords.length > getAllowedArgs()) {
+			    	
+				throw new ObjectParseException(Messages.OBJECT_PARSE_ERROR.formatted(String.join(" ", objWords)));
+			}
+			
 			Position pos;
 			try {
 				pos = Position.parse(objWords[0]);
@@ -99,7 +104,7 @@ public abstract class GameObject implements GameItem{
 
 			return this.createObject(game, pos, objWords);
 		}
-		return null; //o hacemos un gameParseException?	    
+		return null;    
 	}
 	
 	public void receiveAction(Action act){}
