@@ -125,12 +125,46 @@ public class Mario extends MovingObject{
 		boolean success = false;
 	    boolean canInteract = other.isInPosition(this.pos); 
 	    Position topPos = this.pos.translate(new Position(0, -1));
-	    if (canInteract || (other.isInPosition(topPos)))
-	        success = other.receiveInteraction(this);         
+	    Position topPosBig = this.pos.translate(new Position(0, -2));
+
+	    if (canInteract || (other.isInPosition(topPos)) || (this.big && other.isInPosition(topPosBig) && other.isSolid())) {
+	      //la tercera condición sirve para detectar el box y hacer la interacción 
+	    	
+	    	success = other.receiveInteraction(this);     
+	    }
+	    
 	    
 	    return canInteract && success;
 	    
 	}
+//	@Override
+//	public boolean interactWith(GameItem other) {
+//		
+//		// 1. Calculamos posiciones
+//		boolean hitFeet = other.isInPosition(this.pos);
+//		Position headPos = this.pos.translate(new Position(0, -1));
+//		boolean hitHead = other.isInPosition(headPos);
+//		
+//		// 2. DEBUG: Solo si el objeto es una Caja
+//		// (Asegúrate de que toString devuelve el icono "?" o "Box" para que esto entre)
+//		String objStr = other.toString();
+//		if (objStr.contains("?") || objStr.contains("Box")) {
+//			System.out.println("--- INTERACCIÓN MARIO vs CAJA ---");
+//			System.out.println("Mario Pos (Pies): " + this.pos);
+//			System.out.println("Mario Head (Cabeza): " + headPos);
+//			System.out.println("Caja Pos: " + ((GameObject)other).stringify()); // O usa un getter de pos si tienes
+//			System.out.println("¿Choca Pies? " + hitFeet);
+//			System.out.println("¿Choca Cabeza? " + hitHead);
+//			System.out.println("---------------------------------");
+//		}
+//
+//		// 3. Lógica original
+//		if (hitFeet || hitHead) {
+//			return other.receiveInteraction(this);
+//		}
+//		
+//		return false;
+//	}
 	
 	@Override
 	public boolean receiveInteraction(Goomba goomba) {
@@ -265,12 +299,21 @@ public class Mario extends MovingObject{
                 while (game.isInside(below) && !game.isSolid(below)) {
                 	
                     pos = below;
-        				game.doInteraction(this);
+        			game.doInteraction(this);
                     below = pos.translateMario(act);
-                    if (!game.isInside(below))                     	
-                        return false;                   
+//                    if (!game.isInside(below)) {                    	
+//                 //       return false;  
+//                    	muere();
+//                    	return true;
+//                    }
+//                    
                 }
-                
+                if (!game.isInside(below)) {                    	
+                    //       return false;  
+                	muere();
+                	return true;
+                }
+                                      
                 moved = true;
 
             } 
@@ -282,7 +325,7 @@ public class Mario extends MovingObject{
         }
         
         if(act != Action.DOWN)
-        		game.doInteraction(this);
+        	game.doInteraction(this);
     
     }
 	    
@@ -391,8 +434,10 @@ public class Mario extends MovingObject{
 	}
 
 	public boolean isDirectlyBelow(Position pos) {
-		
+			
+
 		Position below = pos.translate(new Position(0, 1));
+		
 		return this.isInPosition(below);
 		
 	}

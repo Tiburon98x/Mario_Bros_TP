@@ -305,64 +305,137 @@ public class Game implements GameModel, GameStatus, GameWorld {
 	 @Override
 	 public void reset(int level) throws GameModelException { //He añadido el throw que se trata en controller
 		 
-		 this.level = level;
+		 this.level = level;		 				    
 		 this.remainingTime = 100;
 		 this.finished = false;
 		 this.win = false;
 		 this.gameObjects = new GameObjectContainer();
-		 
-//		 if (level == -1) {
-//				this.lives = 3;
-//				this.points = 0;
-//			}	
-//		 initLevel(level);
-		 if (this.lastLoadedFile != null && (level == -1 || level == this.getCurrentLevel())) {
+		
+		 if (this.lastLoadedFile != null) {
 			 try {
+				 
 				 load(this.lastLoadedFile);
+				 this.level = 10;
 				 return; // Salimos, ya hemos cargado
 			 } catch (GameLoadException e) {
 				 //System.err.println("Error reloading file on reset: " + e.getMessage());
 				 throw new GameModelException(Messages.FILE_NOT_FOUND + e.getMessage());
 				 // Si falla la recarga, podríamos volver al nivel por defecto o no hacer nada
 			 }
-		 }
+		}
 		 
-		 if (level == 0 || level == 1 || level == 2 || level == -1) {
+		 else if (level == 0 || level == 1 || level == 2 || level == -1) {
 			 
+			 this.lastLoadedFile = null;
 			 if(level == -1) {
 				 
 				 this.lives = 3;
 			     this.points = 0;
 			 
 			 }
-			 
+
 			 initLevel(level);
 			  
 		 }
-		 else 
+		 
+	
+		  else 
+		 
 			 throw new GameModelException(Messages.INVALID_LEVEL_NUMBER);
 			 
 		 
-//		 if(level != 0 && level != 1 && level != 2 && level != -1) {
-//			 //initLevel(this.getCurrentLevel());
-//			
-//		 }
-//		 else {
-//			 
-//			 if (level == -1) {
-//				 
-//					this.lives = 3;
-//					this.points = 0;
-//					
-//				}	
-//			 
-//			 initLevel(level);
-//			 
-//		 }
-		 
 	 }
 	 
+	 @Override 
+	 public void reset() throws GameModelException {
+		 
+		 if(lastLoadedFile != null) {
+			 try {
+				 
+				 load(this.lastLoadedFile);
+				 return; // Salimos, ya hemos cargado
+			 } catch (GameLoadException e) {
+				 //System.err.println("Error reloading file on reset: " + e.getMessage());
+				 throw new GameModelException(Messages.FILE_NOT_FOUND + e.getMessage());
+				 // Si falla la recarga, podríamos volver al nivel por defecto o no hacer nada
+
+			 }
+		 }
+		 else {
+			 
+			 
+			 
+		 }
+		 	 
+	 }
 	 
+//	// ----------------------------------------------------------------
+//	    // MÉTODO 1: RESET CON PARÁMETRO (Carga de Mapas Numéricos)
+//	    // Se usa para: reset 1, reset 2, etc.
+//	    // Comportamiento: Olvida el fichero y empieza partida nueva en ese nivel.
+//	    // ----------------------------------------------------------------
+//	    @Override
+//	    public void reset(int level) throws GameModelException {
+//	        
+//	        // 1. Validamos que el nivel exista (0, 1, 2)
+////	        if (level != 0 && level != 1 && level != 2) {
+////	            throw new GameModelException(Messages.INVALID_LEVEL_NUMBER);
+////	        }
+//	    	if (level == 0 || level == 1 || level == 2 || level == -1) {
+//	        // 2. Limpieza total (Nueva partida)
+//	        this.lastLoadedFile = null; // IMPORTANTE: Olvidamos el fichero
+//	        
+//	        this.lives = 3;
+//	        this.points = 0;
+//	        this.level = level; // Guardamos el nuevo nivel actual
+//	        
+//	        // Reset de estado
+//	        this.remainingTime = 100;
+//	        this.finished = false;
+//	        this.win = false;
+//	        this.gameObjects = new GameObjectContainer();
+//	        
+//	        // 3. Cargamos el mapa
+//	        initLevel(level);
+//	    	}
+//	    	else throw new GameModelException(Messages.INVALID_LEVEL_NUMBER);
+//	    }
+//
+//	    // ----------------------------------------------------------------
+//	    // MÉTODO 2: RESET SIN PARÁMETROS (Recarga de situación actual)
+//	    // Se usa para: comando 'reset' a secas, o cuando Mario muere.
+//	    // Comportamiento: Si hay fichero, lo recarga. Si no, reinicia nivel actual.
+//	    // ----------------------------------------------------------------
+//	    @Override
+//	    public void reset() throws GameModelException {
+//	        
+//	        // Reset de estado común
+//	        this.remainingTime = 100;
+//	        this.finished = false;
+//	        this.win = false;
+//	        this.gameObjects = new GameObjectContainer();
+//
+//	        // CASO A: Estamos jugando desde un fichero -> Recargamos el fichero
+//	        if (this.lastLoadedFile != null) {
+//	            try {
+//	                load(this.lastLoadedFile);
+//	                // Nota: load() leerá las vidas/puntos del fichero.
+//	            } catch (GameLoadException e) {
+//	                throw new GameModelException(Messages.FILE_NOT_FOUND + ": " + e.getMessage());
+//	            }
+//	        } 
+//	        // CASO B: Estamos jugando un nivel estándar -> Reiniciamos el nivel
+////	        else {
+////	            this.lives = 3;
+////	            this.points = 0;
+////	            
+////
+////	            
+////	            initLevel(this.level);
+//	        }
+////	    }
+//	 
+//	 
 	 
 	 @Override
 	 public boolean isFinished() {
@@ -462,19 +535,24 @@ public class Game implements GameModel, GameStatus, GameWorld {
 	@Override
 	public void marioMuere() {
 
-		lives--;
-		if (lives <= 0) {
+		int nextLives = lives - 1;
 
+		if (nextLives <= 0) {
+			this.lives = 0;
 			finished = true;
 			win = false;
-		} else
-			//Hay que revisar esta parte porque lanza excepción pero nunca se lanza aqui porque se carga el nivel anterior
+		} else {
+
 			try {
-				reset(level);
-			} catch (GameModelException e) {
+				reset(level); 
 				
+				this.lives = nextLives; //Arreglamos el error de las vidas
+			} catch (GameModelException e) {
+				//Necesario este try-catch pues reset lanza excepciones
+				//No obstante, en teoría, nunca va a pasar que lance la excepción pues ya se pudo
+				//cargar anteriormente
 			}
-	
+		}
 	}
 
 	@Override
@@ -502,24 +580,6 @@ public class Game implements GameModel, GameStatus, GameWorld {
 	@Override
 	public void addObject(String[] WORDS) throws OffBoardException, ObjectParseException {		
      
-//		Position pos; // Lanza PositionParseException
-//		
-//		try {
-//			pos = Position.parse(WORDS[0]);	
-//		}
-//		catch(PositionParseException e){
-//			throw new ObjectParseException(e.getMessage(), e);
-//		}
-//		
-//		
-//        if (!isInside(pos)) {
-//            throw new OffBoardException(Messages.OBJECT_POSITION_OFF_BOARD.formatted(String.join(" ", WORDS)));
-//        } //al hacer este if, si ha entrado al catch, que pasaría?? xq no tiene valor la variable pos
-        
-        //esto es solo para Mario, estariamos repitiendo codigo de GOF
-        //capaz rente mas ponerlo dentro de la condicion para que no se ejecute todo el rato y se ejecute cuando
-        //sea solo Mario
-		
 		GameObject obj = this.mario.parse(WORDS, this);
         		
 		if (obj != null) 
@@ -577,10 +637,10 @@ public class Game implements GameModel, GameStatus, GameWorld {
 	@Override
 	public void load(String fileName) throws GameLoadException {
 	    
-	    // 1. Creamos la configuración desde el fichero (si falla, lanza excepción y no toca nada)
+	    // Creamos la configuración desde el fichero (si falla, lanza excepción y no toca nada)
 	    GameConfiguration config = new FileGameConfiguration(fileName, this);
 
-	    // 2. Si llegamos aquí, la carga fue exitosa. Actualizamos el juego.
+	    // Si llegamos aquí, la carga fue exitosa y actualizamos el juego.
 	    this.remainingTime = config.getRemainingTime();
 	    this.points = config.getPoints();
 	    this.lives = config.getLives();
@@ -600,7 +660,6 @@ public class Game implements GameModel, GameStatus, GameWorld {
 	    // Guardamos el nombre del fichero para futuros resets
 	    this.lastLoadedFile = fileName;
 	    
-	    // Reset de flags de estado
 	    this.finished = false;
 	    this.win = false;
 	}

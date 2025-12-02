@@ -30,7 +30,8 @@ public class SaveCommand extends AbstractCommand {
     public void execute(GameModel game, GameView view) throws CommandExecuteException {
         try {
             game.save(fileName);
-            view.showMessage("Game successfully saved to file: " + fileName); // Mensaje de éxito opcional
+            view.showMessage(Messages.FILE_SAVED.formatted(fileName) + System.lineSeparator()); 
+            //lineSeparator necesario porque el test 4 lo exige (linea 82)
         } catch (GameModelException e) {
 //            throw new CommandExecuteException(Messages.WRITE_ERROR.formatted(fileName), e);
             throw new CommandExecuteException(e.getMessage());

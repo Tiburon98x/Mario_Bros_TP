@@ -22,14 +22,15 @@ public class ResetCommand extends AbstractCommand {
     
     public ResetCommand() {
         super(NAME, SHORTCUT, DETAILS, HELP);
-        
+		this.haslevel = false;  
+
     }
     
 	public ResetCommand(int level) {
 		
 		super(NAME, SHORTCUT, DETAILS, HELP);
 		this.level = level;
-		this.haslevel = true;   // ¿?
+		this.haslevel = true; 
 		
 	}
 //	public void execute(GameModel game, GameView view) {
@@ -64,29 +65,22 @@ public class ResetCommand extends AbstractCommand {
 //		}
 	@Override
 	public void execute(GameModel game, GameView view) throws CommandExecuteException{
-//	    try {
-//	        int targetLevel;
-//
-//	        if (level == defaultLevel) {
-//	            targetLevel = game.getCurrentLevel();
-//	        } else {
-//	            targetLevel = level;
-//	        }
-//
-//	        if (targetLevel > 10) {
-//	      
-//	            throw new CommandExecuteException(Messages.INVALID_LEVEL_NUMBER);
-//	        }
-		
-		
+	
 	        if(!haslevel)
 	        	level = game.getCurrentLevel();        	
 
 	        try {
+//	        	
+//	        	if (haslevel) {
+//	                game.reset(level);
+//	            } else {
+//	                game.reset();
+//	            }
+//	            view.showGame();
+	        	
 	        	
 	            game.reset(level);
-   	            view.showGame();
-	            
+   	            view.showGame();    
 	        } catch (GameModelException e) {
 	            throw new CommandExecuteException(e.getMessage());
 	        }

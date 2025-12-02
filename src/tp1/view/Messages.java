@@ -167,4 +167,7 @@ public class Messages {
     public static final String EMPTY_ACTIONS = "Incorrect 'action command', because the action list is empty (all actions are unknown).";
     public static final String COMMAND_EXECUTE_ERROR = "Command execute problem";
     public static final String OBJECT_PARSE_ERROR = "Object parse error, too much args: \"%s\"";
+    public static final String NOT_MARIO_FOUND = "File format error: Mario not found in file";
+    public static final String FILE_SAVED = "   File \"%s\" correctly saved";
+    
 }

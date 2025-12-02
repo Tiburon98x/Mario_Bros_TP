@@ -32,7 +32,7 @@ public class FileGameConfiguration implements GameConfiguration {
 		try (BufferedReader inStream = new BufferedReader(new FileReader(fileName))){
 			
 			this.gameObjects = new ArrayList<>();
-//			this.mario = new Mario(game, new Position(0, 0)); //inicializamos con esa posición
+			this.mario = new Mario(game, new Position(0, 0)); //inicializamos con esa posición
 			
 			String line = inStream.readLine();
 			//si line está vacio, excepcion??
@@ -49,7 +49,7 @@ public class FileGameConfiguration implements GameConfiguration {
 			}
 			
 			if (this.mario == null) { //si no hay mario, no hay juego
-                throw new GameLoadException("File format error: Mario not found in file");
+                throw new GameLoadException(Messages.NOT_MARIO_FOUND);
            }
 			
 		}
@@ -62,6 +62,9 @@ public class FileGameConfiguration implements GameConfiguration {
 		catch(ObjectParseException | OffBoardException e) {
 			throw new GameLoadException(Messages.INVALID_FILE_CONFIGURATION.formatted(fileName), e);
 		}	
+		catch(GameLoadException e) {
+			throw e;		//necesario para evitar doble mensaje de la excepcion de parseStatus
+		}
 		catch(Exception e) {
 			throw new GameLoadException(e.getMessage(), e); //excepción general, capaz haya q corregirlo para los tests
 		}
@@ -77,7 +80,7 @@ public class FileGameConfiguration implements GameConfiguration {
 				throw new GameLoadException("Invalid game status: Too many arguments in header");
 		}
 		catch (NoSuchElementException e) {
-			throw new GameLoadException(Messages.INCORRECT_GAME_STATUS.formatted(line), e);
+			throw new GameLoadException(Messages.INCORRECT_GAME_STATUS.formatted(line));
 		}	
 	}
 	

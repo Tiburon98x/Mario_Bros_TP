@@ -60,63 +60,33 @@ public class ActionCommand extends AbstractCommand {
     			emptyActions = false;
             
     		} catch (ActionParseException e) {
-            	
-    			//Cuando le pasas la causa lo hace dos veces por como esta configurado el run de controller
-    		//	throw new CommandExecuteException(Messages.UNKNOWN_COMMAND.formatted(NAME + " " + forError));
+    			//Ignoramos aposta para ver si se pueden meter otras acciones
     		}
     	}
-    	if(emptyActions)
+    	if(emptyActions) //si no existen acciones válidas
     		throw new CommandExecuteException(Messages.EMPTY_ACTIONS);
     	
     	game.update();
     	view.showGame();
-    }
-    
-	
-//	@Override
-//	public Command parse(String[] words){
-//		
-//	    if (!matchCommandName(words[0])) {
-//	        return null; 
-//	    }
-//	    if (words.length < 2) 
-//	        return null; 
-//	    
-//	    String[] parameters = new String[words.length - 1];
-//
-//	    // Copiamos las acciones desde words a parameters
-//	    for (int i = 1; i < words.length; i++) {
-//	        parameters[i - 1] = words[i];
-//	    }
-//
-//	    return new ActionCommand(parameters);
-//	}
+    }  
     
     @Override
-	public Command parse(String[] words) throws CommandParseException{
-		
-		if (matchCommandName(words[0]) && words.length == 1) 
-			throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER); 
-			    
-//		if (words.length < 2) 
-//			throw new CommandParseException(Messages.INVALID_COMMAND_PARAMETERS); 
-		
-		if (!matchCommandName(words[0]))
-			return null;
+    public Command parse(String[] words) throws CommandParseException {
+        
+        if (matchCommandName(words[0])) {
 
-		
-			  
-		String[] parameters = new String[words.length - 1];
-	
-		// Copiamos las acciones desde words a parameters
-		for (int i = 1; i < words.length; i++) 
-			parameters[i - 1] = words[i];
-			    
-	
-		return new ActionCommand(parameters);
-    	
-    	   
-	}
-	
+            if (words.length == 1) {
+                throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER); 
+            }
+           
+            String[] parameters = new String[words.length - 1];
+            
+            for (int i = 1; i < words.length; i++) {
+                parameters[i - 1] = words[i];
+            }   
+            return new ActionCommand(parameters);
+        }       
+        return null;
+    }	
   
 }

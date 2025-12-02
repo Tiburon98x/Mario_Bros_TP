@@ -13,7 +13,7 @@ public class Box extends GameObject{
     
     private boolean full = true;
 	private String icon;
-	private static final int AllowedArgsGameObject = 3;
+	private static final int AllowedArgsBox = 3;
 	
 	public Box(GameWorld game, Position pos) {
 		
@@ -22,6 +22,7 @@ public class Box extends GameObject{
 		this.full = true;
 		this.icon = Messages.BOX;
 		
+		
 	}
 
 	public Box() {
@@ -29,8 +30,9 @@ public class Box extends GameObject{
 		//super();
 	}
 	
-	protected int getAllowedArgs() {
-        return AllowedArgsGameObject;
+	@Override
+	public int getAllowedArgs() {
+        return AllowedArgsBox;
     }
 	
 //	@Override
@@ -57,7 +59,7 @@ public class Box extends GameObject{
 	public void setState(boolean state){
 		
 		this.full = state;
-		if (state) 
+		if (full) 
 	        this.icon = Messages.BOX;    
 	     else 
 	        this.icon = Messages.EMPTY_BOX; 
@@ -71,7 +73,7 @@ public class Box extends GameObject{
 		if (obj == null) 
 	        return null;
 	    
-		Box b = (Box) obj; //No estoy seguro de que se pueda
+		Box b = (Box) obj; //Casting necesario
 
 	    if (objWords.length > 2) {
 
@@ -106,16 +108,17 @@ public class Box extends GameObject{
 	@Override
 	public boolean receiveInteraction(Mario mario) {
 		
-	   if (mario.isDirectlyBelow(this.pos) && Messages.BOX.equals(this.icon)) {
-	       mario.givePointsToGame(50);
-	       this.icon = Messages.EMPTY_BOX;
-	       Mushroom obj = new Mushroom(game, this.pos.translate(new Position(0, -1)));
-	       game.addMushroom(obj);
-	       return true;
+
+		if (mario.isDirectlyBelow(this.pos) && Messages.BOX.equals(this.icon)) {
+			mario.givePointsToGame(50);
+			setState(false); //Empty BOX
+			Mushroom obj = new Mushroom(game, this.pos.translate(new Position(0, -1)));
+			game.addMushroom(obj);
+			return true;
 	     
-	   }
+		}
 	   
-	   return false;
+		return false;
 	   
 	}
 

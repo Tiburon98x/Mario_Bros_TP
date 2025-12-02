@@ -28,7 +28,7 @@ public class Controller {
 		while (!game.isFinished()) {			
 
 			try {
-			String[] userWords = view.getPrompt();
+			String[] userWords = view.getPrompt(); 
 			
 			if(userWords.length == 1 && userWords[0].isEmpty()){
 				
@@ -48,26 +48,7 @@ public class Controller {
 					view.showError(cause.getMessage());
 	 				cause = cause.getCause();
 				}
-			}
-		
-			
-			
-//			String[] userWords = view.getPrompt();
-//			Command command = CommandGenerator.parse(userWords);
-//			
-//			if(command != null) {
-//				command.execute(game, view);
-//			}
-//			else if (userWords.length == 1 && userWords[0].isEmpty()){
-//					
-//				game.update();
-//				view.showGame();
-//			}
-//			else 
-//				view.showError(Messages.UNKNOWN_COMMAND.formatted(String.join(" ", userWords)));
-//			}
-//		view.showEndMessage();	
-
+			}		
 		} 
 		view.showEndMessage();
 

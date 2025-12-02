@@ -21,5 +21,6 @@ public interface GameModel {
 	public void AddObjectToContainer();
 	public void save(String fileName) throws GameModelException;
 	public void load(String fileName) throws GameLoadException;
+	public void reset() throws GameModelException;
 	
 }

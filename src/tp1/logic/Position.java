@@ -12,10 +12,10 @@ public class Position {
 		
 	
 	
-	public Position(int row2, int col2) {
+	public Position(int col, int row) {
 
-		this.row = row2;
-		this.col = col2;		
+		this.col = row;	
+		this.row = col;
 	}
 		
 	public boolean isInPosition(Position delta) {

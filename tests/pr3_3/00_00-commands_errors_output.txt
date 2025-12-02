@@ -90,11 +90,12 @@ Command > [DEBUG] Executing: addObject (a,4) Land
 Command > [DEBUG] Executing: addObject (1,2) Goomba NORTH
 
 [ERROR] Error: Command execute problem
-[ERROR] Error: Unknown game object: "(1,2) Goomba NORTH"
+[ERROR] Error: Unknown moving object direction: "(1,2) Goomba NORTH"
+[ERROR] Error: Unknown action: "NORTH"
 Command > [DEBUG] Executing: addObject (1,4) Goomba UP
 
 [ERROR] Error: Command execute problem
-[ERROR] Error: Unknown game object: "(1,4) Goomba UP"
+[ERROR] Error: Invalid moving object direction: "(1,4) Goomba UP"
 Command > [DEBUG] Executing: addObject (1,4) Goomba RIGHT extraArgs
 
 [ERROR] Error: Command execute problem
@@ -106,7 +107,7 @@ Command > [DEBUG] Executing: addObject (1,8) Patata
 Command > [DEBUG] Executing: addObject (2,9) Box UP
 
 [ERROR] Error: Command execute problem
-[ERROR] Error: Object parse error, too much args: "(2,9) Box UP"
+[ERROR] Error:  Invalid Box status: "(2,9) Box UP"
 Command > [DEBUG] Executing: addObject (2,9) Box Empty extraArgs
 
 [ERROR] Error: Command execute problem
@@ -118,11 +119,12 @@ Command > [DEBUG] Executing: addObject (2,9) Box Full extraArgs
 Command > [DEBUG] Executing: ADDOBJECT (3,4) mARIO nORMAL
 
 [ERROR] Error: Command execute problem
-[ERROR] Error: Unknown game object: "(3,4) mARIO nORMAL"
+[ERROR] Error: Unknown moving object direction: "(3,4) mARIO nORMAL"
+[ERROR] Error: Unknown action: "nORMAL"
 Command > [DEBUG] Executing: ADDOBJECT (3,4) mARIO RiGHT nORMAL
 
 [ERROR] Error: Command execute problem
-[ERROR] Error: Object parse error, too much args: "(3,4) mARIO RiGHT nORMAL"
+[ERROR] Error: Invalid Mario size: "(3,4) mARIO RiGHT nORMAL"
 Command > [DEBUG] Executing: addObject (3,5) Mario Right Big extraArgs
 
 [ERROR] Error: Command execute problem
@@ -147,6 +149,7 @@ Command > [DEBUG] Executing: load unknownFile
 
 [ERROR] Error: Unable to load game configuration from file "unknownFile"
 [ERROR] Error: File not found: "unknownFile"
+[ERROR] Error: unknownFile (El sistema no puede encontrar el archivo especificado)
 Command > [DEBUG] Executing: exit
 
 Player leaves the game
