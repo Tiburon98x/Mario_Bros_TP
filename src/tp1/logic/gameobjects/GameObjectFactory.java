@@ -46,7 +46,7 @@ public class GameObjectFactory {
 				return object;
 			
 		}
-		
+
 		throw new ObjectParseException(Messages.UNKNOWN_GAME_OBJECT.formatted(String.join(" ", objWords)));		
 	}
 

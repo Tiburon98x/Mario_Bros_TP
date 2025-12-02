@@ -84,11 +84,9 @@ public abstract class GameObject implements GameItem{
 //	    	throw new ObjectParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	    	 	   
 	    if (this.getName().equalsIgnoreCase(objWords[1]) ||  this.getShortcut().equalsIgnoreCase(objWords[1])) {
-		        
-			if(objWords.length > getAllowedArgs()) {
-			    	
-				throw new ObjectParseException(Messages.OBJECT_PARSE_ERROR.formatted(String.join(" ", objWords)));
-			}
+   
+			if(objWords.length > this.getAllowedArgs()) 
+			    	throw new ObjectParseException(Messages.OBJECT_PARSE_ERROR.formatted(String.join(" ", objWords)));
 			
 			Position pos;
 			try {
@@ -104,6 +102,7 @@ public abstract class GameObject implements GameItem{
 
 			return this.createObject(game, pos, objWords);
 		}
+	    
 		return null;    
 	}
 	

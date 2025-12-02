@@ -13,6 +13,7 @@ public class Goomba extends MovingObject {
 	private String icon;
 	private static final String NAME = Messages.OBJECT_GOOMBA;
     private static final String SHORTCUT = Messages.OBJECT_GOOMBA_SHORTCUT;
+    private static final int AllowedArgsGameObject = 3;
 
     
 	public Goomba (GameWorld game, Position pos) {
@@ -22,6 +23,11 @@ public class Goomba extends MovingObject {
 		setDirx(-1);
 		this.icon = Messages.GOOMBA;
 		
+	}
+	
+	 @Override
+	protected int getAllowedArgs() {
+		 return AllowedArgsGameObject; 
 	}
 	
 	public Goomba() {
@@ -44,6 +50,7 @@ public class Goomba extends MovingObject {
 		Goomba g = new Goomba(game, pos);
 		g.setDirx(Dirx);
 		return g;
+//		return new Goomba(game, pos);
 	}
 	
 	@Override
@@ -105,7 +112,8 @@ public class Goomba extends MovingObject {
 
 	@Override
 	protected GameObject createObject(GameWorld game, Position pos, String[] s) {
-		return null;
+//		return null;
+		return new Goomba(game, pos);
 	}	//no se va a usar este, se usará el movingObject
 	
 }

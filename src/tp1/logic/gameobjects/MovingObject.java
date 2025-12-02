@@ -112,24 +112,37 @@ public abstract class MovingObject extends GameObject {
 	
 	@Override
 	public GameObject parse(String[] objWords, GameWorld game) throws ObjectParseException, OffBoardException  {
-
-
 	    
 		GameObject obj = super.parse(objWords, game);
-	    
-		if (obj != null) {
-            MovingObject mObj = (MovingObject) obj;
-            
-            // Si hay dirección (indice 2)
-            if (objWords.length > 2) {
-            	
-            	String dirString = objWords[2];
-            	Action dirAux = parseDirection(dirString, objWords);
-            	applyDirection(mObj, dirAux);
-            }
-		}
-	    
-	    return obj;
+		if (obj == null) 
+			return null;
+        
+        MovingObject mObj = (MovingObject) obj;
+        
+        if (objWords.length > 2) { 
+        	
+            String dirString = objWords[2];
+            String originalText = String.join(" ", objWords);
+           
+            // Aquí capturamos el error "NORTH"
+            Action action = parseDirection(dirString, originalText);
+            mObj.setDirection(action, originalText);
+        }
+        
+        return mObj;
+//		if (obj != null) {
+//            MovingObject mObj = (MovingObject) obj;
+//            
+//            // Si hay dirección (indice 2)
+//            if (objWords.length > 2) {
+//            	
+//            	String dirString = objWords[2];
+//            	Action dirAux = parseDirection(dirString, objWords);
+//            	applyDirection(mObj, dirAux);
+//            }
+//		}
+//	    
+//	    return obj;
 	}
 		
 	@Override
@@ -147,45 +160,75 @@ public abstract class MovingObject extends GameObject {
         return sb.toString();
     }
 	
-	private boolean isValidDirection(Action action) {
-        return action == Action.LEFT || action == Action.RIGHT || action == Action.STOP;
-    }
+//	private boolean isValidDirection(Action action) {
+//        return action == Action.LEFT || action == Action.RIGHT || action == Action.STOP;
+//    }
+//	
+//	private void applyDirection(MovingObject mObj, Action action) {
+//        switch (action) {
+//            case RIGHT:
+//                mObj.setDirx(1);
+//                mObj.cambiarIconDer();
+//                break;
+//            case LEFT:
+//                mObj.setDirx(-1);
+//                mObj.cambiarIconIzq();
+//                break;
+//            default: // STOP
+//                mObj.setDirx(0);
+//                break;
+//        }
+//    }
 	
-	private void applyDirection(MovingObject mObj, Action action) {
-        switch (action) {
-            case RIGHT:
-                mObj.setDirx(1);
-                mObj.cambiarIconDer();
-                break;
-            case LEFT:
-                mObj.setDirx(-1);
-                mObj.cambiarIconIzq();
-                break;
-            default: // STOP
-                mObj.setDirx(0);
-                break;
+//	private Action parseDirection(String dirString, String[] objWords) throws ObjectParseException {
+//		 try {
+//
+//             Action dirAux = Action.parseAction(objWords[2]);
+//             System.out.println("PARSE GAMEOBJECT");
+//             if (isValidDirection(dirAux)) {
+//            	 
+//            	 return dirAux;
+//            	 
+//             } else {
+//                 
+//                 throw new ObjectParseException(Messages.ERROR_INVALID_DIRECTION.formatted(String.join(" ", objWords)));
+//             }
+//             
+//         } catch (ActionParseException e) {
+//             
+//             throw new ObjectParseException(Messages.ERROR_UNKNOWN_DIRECTION.formatted(String.join(" ", objWords)), e);
+//         }
+//    }
+	
+	private Action parseDirection(String dirString, String originalText) throws ObjectParseException {
+		
+        try {
+            return Action.parseAction(dirString);
+        } catch (Exception e) {
+        	
+            throw new ObjectParseException(Messages.ERROR_UNKNOWN_DIRECTION.formatted(originalText), e);
         }
     }
 	
-	private Action parseDirection(String dirString, String[] objWords) throws ObjectParseException {
-		 try {
 
-             Action dirAux = Action.parseAction(objWords[2]);
-             
-             if (isValidDirection(dirAux)) {
-            	 
-            	 return dirAux;
-            	 
-             } else {
-                 
-                 throw new ObjectParseException(Messages.ERROR_INVALID_DIRECTION.formatted(String.join(" ", objWords)));
-             }
-             
-         } catch (ActionParseException e) {
-             
-             throw new ObjectParseException(Messages.ERROR_UNKNOWN_DIRECTION.formatted(String.join(" ", objWords)), e);
-         }
-    }
-	
+	private void setDirection(Action action, String originalText) throws ObjectParseException {
+	    switch (action) {
+	        case RIGHT:
+	            this.setDirx(1);
+	            this.cambiarIconDer();
+	            break;
+	        case LEFT:
+	            this.setDirx(-1);
+	            this.cambiarIconIzq();
+	            break;
+	        case STOP: 
+	            this.setDirx(0);
+	            break;
+	        default:
+	            // Si la acción existe (ej: UP, DOWN, JUMP) pero no es válida para moverse:
+	            // El mensaje del log dice: "Invalid moving object direction"
+	            throw new ObjectParseException(Messages.ERROR_INVALID_DIRECTION.formatted(originalText));
+	    }
+	}
 	
 }

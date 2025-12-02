@@ -50,6 +50,7 @@ public class Messages {
 	// Errores de factorías:
 	public static final String UNKNOWN_COMMAND = "Unknown command: %s";
 	public static final String INVALID_GAME_OBJECT = "Invalid game object: %s";
+	public static final String INVALID_BOX_STATUS = " Invalid Box status: \"%s\"";       //NUEVO 
 	public static final String UNKNOWN_GAME_OBJECT = "Unknown game object: \"%s\""; // NUEVO
     public static final String INVALID_POSITION = "Invalid position: \"(%s)\"";
     public static final String OBJECT_POSITION_OFF_BOARD = "Object position is off board: \"%s\""; // NUEVO

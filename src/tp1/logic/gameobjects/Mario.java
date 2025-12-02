@@ -15,6 +15,7 @@ public class Mario extends MovingObject{
 	private String icon;
 	private static final String NAME = Messages.OBJECT_MARIO;
     private static final String SHORTCUT = Messages.OBJECT_MARIO_SHORTCUT;
+    private static final int AllowedArgsGameObject = 4;
 
 	private boolean big = true;
     private ActionList actionList;
@@ -48,6 +49,7 @@ public class Mario extends MovingObject{
 //		return SHORTCUT;
 //	}
 	
+	//Posiblemente hay que eliminarlo
 	@Override
 	public MovingObject createObject(GameWorld game, Position pos, int Dirx) {
 		Mario m = new Mario(game, pos);
@@ -311,6 +313,37 @@ public class Mario extends MovingObject{
 		return true;
 	}
 	
+	//En prueba
+	@Override
+    protected int getAllowedArgs() {
+        return AllowedArgsGameObject;
+    }
+	
+//	@Override
+//    public GameObject parse(String[] objWords, GameWorld game) throws ObjectParseException, OffBoardException {
+//        
+//        // 1. Dejar que MovingObject parsee la dirección
+//        GameObject obj = super.parse(objWords, game);
+//        
+//        if (obj == null) return null;
+//        Mario m = new Mario(game, pos);
+//        Mario m = (Mario) obj;
+//
+//        // 2. Si hay 4ª palabra, es el TAMAÑO (Small/Big/Super)
+//        if (objWords.length > 3) {
+//        	
+//            if (objWords[3].equalsIgnoreCase("BIG") || objWords[3].equalsIgnoreCase("B")) 
+//        		m.setBig(true);
+//
+//            else if (objWords[3].equalsIgnoreCase("SMALL") || objWords[3].equalsIgnoreCase("S")) 
+//        		m.setBig(false);	
+//            else 
+//            		throw new ObjectParseException(Messages.ERROR_INVALID_MARIO_SIZE.formatted(String.join(" ", objWords)));
+//        }
+//        
+//        
+//        return m;
+//    }
 	@Override
 	public Mario parse(String[] objWords, GameWorld game) throws OffBoardException, ObjectParseException {
 
@@ -376,7 +409,8 @@ public class Mario extends MovingObject{
 
 	@Override
 	protected GameObject createObject(GameWorld game, Position pos, String[] s) {
-		return null;
+		return new Mario(game, pos);
+//		return null;
 	}			
 	
 	@Override

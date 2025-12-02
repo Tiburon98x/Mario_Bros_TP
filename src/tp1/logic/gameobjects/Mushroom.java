@@ -96,7 +96,8 @@ public class Mushroom extends MovingObject {
 
 	@Override
 	protected GameObject createObject(GameWorld game, Position pos, String[] s) {
-		return null; //se usará siempre el de movingObject
+		return new Mushroom(game, pos);
+//		return null; //se usará siempre el de movingObject
 	}
 	
 }

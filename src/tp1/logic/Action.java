@@ -22,6 +22,7 @@ public enum Action {
 	
 	public static Action parseAction(String str) throws ActionParseException {
     	
+		String strError = str;
         str = str.toLowerCase();
         switch (str) {
             case "l":
@@ -40,7 +41,7 @@ public enum Action {
             case "stop":
                 return Action.STOP;
             default:        	
-                throw new ActionParseException(Messages.UNKNOWN_ACTION.formatted(str)); 
+                throw new ActionParseException(Messages.UNKNOWN_ACTION.formatted(strError)); 
                 //si las acciones introducidas son incorrectas (-1, -1) 
               //hay que lanzar una excepcion y tratarla en el Execute de aquí, que lanzará otro
                // exception que irá al controller, siendo un CommandExecuteException

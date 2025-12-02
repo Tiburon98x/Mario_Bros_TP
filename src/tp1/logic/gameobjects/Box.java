@@ -1,5 +1,7 @@
 package tp1.logic.gameobjects;
 
+import tp1.exception.ObjectParseException;
+import tp1.exception.OffBoardException;
 import tp1.logic.GameWorld;
 import tp1.logic.Position;
 import tp1.view.Messages;
@@ -8,12 +10,16 @@ public class Box extends GameObject{
 
 	private static final String NAME = Messages.OBJECT_BOX;
     private static final String SHORTCUT = Messages.OBJECT_BOX_SHORTCUT;
+    
+    private boolean full = true;
 	private String icon;
+	private static final int AllowedArgsGameObject = 3;
 	
 	public Box(GameWorld game, Position pos) {
 		
 //		super(game, pos);
 		super(game, pos, NAME, SHORTCUT);
+		this.full = true;
 		this.icon = Messages.BOX;
 		
 	}
@@ -22,6 +28,10 @@ public class Box extends GameObject{
 		super(NAME, SHORTCUT);
 		//super();
 	}
+	
+	protected int getAllowedArgs() {
+        return AllowedArgsGameObject;
+    }
 	
 //	@Override
 //	public String getName() {
@@ -39,11 +49,45 @@ public class Box extends GameObject{
 		//Mi idea era crear otro constructor al que se le paso como parámetro como está la caja
 		//Mejor idea imitar el mario creas y luego haces un setState dependiendo si esta vacía 
 		// o llena pasándolo por los parámetros
-		if(s.length > 3)
-			return null;
-		return new Box(game, pos);
+		Box b = new Box(game, pos);
+		return b;
 	}
 
+	
+	public void setState(boolean state){
+		
+		this.full = state;
+		if (state) 
+	        this.icon = Messages.BOX;    
+	     else 
+	        this.icon = Messages.EMPTY_BOX; 
+	    
+	}
+	
+	@Override
+	public Box parse(String[] objWords, GameWorld game) throws OffBoardException, ObjectParseException {
+		
+		GameObject obj = super.parse(objWords, game);
+		if (obj == null) 
+	        return null;
+	    
+		Box b = (Box) obj; //No estoy seguro de que se pueda
+
+	    if (objWords.length > 2) {
+
+	        if (objWords[2].equalsIgnoreCase("FULL")) 
+	        		b.setState(true);
+
+	        else if (objWords[2].equalsIgnoreCase("EMPTY")) 
+	        		b.setState(false);	
+	        else 
+	        	throw new ObjectParseException(Messages.INVALID_BOX_STATUS.formatted(String.join(" ", objWords)));
+	    }
+	    
+	    return b;
+	}
+	
+	
 	@Override
 	public boolean interactWith(GameItem item) {
 		return false;

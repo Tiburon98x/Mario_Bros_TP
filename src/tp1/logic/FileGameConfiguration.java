@@ -54,7 +54,7 @@ public class FileGameConfiguration implements GameConfiguration {
 			
 		}
 		catch(FileNotFoundException e) {
-			throw new GameLoadException(Messages.FILE_NOT_FOUND.formatted(fileName));
+			throw new GameLoadException(Messages.FILE_NOT_FOUND.formatted(fileName), e);
 		}
 		catch(IOException e) {
 			throw new GameLoadException(Messages.READ_ERROR.formatted(fileName), e);
@@ -83,6 +83,7 @@ public class FileGameConfiguration implements GameConfiguration {
 	
 	
 	private void parseAndAddObject(String [] objWords, GameWorld game) throws ObjectParseException, OffBoardException{
+		
 		
 		Mario mario = this.mario.parse(objWords, game);
 		GameObject obj = mario;

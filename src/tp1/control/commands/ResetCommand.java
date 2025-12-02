@@ -121,7 +121,7 @@ public class ResetCommand extends AbstractCommand {
 		
 	    if (matchCommandName(commandWords[0])) {
 	    	
-	        if (commandWords.length != 2) {
+	        if (commandWords.length > 2) {
 	        	
 	            throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	            
