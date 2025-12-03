@@ -1,3 +1,5 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
+
 package tp1.logic.gameobjects;
 
 import tp1.exception.ObjectParseException;
@@ -17,7 +19,6 @@ public class Box extends GameObject{
 	
 	public Box(GameWorld game, Position pos) {
 		
-//		super(game, pos);
 		super(game, pos, NAME, SHORTCUT);
 		this.full = true;
 		this.icon = Messages.BOX;
@@ -27,7 +28,6 @@ public class Box extends GameObject{
 
 	public Box() {
 		super(NAME, SHORTCUT);
-		//super();
 	}
 	
 	@Override
@@ -35,22 +35,9 @@ public class Box extends GameObject{
         return AllowedArgsBox;
     }
 	
-//	@Override
-//	public String getName() {
-//		return NAME;
-//	}
-//	
-//	@Override
-//	public String getShortcut() {
-//		return SHORTCUT;
-//	}
-	
 	@Override
 	public GameObject createObject(GameWorld game, Position pos, String[] s) {
-		//Hay que arreglar cuando se quiere añadir una caja vacía porque añade siempre una llena
-		//Mi idea era crear otro constructor al que se le paso como parámetro como está la caja
-		//Mejor idea imitar el mario creas y luego haces un setState dependiendo si esta vacía 
-		// o llena pasándolo por los parámetros
+		
 		Box b = new Box(game, pos);
 		return b;
 	}
@@ -62,8 +49,7 @@ public class Box extends GameObject{
 		if (full) 
 	        this.icon = Messages.BOX;    
 	     else 
-	        this.icon = Messages.EMPTY_BOX; 
-	    
+	        this.icon = Messages.EMPTY_BOX; 	    
 	}
 	
 	@Override
@@ -114,12 +100,9 @@ public class Box extends GameObject{
 			setState(false); //Empty BOX
 			Mushroom obj = new Mushroom(game, this.pos.translate(new Position(0, -1)));
 			game.addMushroom(obj);
-			return true;
-	     
-		}
-	   
-		return false;
-	   
+			return true;	     
+		}	   
+		return false;	   
 	}
 
 	@Override

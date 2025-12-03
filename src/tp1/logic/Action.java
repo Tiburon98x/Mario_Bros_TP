@@ -42,9 +42,7 @@ public enum Action {
                 return Action.STOP;
             default:        	
                 throw new ActionParseException(Messages.UNKNOWN_ACTION.formatted(strError)); 
-                //si las acciones introducidas son incorrectas (-1, -1) 
-              //hay que lanzar una excepcion y tratarla en el Execute de aquí, que lanzará otro
-               // exception que irá al controller, siendo un CommandExecuteException
+                //la acción no existe
         }
     }
 

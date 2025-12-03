@@ -2,7 +2,6 @@
 
 package tp1.logic.gameobjects;
 
-import tp1.exception.ActionParseException;
 import tp1.exception.ObjectParseException;
 import tp1.exception.OffBoardException;
 import tp1.logic.Action;
@@ -18,11 +17,6 @@ public abstract class MovingObject extends GameObject {
 	
     public static final int AllowedArgsMovingObject = 3; //posicion, nombre y dirección
 
-    
-//	private  String NAME;
-//    private  String SHORTCUT;
-
-
     protected abstract MovingObject createObject(GameWorld game, Position pos, int Dirx); //creacion de objetos
 	
     @Override
@@ -30,18 +24,13 @@ public abstract class MovingObject extends GameObject {
         return AllowedArgsMovingObject; 
     }
     
-	public MovingObject(GameWorld game, Position pos, String NAME, String SHORTCUT) {  // DUDOSO String NAME, String SHORTCUT
-//		super(game, pos);
+	public MovingObject(GameWorld game, Position pos, String NAME, String SHORTCUT) {  
 		super(game, pos, NAME, SHORTCUT);
 	}
 	
 	public MovingObject(String name, String shortcut) {
 		super(name, shortcut);
 	}
-	
-//	public MovingObject() {
-//		super();
-//	}
 
 	public void setFalling(boolean falling) {
 	    this.isFalling = falling;
@@ -130,19 +119,6 @@ public abstract class MovingObject extends GameObject {
         }
         
         return mObj;
-//		if (obj != null) {
-//            MovingObject mObj = (MovingObject) obj;
-//            
-//            // Si hay dirección (indice 2)
-//            if (objWords.length > 2) {
-//            	
-//            	String dirString = objWords[2];
-//            	Action dirAux = parseDirection(dirString, objWords);
-//            	applyDirection(mObj, dirAux);
-//            }
-//		}
-//	    
-//	    return obj;
 	}
 		
 	@Override
@@ -159,47 +135,7 @@ public abstract class MovingObject extends GameObject {
         
         return sb.toString();
     }
-	
-//	private boolean isValidDirection(Action action) {
-//        return action == Action.LEFT || action == Action.RIGHT || action == Action.STOP;
-//    }
-//	
-//	private void applyDirection(MovingObject mObj, Action action) {
-//        switch (action) {
-//            case RIGHT:
-//                mObj.setDirx(1);
-//                mObj.cambiarIconDer();
-//                break;
-//            case LEFT:
-//                mObj.setDirx(-1);
-//                mObj.cambiarIconIzq();
-//                break;
-//            default: // STOP
-//                mObj.setDirx(0);
-//                break;
-//        }
-//    }
-	
-//	private Action parseDirection(String dirString, String[] objWords) throws ObjectParseException {
-//		 try {
-//
-//             Action dirAux = Action.parseAction(objWords[2]);
-//             System.out.println("PARSE GAMEOBJECT");
-//             if (isValidDirection(dirAux)) {
-//            	 
-//            	 return dirAux;
-//            	 
-//             } else {
-//                 
-//                 throw new ObjectParseException(Messages.ERROR_INVALID_DIRECTION.formatted(String.join(" ", objWords)));
-//             }
-//             
-//         } catch (ActionParseException e) {
-//             
-//             throw new ObjectParseException(Messages.ERROR_UNKNOWN_DIRECTION.formatted(String.join(" ", objWords)), e);
-//         }
-//    }
-	
+
 	private Action parseDirection(String dirString, String originalText) throws ObjectParseException {
 		
         try {
@@ -210,7 +146,6 @@ public abstract class MovingObject extends GameObject {
         }
     }
 	
-
 	private void setDirection(Action action, String originalText) throws ObjectParseException {
 	    switch (action) {
 	        case RIGHT:

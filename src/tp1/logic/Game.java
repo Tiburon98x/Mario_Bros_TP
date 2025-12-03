@@ -11,7 +11,6 @@ import tp1.exception.GameLoadException;
 import tp1.exception.GameModelException;
 import tp1.exception.ObjectParseException;
 import tp1.exception.OffBoardException;
-import tp1.exception.PositionParseException;
 import tp1.logic.gameobjects.*;
 import tp1.view.Messages;
 
@@ -31,10 +30,8 @@ public class Game implements GameModel, GameStatus, GameWorld {
     private boolean finished = false;
     private boolean win = false;
     
-    private String lastLoadedFile;
     private GameConfiguration fileloader;
-    
-    
+       
 	public Game(int nLevel) {
 		
 		this.level = nLevel;
@@ -462,39 +459,35 @@ public class Game implements GameModel, GameStatus, GameWorld {
 	     * - Si hay un fileloader (fichero cargado), restablece esa configuración.
 	     * - Si no, reinicia el nivel actual con vidas/puntos por defecto (o lógica de reinicio).
 	     */
-	    @Override 
-	    public void reset() throws GameModelException {
-	         
-	    	this.remainingTime = 100;
-	    	this.finished = false;
-	        this.win = false;
-	        this.gameObjects = new GameObjectContainer();
-	        
-	        //Reset de fichero
-	        if (this.fileloader != null) {
-
-	            this.remainingTime = fileloader.getRemainingTime();
-	            this.points = fileloader.getPoints();
-	            this.lives = fileloader.getLives();
-	            
-	            
-	            // IMPORTANTE: FileGameConfiguration.getMario() y getObjects() deben devolver
-	            // NUEVAS instancias cada vez que se llamen (Encapsulamiento).
-	            this.mario = fileloader.getMario();
-	            this.gameObjects.addItem(this.mario);
-	            
-	            for (GameObject obj : fileloader.getObjects()) {
-	                this.gameObjects.addItem(obj);
-	            }
-	            	           
-	        }
-	        
-	        else {
-	           
-//	            reset(this.level);
-	        	initLevel(this.level);
-	        }
-	    }
+	@Override 
+	public void reset() throws GameModelException {
+	     
+		this.remainingTime = 100;
+		this.finished = false;
+	    this.win = false;
+	    this.gameObjects = new GameObjectContainer();
+	    
+	    //Reset de fichero
+		if (this.fileloader != null) {
+		
+			//establecemos estado
+		    this.remainingTime = fileloader.getRemainingTime();
+		    this.points = fileloader.getPoints();
+		    this.lives = fileloader.getLives();
+		    
+		    //establecemos objetos + mario
+		    this.mario = fileloader.getMario();
+		    this.gameObjects.addItem(this.mario);		    
+		    for (GameObject obj : fileloader.getObjects()) {
+		        this.gameObjects.addItem(obj);
+		    }	            	           
+		}
+		
+		else {		   
+		//	            reset(this.level);
+			initLevel(this.level);
+		}
+	}
 	 
 	 
 	 @Override
@@ -638,11 +631,7 @@ public class Game implements GameModel, GameStatus, GameWorld {
 		else 		
 			obj = GameObjectFactory.parse(WORDS,this);        
         
-       // if(obj!=null)
-        		gameObjects.addItem(obj);
-        
-     //   return obj != null;
-        
+		gameObjects.addItem(obj);      
 	}
 
 	@Override
@@ -657,60 +646,27 @@ public class Game implements GameModel, GameStatus, GameWorld {
             
             out.println(remainingTime + " " + points + " " + lives);
 
-            out.println(gameObjects.stringifyObjects());
+            out.println(gameObjects.stringifyObjects()); //serializacion de los objetos
             
 		} catch (IOException e) {
             throw new GameModelException(Messages.WRITE_ERROR.formatted(fileName) + e.getMessage());
         }
-	}
-	
-//	@Override
-//	public void load(String fileName) throws GameLoadException {
-//	    
-//	    // Creamos la configuración desde el fichero (si falla, lanza excepción y no toca nada)
-//	    GameConfiguration config = new FileGameConfiguration(fileName, this);
-//
-//	    // Si llegamos aquí, la carga fue exitosa y actualizamos el juego.
-//	    this.remainingTime = config.getRemainingTime();
-//	    this.points = config.getPoints();
-//	    this.lives = config.getLives();
-//	    
-//	    // Reiniciamos el contenedor
-//	    this.gameObjects = new GameObjectContainer();
-//	    
-//	    // Añadimos a Mario
-//	    this.mario = config.getMario();
-//	    this.gameObjects.addItem(this.mario);
-//	    
-//	    // Añadimos el resto de objetos
-//	    for (GameObject obj : config.getObjects()) {
-//	        this.gameObjects.addItem(obj);
-//	    }
-//	    
-//	    // Guardamos el nombre del fichero para futuros resets
-//	    this.lastLoadedFile = fileName;
-//	    
-//	    this.finished = false;
-//	    this.win = false;
-//	}
+	}	
 	
 	@Override
     public void load(String fileName) throws GameLoadException {
-        // 1. Creamos la configuración leyendo el fichero
-        // Si falla (FileNotFound, formato, etc.), lanza excepción y no altera el juego.
+		
+		//creamos la conf con el fichero, si falla lanza excepción y no altera el juego
         GameConfiguration config = new FileGameConfiguration(fileName, this);
 
-        // 2. Si es exitoso, guardamos el objeto config en fileloader
         this.fileloader = config;
-        
-        // 3. Aplicamos la configuración al juego (similar a hacer un reset)
+              
         try {
             reset(); // Esto cargará datos desde this.fileloader
         } catch (GameModelException e) {
             throw new GameLoadException(Messages.INVALID_FILE_CONFIGURATION.formatted(fileName), e);
         }
     }
-
 
 
 }

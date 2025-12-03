@@ -1,3 +1,4 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
 
 package tp1.control.commands;
 
@@ -33,9 +34,7 @@ public class SaveCommand extends AbstractCommand {
             view.showMessage(Messages.FILE_SAVED.formatted(fileName) + System.lineSeparator()); 
             //lineSeparator necesario porque el test 4 lo exige (linea 82)
         } catch (GameModelException e) {
-//            throw new CommandExecuteException(Messages.WRITE_ERROR.formatted(fileName), e);
-            throw new CommandExecuteException(e.getMessage());
-
+        	throw new CommandExecuteException(e.getMessage());
         }
     }
 

@@ -13,6 +13,8 @@ public class CommandGenerator {
 	
 	private static final List<Command> availableCommands = Arrays.asList(
 			
+			//cada Comando tendrá su constructor vacío. En el parseo se devuelve el
+			//comando con sus args correspondientes
 	        new LoadCommand(),
 			new SaveCommand(),
 			new AddObjectCommand(),
@@ -27,10 +29,10 @@ public class CommandGenerator {
 
 		for (Command c: availableCommands) {
 			
-			Command parsedCommand = c.parse(commandWords); //llama al de NoParamsCommand
+			Command parsedCommand = c.parse(commandWords); //llama a los parses correspondientes de cada comando
 			if (parsedCommand != null)  
 				return parsedCommand;
-			
+			//nulo = excepción, no nulo = comando bien parseado
 		}	
 		 throw new CommandParseException(Messages.UNKNOWN_COMMAND.formatted(commandWords[0]));
 	}

@@ -14,22 +14,14 @@ public abstract class NoParamsCommand extends AbstractCommand {
 		super(name, shortcut, details, help);
 	}
 
-//	@Override
-//	public Command parse(String[] commandWords){
-//		
-//		 if (commandWords.length == 1 && matchCommandName(commandWords[0]))
-//		        return this; 
-//		return null;
-//		
-//	}	
-	 public Command parse(String[] commandWords) throws CommandParseException {
-		 	if (commandWords.length > 1 && matchCommandName(commandWords[0]))
-		 		throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
-		 	
-		 	Command cmd = null;
-		 	if (commandWords.length == 1 && matchCommandName(commandWords[0]))
-		 		cmd = this;
-		 	
-		 	return cmd;
-		 }
+	public Command parse(String[] commandWords) throws CommandParseException {
+		if (commandWords.length > 1 && matchCommandName(commandWords[0]))
+	 		throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
+	 	
+		Command cmd = null;
+	 	if (commandWords.length == 1 && matchCommandName(commandWords[0]))
+	 		cmd = this;
+	 	
+	 	return cmd;
+	}
 }

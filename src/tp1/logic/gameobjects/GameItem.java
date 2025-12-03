@@ -1,7 +1,6 @@
 //GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
 
 package tp1.logic.gameobjects;
-import tp1.logic.GameWorld;
 import tp1.logic.Position;
 
 public interface GameItem {
@@ -19,8 +18,5 @@ public interface GameItem {
 	public  boolean receiveInteraction(Box obj);
 	public  boolean receiveInteraction(Mushroom obj);
 	
-//	public String getName();
-//	public String getShortcut();
-//	
 }
 

@@ -109,7 +109,7 @@ public class GameObjectContainer{
 			obj.receiveAction(act); 
 	}
 	
-	public String stringifyObjects() { //serializacion de los objetos
+	public String stringifyObjects() {
         StringBuilder sb = new StringBuilder();
         for (GameObject obj : gameObjects) {
             sb.append(obj.stringify());

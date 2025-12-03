@@ -27,30 +27,10 @@ public class ActionCommand extends AbstractCommand {
 		super(NAME, SHORTCUT, DETAILS, HELP);
 		this.words = words;
 	}
-
-//    @Override
-//    public void execute(GameModel game, GameView view) throws CommandExecuteException{
-//    	//try catch aqui
-//        for (String s : words) {
-//            Action act = parseAction(s);
-//
-//            if (act == null) {
-//                view.showError(Messages.UNKNOWN_COMMAND.formatted(s));
-//                return;
-//            }
-//            
-//            game.addActionToMario(act);
-//        }
-//
-//        game.update();
-//        view.showGame();
-//    }
-    
     
     @Override
     public void execute(GameModel game, GameView view) throws CommandExecuteException {
     		
- //   	String forError = String.join(" ", words);
     	boolean emptyActions = true;
     	
     	for (String s : words) {

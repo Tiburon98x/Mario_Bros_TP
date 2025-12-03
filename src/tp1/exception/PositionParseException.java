@@ -1,3 +1,5 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
+
 package tp1.exception;
 
 public class PositionParseException extends GameParseException {

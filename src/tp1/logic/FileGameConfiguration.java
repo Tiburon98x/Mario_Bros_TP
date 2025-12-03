@@ -1,3 +1,5 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
+
 package tp1.logic;
 
 import java.io.BufferedReader;
@@ -37,19 +39,18 @@ public class FileGameConfiguration implements GameConfiguration {
 //			this.mario = new Mario(game, new Position(0, 0)); //inicializamos con esa posición
 			this.objectsWords = new ArrayList<>();
 			
-			String line = inStream.readLine();
-			//si line está vacio, excepcion??
+			String line = inStream.readLine(); //leemos del fichero
 			
-			parseStatus(line);
+			parseStatus(line); //establecemos tiempo, puntos y vidas
 			
 			line = inStream.readLine();
 						
-			while(line != null && !line.isEmpty()) { //no se si esa condición es correcta, aunq el profe lo tenía así
+			while(line != null && !line.isEmpty()) { //leemos hasta el final
 //				String [] objWords = line.trim().split("\\s+");
 //				parseAndAddObject(objWords, game);
 //				line = inStream.readLine();
 				String[] objWords = line.trim().split("\\s+");
-				preCheckObject(objWords);
+				stringObject(objWords);
 				line = inStream.readLine();
 
 			}
@@ -82,16 +83,15 @@ public class FileGameConfiguration implements GameConfiguration {
 			remainingTime = scan.nextInt();
 			points = scan.nextInt();
 			lives = scan.nextInt();
-			if(scan.hasNext()) 
-				throw new GameLoadException("Invalid game status: Too many arguments in header");
 		}
 		catch (NoSuchElementException e) {
 			throw new GameLoadException(Messages.INCORRECT_GAME_STATUS.formatted(line));
 		}	
 	}
 	
-	private void preCheckObject(String[] words) throws ObjectParseException, OffBoardException {
-        GameObject obj = GameObjectFactory.parse(words, game); // Solo para validar
+	private void stringObject(String[] words) throws ObjectParseException, OffBoardException {
+        @SuppressWarnings("unused")
+		GameObject obj = GameObjectFactory.parse(words, game); //Solo para validar
         
         String type = words[1];
         
@@ -131,15 +131,6 @@ public class FileGameConfiguration implements GameConfiguration {
 		return lives;
 	}
 
-//	@Override
-//	public Mario getMario() {
-//		return mario;
-//	}
-//
-//	@Override
-//	public List<GameObject> getObjects() {
-//		return gameObjects;
-//	}
 	@Override
     public Mario getMario() {
         try {
@@ -153,16 +144,16 @@ public class FileGameConfiguration implements GameConfiguration {
 
     @Override
     public List<GameObject> getObjects() {
-        List<GameObject> freshObjects = new ArrayList<>();
+        List<GameObject> realObjects = new ArrayList<>();
         for (String[] words : objectsWords) {
             try {
                 // Re-creamos cada objeto
-                freshObjects.add(GameObjectFactory.parse(words, game));
+                realObjects.add(GameObjectFactory.parse(words, game));
             } catch (Exception e) {
                 // No debería ocurrir
             }
         }
-        return freshObjects;
+        return realObjects;
     }
 	
 }

@@ -18,35 +18,21 @@ public class AddObjectCommand extends AbstractCommand {
 	private static final String DETAILS = Messages.COMMAND_ADDOBJECT_DETAILS;
 	private static final String HELP = Messages.COMMAND_ADDOBJECT_HELP
 			+ System.lineSeparator()
-			+ "      <object_description> = (col,row) objName [dir [BIG|SMALL]]. Ej. (12,3) Mario LEFT SMALL";
+			+ Messages.COMMAND_ADDOBJECT_OBJECT_DESCRIPTION;
 	
 	private String[] objWords; 
+	@SuppressWarnings("unused")
 	private String objString;	
 	
 	public AddObjectCommand() {
         super(NAME, SHORTCUT, DETAILS, HELP);
     }
-
 	
 	public AddObjectCommand(String[] objectDescription) {
 		super(NAME, SHORTCUT, DETAILS, HELP);
 		this.objWords = objectDescription;
 		this.objString = String.join(" ", objectDescription);;
 	}
-	
-//	@Override
-//	public void execute(GameModel game, GameView view) throws CommandExecuteException {
-//		
-//		if (game.addGameObject(objWords)) {
-//	    	   
-//			game.AddObject();
-//			view.showGame();
-//	           
-//		} else 
-//			//view.showError(Messages.INVALID_GAME_OBJECT.formatted(objString));
-//			throw new CommandExecuteException(Messages.INVALID_GAME_OBJECT.formatted(objString));
-//	       
-//		}
 	
 	@Override
 	public void execute(GameModel game, GameView view) throws CommandExecuteException {
@@ -67,14 +53,11 @@ public class AddObjectCommand extends AbstractCommand {
 		if (matchCommandName(commandWords[0])) {
 			if (commandWords.length < 3) //2 o 3
 				throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER); 
-
-//				return null;
 	           
 			String[] objWords = Arrays.copyOfRange(commandWords, 1, commandWords.length);
 			return new AddObjectCommand(objWords);
 	           
 		}
-		return null;
-	       
+		return null;	       
 	} 
 }

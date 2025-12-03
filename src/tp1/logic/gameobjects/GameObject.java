@@ -2,7 +2,6 @@
 
 package tp1.logic.gameobjects;
 
-import tp1.exception.GameParseException;
 import tp1.exception.ObjectParseException;
 import tp1.exception.OffBoardException;
 import tp1.exception.PositionParseException;
@@ -20,12 +19,11 @@ public abstract class GameObject implements GameItem{
 	
     private static final int AllowedArgsGameObject = 2; //posicion y nombre
 	
-	public GameObject(GameWorld game, Position pos, String NAME, String SHORTCUT) { // DUDOSO , String NAME, String SHORTCUT
+	public GameObject(GameWorld game, Position pos, String NAME, String SHORTCUT) {
 		
 		this.isAlive = true;
 		this.pos = pos;
 		this.game = game;
-		//¿?
 		this.NAME = NAME;
 		this.SHORTCUT = SHORTCUT;
 		
@@ -34,15 +32,10 @@ public abstract class GameObject implements GameItem{
 	protected int getAllowedArgs() {
         return AllowedArgsGameObject;
     }
-	
-	//public GameObject() {} //factoría
-	
-	// CONSTRUCTOR 2: Para la Factory (Prototipo)
-    // Este es el que soluciona tu NullPointerException
+
     public GameObject(String name, String shortcut) {
         this.NAME = name;
         this.SHORTCUT = shortcut;
-        // No necesitamos pos ni game aquí, solo saber CÓMO se llama el objeto
     }
 
 	public boolean isInPosition(Position p) {
@@ -63,14 +56,12 @@ public abstract class GameObject implements GameItem{
 	 
 	public void update() {}
 	
-//	public abstract String getIcon();
 	public abstract String toString();
 	
-	//¿?
 	protected String getName() {
 		return NAME;
 	}
-	//¿?
+
 	protected String getShortcut() {
 		return SHORTCUT;
 	}
@@ -78,17 +69,13 @@ public abstract class GameObject implements GameItem{
     protected abstract GameObject createObject(GameWorld game, Position pos, String[] objWords); //creacion de objetos
 
 	public GameObject parse(String[] objWords, GameWorld game) throws ObjectParseException, OffBoardException {
-	
-
-//	    if (objWords.length < 2) 
-//	    	throw new ObjectParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
-	    	 	   
+		    	 	   
 	    if (this.getName().equalsIgnoreCase(objWords[1]) ||  this.getShortcut().equalsIgnoreCase(objWords[1])) {
    
-			if(objWords.length > this.getAllowedArgs()) 
+			if(objWords.length > this.getAllowedArgs()) //muchos args
 			    	throw new ObjectParseException(Messages.OBJECT_PARSE_ERROR.formatted(String.join(" ", objWords)));
 			
-			Position pos;
+			Position pos; 
 			try {
 				pos = Position.parse(objWords[0]);
 				
@@ -96,7 +83,7 @@ public abstract class GameObject implements GameItem{
 				throw new ObjectParseException(Messages.ERROR_INVALID_POSITION.formatted(String.join(" ", objWords)), e);
 			}
 
-			if (!game.isInside(pos)) {
+			if (!game.isInside(pos)) { //posicion dentro del tablero
 				throw new OffBoardException(Messages.OBJECT_POSITION_OFF_BOARD.formatted(String.join(" ", objWords)));
 			}
 
@@ -114,6 +101,5 @@ public abstract class GameObject implements GameItem{
         sb.append(" ").append(this.getName()); //Coge los nombres de los objetos
         return sb.toString();
     }
-
 	
 }

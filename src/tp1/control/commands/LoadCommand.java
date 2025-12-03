@@ -1,3 +1,5 @@
+//GRUPO 23: YANG LI YANG, SALVADOR VALENZUELA MATOS
+
 package tp1.control.commands;
 
 import tp1.exception.CommandExecuteException;
@@ -29,7 +31,7 @@ public class LoadCommand extends AbstractCommand {
     public void execute(GameModel game, GameView view) throws CommandExecuteException {
         try {
             game.load(fileName);
-            view.showGame(); // Mostrar tablero tras éxito
+            view.showGame(); 
         } catch (GameLoadException e) {
             throw new CommandExecuteException(Messages.LOAD_ERROR.formatted(fileName), e);
         }

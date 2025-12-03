@@ -30,12 +30,12 @@ public class Controller {
 			try {
 			String[] userWords = view.getPrompt(); 
 			
-			if(userWords.length == 1 && userWords[0].isEmpty()){
+			if(userWords.length == 1 && userWords[0].isEmpty()){ //el usuario no pone nada = update
 				
 				game.update();
 				view.showGame();
 			}
-			else {Command command = CommandGenerator.parse(userWords);			
+			else {Command command = CommandGenerator.parse(userWords); 		
 			command.execute(game, view);
 			}
 		
