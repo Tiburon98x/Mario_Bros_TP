@@ -21,18 +21,21 @@ public class FileGameConfiguration implements GameConfiguration {
 	
 	private int remainingTime;
 	private int points, lives;
-	private Mario mario;
-	
-	private List<GameObject> gameObjects;
-	
-	
+
+	private String[] marioWords = null; 
+    private List<String[]> objectsWords;
+    
+    private GameWorld game;
+    
 	public FileGameConfiguration(String fileName, GameWorld game) throws GameLoadException{
 		
 		
 		try (BufferedReader inStream = new BufferedReader(new FileReader(fileName))){
 			
-			this.gameObjects = new ArrayList<>();
-			this.mario = new Mario(game, new Position(0, 0)); //inicializamos con esa posición
+			this.game = game;
+//			this.gameObjects = new ArrayList<>();
+//			this.mario = new Mario(game, new Position(0, 0)); //inicializamos con esa posición
+			this.objectsWords = new ArrayList<>();
 			
 			String line = inStream.readLine();
 			//si line está vacio, excepcion??
@@ -42,13 +45,16 @@ public class FileGameConfiguration implements GameConfiguration {
 			line = inStream.readLine();
 						
 			while(line != null && !line.isEmpty()) { //no se si esa condición es correcta, aunq el profe lo tenía así
-				String [] objWords = line.trim().split("\\s+");
-				parseAndAddObject(objWords, game);
+//				String [] objWords = line.trim().split("\\s+");
+//				parseAndAddObject(objWords, game);
+//				line = inStream.readLine();
+				String[] objWords = line.trim().split("\\s+");
+				preCheckObject(objWords);
 				line = inStream.readLine();
-				
+
 			}
 			
-			if (this.mario == null) { //si no hay mario, no hay juego
+			if (this.marioWords == null) { //si no hay mario, no hay juego
                 throw new GameLoadException(Messages.NOT_MARIO_FOUND);
            }
 			
@@ -84,20 +90,31 @@ public class FileGameConfiguration implements GameConfiguration {
 		}	
 	}
 	
+	private void preCheckObject(String[] words) throws ObjectParseException, OffBoardException {
+        GameObject obj = GameObjectFactory.parse(words, game); // Solo para validar
+        
+        String type = words[1];
+        
+        if (type.equalsIgnoreCase(Messages.OBJECT_MARIO) || type.equalsIgnoreCase(Messages.OBJECT_MARIO_SHORTCUT)) {
+             this.marioWords = words;
+        } else {
+             this.objectsWords.add(words);
+        }
+    }
 	
-	private void parseAndAddObject(String [] objWords, GameWorld game) throws ObjectParseException, OffBoardException{
-		
-		
-		Mario mario = this.mario.parse(objWords, game);
-		GameObject obj = mario;
-
-		if(obj != null)
-			this.mario = mario;
-		else {
-			obj = GameObjectFactory.parse(objWords, game);
-			this.gameObjects.add(obj);
-		}	
-	}
+//	private void parseAndAddObject(String [] objWords, GameWorld game) throws ObjectParseException, OffBoardException{
+//		
+//		
+//		Mario mario = this.mario.parse(objWords, game);
+//		GameObject obj = mario;
+//
+//		if(obj != null)
+//			this.mario = mario;
+//		else {
+//			obj = GameObjectFactory.parse(objWords, game);
+//			this.gameObjects.add(obj);
+//		}	
+//	}
 
 	@Override
 	public int getRemainingTime() {
@@ -114,14 +131,38 @@ public class FileGameConfiguration implements GameConfiguration {
 		return lives;
 	}
 
+//	@Override
+//	public Mario getMario() {
+//		return mario;
+//	}
+//
+//	@Override
+//	public List<GameObject> getObjects() {
+//		return gameObjects;
+//	}
 	@Override
-	public Mario getMario() {
-		return mario;
-	}
+    public Mario getMario() {
+        try {
+            // Re-creamos a Mario con los datos originales
+            return (Mario) GameObjectFactory.parse(marioWords, game);
+        } catch (Exception e) {
+            // Esto no debería pasar porque ya validamos en el constructor
+            return null; 
+        }
+    }
 
-	@Override
-	public List<GameObject> getObjects() {
-		return gameObjects;
-	}
+    @Override
+    public List<GameObject> getObjects() {
+        List<GameObject> freshObjects = new ArrayList<>();
+        for (String[] words : objectsWords) {
+            try {
+                // Re-creamos cada objeto
+                freshObjects.add(GameObjectFactory.parse(words, game));
+            } catch (Exception e) {
+                // No debería ocurrir
+            }
+        }
+        return freshObjects;
+    }
 	
 }

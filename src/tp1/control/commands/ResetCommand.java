@@ -33,54 +33,27 @@ public class ResetCommand extends AbstractCommand {
 		this.haslevel = true; 
 		
 	}
-//	public void execute(GameModel game, GameView view) {
-//
-//
-//		int targetLevel;
-//
-//
-//		if (level == defaultLevel) {
-//
-//		targetLevel = game.getCurrentLevel();
-//
-//
-//		} else {
-//
-//		targetLevel = level;
-//
-//		}
-//
-//		if(targetLevel > 10)
-//
-//		view.showError(Messages.INVALID_LEVEL_NUMBER);
-//
-//		else {
-//
-//		game.reset(targetLevel);
-//
-//		view.showGame();
-//
-//		}
-//
-//		}
+
 	@Override
 	public void execute(GameModel game, GameView view) throws CommandExecuteException{
 	
-	        if(!haslevel)
-	        	level = game.getCurrentLevel();        	
+	        if(!haslevel) {
+	        	level = game.getCurrentLevel();  
+//	        	haslevel = true;
+	        }
 
 	        try {
-//	        	
-//	        	if (haslevel) {
-//	                game.reset(level);
-//	            } else {
-//	                game.reset();
-//	            }
-//	            view.showGame();
+	        	
+	        	if (haslevel) {
+	                game.reset(level);
+	            } else {
+	                game.reset();
+	            }
+	            view.showGame();
 	        	
 	        	
-	            game.reset(level);
-   	            view.showGame();    
+//	            game.reset(level);
+//   	            view.showGame();    
 	        } catch (GameModelException e) {
 	            throw new CommandExecuteException(e.getMessage());
 	        }
@@ -93,23 +66,6 @@ public class ResetCommand extends AbstractCommand {
 //	    }
 	}
 
-//	 @Override
-//	 public Command parse(String[] commandWords) {
-//	
-//		 if (commandWords.length == 1 && matchCommandName(commandWords[0])) 
-//	            return new ResetCommand(defaultLevel); //usamos -10 para indicar en el execute que es erroneo
-//		 
-//		 if (commandWords.length == 2 && matchCommandName(commandWords[0])) {
-//
-//			 int parsedLevel = Integer.parseInt(commandWords[1]);
-//             return new ResetCommand(parsedLevel);
-//             
-//		 }
-//		 
-//		 return null;		 
-//	 }	 
-	
-	
 	@Override
 	public Command parse(String[] commandWords) throws CommandParseException {
 		
@@ -135,6 +91,5 @@ public class ResetCommand extends AbstractCommand {
 	    }
 	    return null; 
 	}
-	
 	
 }
