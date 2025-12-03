@@ -101,20 +101,6 @@ public class FileGameConfiguration implements GameConfiguration {
              this.objectsWords.add(words);
         }
     }
-	
-//	private void parseAndAddObject(String [] objWords, GameWorld game) throws ObjectParseException, OffBoardException{
-//		
-//		
-//		Mario mario = this.mario.parse(objWords, game);
-//		GameObject obj = mario;
-//
-//		if(obj != null)
-//			this.mario = mario;
-//		else {
-//			obj = GameObjectFactory.parse(objWords, game);
-//			this.gameObjects.add(obj);
-//		}	
-//	}
 
 	@Override
 	public int getRemainingTime() {
@@ -134,7 +120,7 @@ public class FileGameConfiguration implements GameConfiguration {
 	@Override
     public Mario getMario() {
         try {
-            // Re-creamos a Mario con los datos originales
+            // Recreamos a Mario con los datos originales
             return (Mario) GameObjectFactory.parse(marioWords, game);
         } catch (Exception e) {
             // Esto no debería pasar porque ya validamos en el constructor
@@ -145,10 +131,13 @@ public class FileGameConfiguration implements GameConfiguration {
     @Override
     public List<GameObject> getObjects() {
         List<GameObject> realObjects = new ArrayList<>();
+        
         for (String[] words : objectsWords) {
             try {
-                // Re-creamos cada objeto
+            	
+                // Recreamos cada objeto         	
                 realObjects.add(GameObjectFactory.parse(words, game));
+                
             } catch (Exception e) {
                 // No debería ocurrir
             }

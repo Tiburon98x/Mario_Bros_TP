@@ -21,9 +21,7 @@ public class Box extends GameObject{
 		
 		super(game, pos, NAME, SHORTCUT);
 		this.full = true;
-		this.icon = Messages.BOX;
-		
-		
+		this.icon = Messages.BOX;	
 	}
 
 	public Box() {
@@ -63,15 +61,14 @@ public class Box extends GameObject{
 
 	    if (objWords.length > 2) {
 
-	        if (objWords[2].equalsIgnoreCase("FULL")) 
+	        if (objWords[2].equalsIgnoreCase(Messages.OBJECT_BOX_FULL)) //podemos añadir shortcut de FULL y EMPTY, pero los tests no lo piden
 	        		b.setState(true);
 
-	        else if (objWords[2].equalsIgnoreCase("EMPTY")) 
+	        else if (objWords[2].equalsIgnoreCase(Messages.OBJECT_BOX_EMPTY)) 
 	        		b.setState(false);	
 	        else 
 	        	throw new ObjectParseException(Messages.INVALID_BOX_STATUS.formatted(String.join(" ", objWords)));
-	    }
-	    
+	    }	    
 	    return b;
 	}
 	
@@ -96,10 +93,13 @@ public class Box extends GameObject{
 		
 
 		if (mario.isDirectlyBelow(this.pos) && Messages.BOX.equals(this.icon)) {
+			
 			mario.givePointsToGame(50);
 			setState(false); //Empty BOX
+			
 			Mushroom obj = new Mushroom(game, this.pos.translate(new Position(0, -1)));
-			game.addMushroom(obj);
+			game.addMushroom(obj); //añadimos la seta al juego
+			
 			return true;	     
 		}	   
 		return false;	   

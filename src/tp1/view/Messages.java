@@ -145,6 +145,13 @@ public class Messages {
     public static final String OBJECT_MUSHROOM = "Mushroom";
     public static final String OBJECT_MUSHROOM_SHORTCUT = "MU";
     
+    public static final String OBJECT_MARIO_BIG = "BIG";
+    public static final String OBJECT_MARIO_BIG_SHORTCUT = "B";
+    public static final String OBJECT_MARIO_SMALL = "SMALL";
+    public static final String OBJECT_MARIO_SMALL_SHORTCUT = "S";
+    public static final String OBJECT_BOX_FULL = "FULL";
+    public static final String OBJECT_BOX_EMPTY = "EMPTY";
+    
 //Symbols
 	public static final String EMPTY = "";
 	public static final String LAND = MyStringUtils.repeat("▓",ConsoleView.CELL_SIZE);

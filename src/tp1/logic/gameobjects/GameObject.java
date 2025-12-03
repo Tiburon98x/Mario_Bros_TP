@@ -25,17 +25,16 @@ public abstract class GameObject implements GameItem{
 		this.pos = pos;
 		this.game = game;
 		this.NAME = NAME;
-		this.SHORTCUT = SHORTCUT;
-		
+		this.SHORTCUT = SHORTCUT;		
+	}
+	
+	 public GameObject(String name, String shortcut) {
+	        this.NAME = name;
+	        this.SHORTCUT = shortcut;
 	}
 	
 	protected int getAllowedArgs() {
         return AllowedArgsGameObject;
-    }
-
-    public GameObject(String name, String shortcut) {
-        this.NAME = name;
-        this.SHORTCUT = shortcut;
     }
 
 	public boolean isInPosition(Position p) {
@@ -65,9 +64,10 @@ public abstract class GameObject implements GameItem{
 	protected String getShortcut() {
 		return SHORTCUT;
 	}
-	
+		
     protected abstract GameObject createObject(GameWorld game, Position pos, String[] objWords); //creacion de objetos
 
+    
 	public GameObject parse(String[] objWords, GameWorld game) throws ObjectParseException, OffBoardException {
 		    	 	   
 	    if (this.getName().equalsIgnoreCase(objWords[1]) ||  this.getShortcut().equalsIgnoreCase(objWords[1])) {
@@ -75,7 +75,7 @@ public abstract class GameObject implements GameItem{
 			if(objWords.length > this.getAllowedArgs()) //muchos args
 			    	throw new ObjectParseException(Messages.OBJECT_PARSE_ERROR.formatted(String.join(" ", objWords)));
 			
-			Position pos; 
+			Position pos; //Parseamos posición
 			try {
 				pos = Position.parse(objWords[0]);
 				

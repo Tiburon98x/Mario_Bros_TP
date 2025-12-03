@@ -24,7 +24,6 @@ public class Mario extends MovingObject{
     
 	public Mario(GameWorld game, Position pos) {
 		
-//		super(game, pos);
 		super(game, pos, NAME, SHORTCUT);
 		this.icon = Messages.MARIO_RIGHT;
 		setFalling(false);
@@ -36,20 +35,9 @@ public class Mario extends MovingObject{
 	
 	public Mario() {
 		super(NAME, SHORTCUT);
-		//super();
+		
 	}
-
-//	@Override
-//	public String getName() {
-//		return NAME;
-//	}
-//	
-//	@Override
-//	public String getShortcut() {
-//		return SHORTCUT;
-//	}
 	
-	//Posiblemente hay que eliminarlo
 	@Override
 	public MovingObject createObject(GameWorld game, Position pos, int Dirx) {
 		Mario m = new Mario(game, pos);
@@ -137,34 +125,6 @@ public class Mario extends MovingObject{
 	    return canInteract && success;
 	    
 	}
-//	@Override
-//	public boolean interactWith(GameItem other) {
-//		
-//		// 1. Calculamos posiciones
-//		boolean hitFeet = other.isInPosition(this.pos);
-//		Position headPos = this.pos.translate(new Position(0, -1));
-//		boolean hitHead = other.isInPosition(headPos);
-//		
-//		// 2. DEBUG: Solo si el objeto es una Caja
-//		// (Asegúrate de que toString devuelve el icono "?" o "Box" para que esto entre)
-//		String objStr = other.toString();
-//		if (objStr.contains("?") || objStr.contains("Box")) {
-//			System.out.println("--- INTERACCIÓN MARIO vs CAJA ---");
-//			System.out.println("Mario Pos (Pies): " + this.pos);
-//			System.out.println("Mario Head (Cabeza): " + headPos);
-//			System.out.println("Caja Pos: " + ((GameObject)other).stringify()); // O usa un getter de pos si tienes
-//			System.out.println("¿Choca Pies? " + hitFeet);
-//			System.out.println("¿Choca Cabeza? " + hitHead);
-//			System.out.println("---------------------------------");
-//		}
-//
-//		// 3. Lógica original
-//		if (hitFeet || hitHead) {
-//			return other.receiveInteraction(this);
-//		}
-//		
-//		return false;
-//	}
 	
 	@Override
 	public boolean receiveInteraction(Goomba goomba) {
@@ -172,13 +132,11 @@ public class Mario extends MovingObject{
 		if (big) {
 			
 	        this.setBig(false);
-	        return true;
-		 
+	        return true;		 
 	    } 
 		
 		else 
-	   		this.muere();
-	    
+	   		this.muere();	    
 	    return true;    
 	}
 	
@@ -191,8 +149,7 @@ public class Mario extends MovingObject{
 	public boolean receiveInteraction(Exit_door exit_door) {		
 		
 	    game.marioExited();
-	    return true;
-	    
+	    return true;	    
 	}
 
 	@Override
@@ -207,15 +164,15 @@ public class Mario extends MovingObject{
 	    if (!isAlive()) 
 	    		return;
 	    	    
-		boolean ActionExecute = processActions(actions());		
+		boolean ActionExecute = processActions(actions());	//procesamos las acciones, si procesa alguno, no hay que hacer update 
+		
 		if(!ActionExecute) {
 			
 			super.update();
 			if(!isAlive() && isFalling())
 				muere();
 			
-		}
-		
+		}		
 	}
 
 	private boolean processActions(Iterable<Action> actions) {
@@ -229,15 +186,15 @@ public class Mario extends MovingObject{
 	    	if(!isAlive()) 
 	    		return moved;
 	    	
-	    	Position below = pos.translate(new Position(0, 1));  
+	    //Revisamos si está en el aire
+	    Position below = pos.translate(new Position(0, 1));  
   	    if (game.isInside(below) && game.isSolid(below))
-  	    		setFalling(false);
+  	   		setFalling(false);
   	    
   	    else 
-  	    		setFalling(true); 	  	
-  	    
- 	    
-        Position next = pos.translateMario(act);
+  	    	setFalling(true); 	  	
+  	     	    
+        Position next = pos.translateMario(act); //siguiente posición
 
         // Movimiento horizontal
         if (act == Action.LEFT || act == Action.RIGHT || act == Action.STOP) {
@@ -245,7 +202,7 @@ public class Mario extends MovingObject{
             if (act == Action.LEFT) {
             	
 	            	setDirx(-1);
-	            	cambiarIconIzq();
+	            	cambiarIconIzq(); //icon Mario moviendose a la izq
 	            	if(maxH > 3) continue;
 	            	maxH++;   
             	
@@ -254,23 +211,21 @@ public class Mario extends MovingObject{
             else if (act == Action.RIGHT) { 
             	
 	            	setDirx(1);
-	            	cambiarIconDer();
+	            	cambiarIconDer(); //icon Mario moviendose a la der
 	            	if(maxH > 3) continue;
-	            	maxH++;
-	            	
+	            	maxH++;	            	
             }
             
             else if (act == Action.STOP) {
             	
 	            	setDirx(0);
-	            	icon = Messages.MARIO_STOP;
-            	
+	            	icon = Messages.MARIO_STOP;          	
             }
+            
             if (canMoveTo(next)) {
             	
                 pos = next;	               
-                moved = true;
-                
+                moved = true;                
             }
     
         }
@@ -284,7 +239,7 @@ public class Mario extends MovingObject{
 	            	
 	            	maxU++;
 	            	pos = next;
-	            	setFalling(true);
+	            	setFalling(true); //necesario para las interacciones
 	            	moved = true;  	            		
 	            }            	
             }
@@ -299,34 +254,25 @@ public class Mario extends MovingObject{
                 while (game.isInside(below) && !game.isSolid(below)) {
                 	
                     pos = below;
-        			game.doInteraction(this);
+        			game.doInteraction(this); //debes chequear en cada bajada
                     below = pos.translateMario(act);
-//                    if (!game.isInside(below)) {                    	
-//                 //       return false;  
-//                    	muere();
-//                    	return true;
-//                    }
-//                    
+                    
                 }
                 if (!game.isInside(below)) {                    	
-                    //       return false;  
                 	muere();
                 	return true;
                 }
                                       
                 moved = true;
-
             } 
             else {
                 setDirx(0);
                 icon = Messages.MARIO_STOP;	                 
-            }
-            
+            }           
         }
         
-        if(act != Action.DOWN)
-        	game.doInteraction(this);
-    
+        if(act != Action.DOWN) //DOWN ya chequea las interacciones 
+        	game.doInteraction(this);   
     }
 	    
 	    return moved;
@@ -356,76 +302,29 @@ public class Mario extends MovingObject{
 		return true;
 	}
 	
-	//En prueba
 	@Override
     protected int getAllowedArgs() {
         return AllowedArgsGameObject;
     }
 	
-//	@Override
-//    public GameObject parse(String[] objWords, GameWorld game) throws ObjectParseException, OffBoardException {
-//        
-//        // 1. Dejar que MovingObject parsee la dirección
-//        GameObject obj = super.parse(objWords, game);
-//        
-//        if (obj == null) return null;
-//        Mario m = new Mario(game, pos);
-//        Mario m = (Mario) obj;
-//
-//        // 2. Si hay 4ª palabra, es el TAMAÑO (Small/Big/Super)
-//        if (objWords.length > 3) {
-//        	
-//            if (objWords[3].equalsIgnoreCase("BIG") || objWords[3].equalsIgnoreCase("B")) 
-//        		m.setBig(true);
-//
-//            else if (objWords[3].equalsIgnoreCase("SMALL") || objWords[3].equalsIgnoreCase("S")) 
-//        		m.setBig(false);	
-//            else 
-//            		throw new ObjectParseException(Messages.ERROR_INVALID_MARIO_SIZE.formatted(String.join(" ", objWords)));
-//        }
-//        
-//        
-//        return m;
-//    }
 	@Override
 	public Mario parse(String[] objWords, GameWorld game) throws OffBoardException, ObjectParseException {
-
-//		if(!objWords[1].equalsIgnoreCase(NAME) && !objWords[1].equalsIgnoreCase(SHORTCUT)) 
-//			return null; //esto no se si está bien
 		
 		GameObject obj = super.parse(objWords, game);
 		
 		if (obj == null) 
 	        return null;
 	    
-		
-	//    Mario m = new Mario(game, pos);
 		Mario m = (Mario) obj;
 
-	    // Dirección
-
-//	    if (objWords.length > 2) {
-//
-//	        if (objWords[2].equalsIgnoreCase("RIGHT") || objWords[2].equalsIgnoreCase("R")) 
-//	        		m.setDirx(1);
-//
-//	        else if (objWords[2].equalsIgnoreCase("LEFT") || objWords[2].equalsIgnoreCase("L")) {
-//	        	
-//	        	m.setDirx(-1);
-//	        	m.cambiarIconIzq();
-//	        	
-//	        }
-//	        
-//	    }
-		
 	    // Tamaño
 
 	    if (objWords.length > 3) {
 
-	        if (objWords[3].equalsIgnoreCase("BIG") || objWords[3].equalsIgnoreCase("B")) 
+	        if (objWords[3].equalsIgnoreCase(Messages.OBJECT_MARIO_BIG) || objWords[3].equalsIgnoreCase(Messages.OBJECT_MARIO_BIG_SHORTCUT)) 
 	        		m.setBig(true);
 
-	        else if (objWords[3].equalsIgnoreCase("SMALL") || objWords[3].equalsIgnoreCase("S")) 
+	        else if (objWords[3].equalsIgnoreCase(Messages.OBJECT_MARIO_SMALL) || objWords[3].equalsIgnoreCase(Messages.OBJECT_MARIO_SMALL_SHORTCUT)) 
 	        		m.setBig(false);	
 	        else 
 	        	throw new ObjectParseException(Messages.ERROR_INVALID_MARIO_SIZE.formatted(String.join(" ", objWords)));
@@ -433,13 +332,10 @@ public class Mario extends MovingObject{
 	    return m;
 	}
 
-	public boolean isDirectlyBelow(Position pos) {
+	public boolean isDirectlyBelow(Position pos) { //Método para BOX
 			
-
-		Position below = pos.translate(new Position(0, 1));
-		
-		return this.isInPosition(below);
-		
+		Position below = pos.translate(new Position(0, 1));		
+		return this.isInPosition(below);		
 	}
 	
 	@Override
@@ -455,19 +351,18 @@ public class Mario extends MovingObject{
 	@Override
 	protected GameObject createObject(GameWorld game, Position pos, String[] s) {
 		return new Mario(game, pos);
-//		return null;
 	}			
 	
 	@Override
     public String stringify() {
-        // Llama a MovingObject.getGameItemState (que ya pone Posición, Nombre y Dirección)
+		
         StringBuilder sb = new StringBuilder(super.stringify());
         
-        if (big) {
-            sb.append(" BIG");
-        } else {
-            sb.append(" SMALL");
-        }
+        if (big) 
+            sb.append(" " + Messages.OBJECT_MARIO_BIG);
+        else 
+            sb.append(" " + Messages.OBJECT_MARIO_SMALL);
+        
         return sb.toString();
     }
 }
