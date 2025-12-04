@@ -35,7 +35,8 @@ public class Controller {
 				game.update();
 				view.showGame();
 			}
-			else {Command command = CommandGenerator.parse(userWords); 		
+			else {
+			Command command = CommandGenerator.parse(userWords); 		
 			command.execute(game, view);
 			}
 		

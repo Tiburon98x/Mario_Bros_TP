@@ -370,15 +370,15 @@ public class Game implements GameModel, GameStatus, GameWorld {
 			finished = true;
 		}
 	 
-	 @Override
-		public int getCurrentLevel() {
-			return level;
-		}
+	@Override
+	public int getCurrentLevel() {
+		return level;
+	}
 	 
-	 @Override
-	 public void addActionToMario(Action act) {
-		 this.gameObjects.SetAction(act);
-		}
+	@Override
+	public void addActionToMario(Action act) {
+		this.gameObjects.SetAction(act);
+	}
 	 
 	 @Override
 	 public void AddObjectToContainer() {		 

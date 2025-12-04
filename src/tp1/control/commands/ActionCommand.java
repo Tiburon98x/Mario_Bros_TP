@@ -31,13 +31,13 @@ public class ActionCommand extends AbstractCommand {
     @Override
     public void execute(GameModel game, GameView view) throws CommandExecuteException {
     		
-    	boolean emptyActions = true;
+    	boolean emptyActions = true; //vemos si vamos a meter acciones
     	
     	for (String s : words) {
     		try {
     			Action act = Action.parseAction(s);
-    			game.addActionToMario(act);
-    			emptyActions = false;
+    			game.addActionToMario(act); 
+    			emptyActions = false; //hemos añadido accion
             
     		} catch (ActionParseException e) {
     			//Ignoramos aposta para ver si se pueden meter otras acciones

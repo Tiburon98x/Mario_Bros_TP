@@ -35,8 +35,6 @@ public class FileGameConfiguration implements GameConfiguration {
 		try (BufferedReader inStream = new BufferedReader(new FileReader(fileName))){
 			
 			this.game = game;
-//			this.gameObjects = new ArrayList<>();
-//			this.mario = new Mario(game, new Position(0, 0)); //inicializamos con esa posición
 			this.objectsWords = new ArrayList<>();
 			
 			String line = inStream.readLine(); //leemos del fichero
@@ -46,9 +44,7 @@ public class FileGameConfiguration implements GameConfiguration {
 			line = inStream.readLine();
 						
 			while(line != null && !line.isEmpty()) { //leemos hasta el final
-//				String [] objWords = line.trim().split("\\s+");
-//				parseAndAddObject(objWords, game);
-//				line = inStream.readLine();
+
 				String[] objWords = line.trim().split("\\s+");
 				stringObject(objWords);
 				line = inStream.readLine();
@@ -128,7 +124,7 @@ public class FileGameConfiguration implements GameConfiguration {
         }
     }
 
-    @Override
+	@Override
     public List<GameObject> getObjects() {
         List<GameObject> realObjects = new ArrayList<>();
         
@@ -143,6 +139,5 @@ public class FileGameConfiguration implements GameConfiguration {
             }
         }
         return realObjects;
-    }
-	
+    }	
 }

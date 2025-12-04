@@ -19,9 +19,7 @@ public class Mario extends MovingObject{
 
 	private boolean big = true;
     private ActionList actionList;
-	
-    
-    
+	  
 	public Mario(GameWorld game, Position pos) {
 		
 		super(game, pos, NAME, SHORTCUT);

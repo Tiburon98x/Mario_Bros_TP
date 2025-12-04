@@ -76,8 +76,7 @@ public class ResetCommand extends AbstractCommand {
 	            throw new CommandParseException(Messages.COMMAND_INCORRECT_PARAMETER_NUMBER);
 	            
 	        } else if (commandWords.length == 1)
-//	        	return new ResetCommand(defaultLevel); // No necesario, si no tiene nivel se le atribuye el constructor sin nivel
-	        	//Ahora la pregunta es sería necesario inicializar level a algún valor 
+
 	        	return new ResetCommand();
 
 	        try {
